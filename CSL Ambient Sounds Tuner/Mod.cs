@@ -13,7 +13,7 @@ namespace AmbientSoundsTuner
     {
         internal const string FriendlyName = "Ambient Sounds Tuner";
         internal const string AssemblyName = "AmbientSoundsTuner";
-        internal const ulong WorkshopId = 0;
+        internal const ulong WorkshopId = 455958878;
 
         public string Name
         {

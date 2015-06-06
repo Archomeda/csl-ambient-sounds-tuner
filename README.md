@@ -11,10 +11,11 @@ appear that will open a new window where you can change the ambient sounds.
 **Note: The mod might require a restart after enabling or disabling.**
 
 ## Installation
-Go to the Steam Workshop and subscribe to the mod, it will install
-automatically. This will also keep it updated with newer releases. If you want
-to do it manually, you can clone this repo, compile the code yourself and place
-the DLL file in your mods folder.
+Go to the
+[Steam Workshop](http://steamcommunity.com/sharedfiles/filedetails/?id=455958878)
+and subscribe to the mod, it will install automatically. This will also keep it
+updated with newer releases. If you want to do it manually, you can clone this
+repo, compile the code yourself and place the DLL file in your mods folder.
 
 ## Compatibility
 This mod is based on version 1.1.0 of Cities Skylines, and it is not guaranteed
