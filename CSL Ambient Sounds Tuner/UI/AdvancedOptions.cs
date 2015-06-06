@@ -62,7 +62,7 @@ namespace AmbientSoundsTuner.UI
 
             UIView.GetAView().AttachUIComponent(advancedOptions);
             advancedOptionsWindow.transform.SetParent(GameObject.Find(GameObjectDefs.ID_LIBRARY_OPTIONSPANEL).GetComponent<OptionsPanel>().component.transform);
-            advancedOptionsWindow.BringToFront();
+            advancedOptionsWindow.Show(true);
 
             Window.ShowWindow(advancedOptions.GetComponent<AdvancedOptionsWindow>());
         }
