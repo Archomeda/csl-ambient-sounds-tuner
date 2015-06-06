@@ -28,7 +28,7 @@ time being until an update of this mod is released.
 ### Mods
 This mod should be compatible with all mods, as long as they don't change the
 following stuff:
-- The values of `AudioManager.instance.m_properties_m_ambients`.
+- The values of `AudioManager.instance.m_properties.m_ambients`.
 
 ## Contributing
 I'm open for any contributions you can make. If you find a bug, create an issue
