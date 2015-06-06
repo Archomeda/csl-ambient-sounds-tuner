@@ -30,6 +30,14 @@ time being until an update of this mod is released.
 This mod should be compatible with all mods, as long as they don't change the
 following stuff:
 - The values of `AudioManager.instance.m_properties.m_ambients`.
+- The values of `m_audioInfo` within an `EffectInfo` that is an `SoundEffect`.
+
+*Incompatible:*
+- SilenceObnoxiousSirens
+  - This mod basically sets the volume of every siren to 0 in the same location
+    as Ambient Sounds Tuner does. However, Ambient Sounds Tuner allows you to
+    customize the volume of each effect sound to your likings. Therefore,
+    SilenceObnoxiousSirens is not needed when using Ambient Sounds Tuner.
 
 ## Contributing
 I'm open for any contributions you can make. If you find a bug, create an issue
