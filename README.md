@@ -1,4 +1,6 @@
 # Cities Skylines: Ambient Sounds Tuner
+[![Build status](https://ci.appveyor.com/api/projects/status/pt4toy5d9o5mb1bo/branch/master?svg=true)](https://ci.appveyor.com/project/Archomeda/csl-ambient-sounds-tuner/branch/master)
+
 Sick of hearing those wind sounds when zoomed out, but you still want to hear
 other ambient sounds? This mod will allow you to tune each different ambient
 sound individually.

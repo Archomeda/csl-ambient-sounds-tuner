@@ -1,0 +1,18 @@
+# We follow the versioning of Cities Skylines
+version: 1.1.0.{build}
+
+configuration: Release
+
+cache:
+  - packages -> appveyor\packages.config
+
+build_script:
+  - ps: appveyor\Build.ps1
+
+artifacts:
+  - path: bin
+    name: AmbientSoundsTuner-v$(appveyor_build_version)
+    type: zip
+  - path: workshop
+    name: AmbientSoundsTuner-workshop-v$(appveyor_build_version)
+    type: zip
