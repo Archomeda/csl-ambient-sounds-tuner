@@ -6,9 +6,11 @@ other ambient sounds? This mod will allow you to tune each different ambient
 sound type individually.
 
 After installing this mod, go to the audio settings. You should see a new button
-appear that will open a new window where you can change the ambient sounds.
+appear that will open a new window where you can change the volume of both the
+ambient sounds and the effect sounds.
 
-**Note: The mod might require a restart after enabling or disabling.**
+**Note:** Although it's not needed anymore, if the button does not show up after
+enabling, try restarting the game.
 
 ## Installation
 Go to the
