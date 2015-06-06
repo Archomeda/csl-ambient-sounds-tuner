@@ -11,17 +11,12 @@ namespace AmbientSoundsTuner.Utils
     {
         public static UIPanel GetAudioOptionsPanel()
         {
-            GameObject optionsContainer = GameObject.Find("OptionsContainer");
+            GameObject optionsContainer = GameObject.Find(GameObjectDefs.ID_OPTIONSCONTAINER);
             if (optionsContainer != null)
             {
                 return optionsContainer.GetComponentsInChildren<UIPanel>().FirstOrDefault(p => p.name == "Audio");
             }
             return null;
-        }
-
-        public static GameObject GetNativeOptionsPanel()
-        {
-            return GameObject.Find("(Library) OptionsPanel");
         }
     }
 }

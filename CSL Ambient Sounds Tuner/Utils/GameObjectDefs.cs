@@ -8,5 +8,7 @@ namespace AmbientSoundsTuner.Utils
     internal static class GameObjectDefs
     {
         public const string ID_EFFECTS = "Effects";
+        public const string ID_LIBRARY_OPTIONSPANEL = "(Library) OptionsPanel";
+        public const string ID_OPTIONSCONTAINER = "OptionsContainer";
     }
 }
