@@ -51,13 +51,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="EffectsPatcher.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerializableDictionary.cs" />
     <Compile Include="UI\AmbientOptions.cs" />
     <Compile Include="UI\AmbientOptionsWindow.cs" />
     <Compile Include="UI\Window.cs" />
     <Compile Include="Utils\FileUtils.cs" />
+    <Compile Include="Utils\GameObjectDefs.cs" />
     <Compile Include="Utils\OptionsPanelUtils.cs" />
     <Compile Include="Utils\PluginUtils.cs" />
     <Compile Include="Utils\ReflectionUtils.cs" />

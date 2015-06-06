@@ -55,6 +55,7 @@ namespace AmbientSoundsTuner
             }
             AmbientOptions.CreateAmbientOptions();
             PatchAmbientSounds();
+            PatchEffectSounds();
         }
 
         /// <summary>
@@ -82,6 +83,23 @@ namespace AmbientSoundsTuner
                 AudioManager.instance.m_properties.m_ambients[8].m_volume = Configuration.Instance.State.AmbientAgricultural;
                 Logger.Info("Ambient audio volumes have been patched");
             }
+        }
+
+        internal static void PatchEffectSounds()
+        {
+            int effectSoundsCount = EffectsPatcher.OriginalVolumes.Count;
+            int backedUpEffectSoundsCount = EffectsPatcher.BackupEffectVolumes();
+            if (backedUpEffectSoundsCount < effectSoundsCount)
+            {
+                Logger.Warning("{0}/{1} effect sound volumes have been backed up", backedUpEffectSoundsCount, effectSoundsCount);
+            }
+            int patchedEffectSoundsCount = EffectsPatcher.PatchEffectVolumes();
+            if (patchedEffectSoundsCount < effectSoundsCount)
+            {
+                Logger.Warning("{0}/{1} effect sound volumes have been patched", patchedEffectSoundsCount, effectSoundsCount);
+            }
+
+            Logger.Info("Effect sound volumes have been patched");
         }
 
     }

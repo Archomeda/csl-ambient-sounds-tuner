@@ -25,6 +25,8 @@ namespace AmbientSoundsTuner
                 this.AmbientSuburban = 1;
                 this.AmbientCity = 1;
                 this.AmbientAgricultural = 1;
+
+                this.EffectVolumes = new SerializableDictionary<string, float>();
             }
 
             public float AmbientWorld { get; set; }
@@ -36,6 +38,9 @@ namespace AmbientSoundsTuner
             public float AmbientSuburban { get; set; }
             public float AmbientCity { get; set; }
             public float AmbientAgricultural { get; set; }
+
+            [XmlElement("EffectVolumes")]
+            public SerializableDictionary<string, float> EffectVolumes { get; set; }
         }
 
         public Configuration()

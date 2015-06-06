@@ -1,0 +1,12 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace AmbientSoundsTuner.Utils
+{
+    internal static class GameObjectDefs
+    {
+        public const string ID_EFFECTS = "Effects";
+    }
+}
