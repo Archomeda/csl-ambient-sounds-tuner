@@ -50,8 +50,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AmbientsPatcher.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="EffectsPatcher.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.Utils;
+using AmbientSoundsTuner.Extensions;
 using ColossalFramework.DataBinding;
 using ColossalFramework.UI;
 using UnityEngine;
@@ -30,15 +31,15 @@ namespace AmbientSoundsTuner.UI
             this.Title = "AMBIENT SOUNDS TUNER";
             base.Start();
 
-            this.volumeWorld = Configuration.Instance.State.AmbientWorld;
-            this.volumeForest = Configuration.Instance.State.AmbientForest;
-            this.volumeSea = Configuration.Instance.State.AmbientSea;
-            this.volumeStream = Configuration.Instance.State.AmbientStream;
-            this.volumeIndustrial = Configuration.Instance.State.AmbientIndustrial;
-            this.volumePlaza = Configuration.Instance.State.AmbientPlaza;
-            this.volumeSuburban = Configuration.Instance.State.AmbientSuburban;
-            this.volumeCity = Configuration.Instance.State.AmbientCity;
-            this.volumeAgricultural = Configuration.Instance.State.AmbientAgricultural;
+            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.World, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.World], out this.volumeWorld);
+            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Forest, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Forest], out this.volumeForest);
+            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Sea, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Sea], out this.volumeSea);
+            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Stream, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Stream], out this.volumeStream);
+            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Industrial, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Industrial], out this.volumeIndustrial);
+            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Plaza, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Plaza], out this.volumePlaza);
+            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Suburban, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Suburban], out this.volumeSuburban);
+            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.City, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.City], out this.volumeCity);
+            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Agricultural, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Agricultural], out this.volumeAgricultural);
 
             this.ContentPanel.autoLayout = true;
             this.ContentPanel.autoLayoutDirection = LayoutDirection.Vertical;
@@ -58,15 +59,15 @@ namespace AmbientSoundsTuner.UI
         public override void Close()
         {
             base.Close();
-            Configuration.Instance.State.AmbientWorld = volumeWorld;
-            Configuration.Instance.State.AmbientForest = volumeForest;
-            Configuration.Instance.State.AmbientSea = volumeSea;
-            Configuration.Instance.State.AmbientStream = volumeStream;
-            Configuration.Instance.State.AmbientIndustrial = volumeIndustrial;
-            Configuration.Instance.State.AmbientPlaza = volumePlaza;
-            Configuration.Instance.State.AmbientSuburban = volumeSuburban;
-            Configuration.Instance.State.AmbientCity = volumeCity;
-            Configuration.Instance.State.AmbientAgricultural = volumeAgricultural;
+            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.World] = volumeWorld;
+            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.Forest] = volumeForest;
+            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.Sea] = volumeSea;
+            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.Stream] = volumeStream;
+            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.Industrial] = volumeIndustrial;
+            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.Plaza] = volumePlaza;
+            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.Suburban] = volumeSuburban;
+            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.City] = volumeCity;
+            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.Agricultural] = volumeAgricultural;
             Configuration.Save();
             Mod.PatchAmbientSounds();
         }

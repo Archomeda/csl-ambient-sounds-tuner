@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AmbientSoundsTuner.Utils;
-using UnityEngine;
+using AmbientSoundsTuner.Extensions;
 
 namespace AmbientSoundsTuner
 {
@@ -70,7 +69,7 @@ namespace AmbientSoundsTuner
                 SoundEffect soundEffect = effectInfo as SoundEffect;
                 if (soundEffect != null)
                 {
-                    Configuration.Instance.State.EffectVolumes.TryGetValue(effectName, out soundEffect.m_audioInfo.m_volume);
+                    Configuration.Instance.State.EffectVolumes.TryGetValueOrDefault(effectName, originalVolumes[effectName], out soundEffect.m_audioInfo.m_volume);
                     success++;
                 }
                 else
@@ -105,7 +104,5 @@ namespace AmbientSoundsTuner
             }
             return success;
         }
-
-
     }
 }
