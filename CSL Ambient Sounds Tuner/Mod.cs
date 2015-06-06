@@ -27,7 +27,7 @@ namespace AmbientSoundsTuner
                     {
                         Logger.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
                     }
-                    AdvancedOptions.CreateAmbientOptions();
+                    AdvancedOptions.CreateAdvancedOptions();
                 }
 
                 return FriendlyName;
@@ -53,7 +53,7 @@ namespace AmbientSoundsTuner
             {
                 Logger.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
             }
-            AdvancedOptions.CreateAmbientOptions();
+            AdvancedOptions.CreateAdvancedOptions();
 
             PatchAmbientSounds();
             PatchEffectSounds();

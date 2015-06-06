@@ -14,7 +14,7 @@ namespace AmbientSoundsTuner.UI
         private static UIButton advancedOptionsButton;
         private static AdvancedOptionsWindow advancedOptionsWindow;
 
-        public static void CreateAmbientOptions()
+        public static void CreateAdvancedOptions()
         {
             if (advancedOptions != null)
             {
@@ -35,14 +35,14 @@ namespace AmbientSoundsTuner.UI
             advancedOptionsButton.autoSize = true;
             advancedOptionsButton.textPadding = new RectOffset(8, 8, 8, 8);
             advancedOptionsButton.textScale = 1.3f;
-            advancedOptionsButton.eventClick += ambientOptionsButton_eventClick;
+            advancedOptionsButton.eventClick += advancedOptionsButton_eventClick;
 
             advancedOptions = new GameObject("AdvancedSoundsTuner");
             advancedOptionsWindow = advancedOptions.AddComponent<AdvancedOptionsWindow>();
             Logger.Info("Created Sounds Tuner button and window");
         }
 
-        public static void DestroyAmbientOptions()
+        public static void DestroyAdvancedOptions()
         {
             if (advancedOptions == null)
             {
@@ -56,7 +56,7 @@ namespace AmbientSoundsTuner.UI
             advancedOptionsWindow = null;
         }
 
-        private static void ambientOptionsButton_eventClick(UIComponent component, UIMouseEventParameter eventParam)
+        private static void advancedOptionsButton_eventClick(UIComponent component, UIMouseEventParameter eventParam)
         {
             Logger.Debug("Opening Sounds Tuner window");
 
