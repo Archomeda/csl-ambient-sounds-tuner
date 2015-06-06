@@ -16,26 +16,15 @@ namespace AmbientSoundsTuner
         {
             public StateConfig()
             {
-                this.AmbientWorld = 1;
-                this.AmbientForest = 1;
-                this.AmbientSea = 1;
-                this.AmbientStream = 1;
-                this.AmbientIndustrial = 1;
-                this.AmbientPlaza = 1;
-                this.AmbientSuburban = 1;
-                this.AmbientCity = 1;
-                this.AmbientAgricultural = 1;
+                this.AmbientVolumes = new SerializableDictionary<AudioManager.AmbientType, float>();
+                this.EffectVolumes = new SerializableDictionary<string, float>();
             }
 
-            public float AmbientWorld { get; set; }
-            public float AmbientForest { get; set; }
-            public float AmbientSea { get; set; }
-            public float AmbientStream { get; set; }
-            public float AmbientIndustrial { get; set; }
-            public float AmbientPlaza { get; set; }
-            public float AmbientSuburban { get; set; }
-            public float AmbientCity { get; set; }
-            public float AmbientAgricultural { get; set; }
+            [XmlElement("AmbientVolumes")]
+            public SerializableDictionary<AudioManager.AmbientType, float> AmbientVolumes { get; set; }
+
+            [XmlElement("EffectVolumes")]
+            public SerializableDictionary<string, float> EffectVolumes { get; set; }
         }
 
         public Configuration()

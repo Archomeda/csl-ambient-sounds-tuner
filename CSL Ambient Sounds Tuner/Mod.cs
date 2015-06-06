@@ -27,7 +27,7 @@ namespace AmbientSoundsTuner
                     {
                         Logger.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
                     }
-                    AmbientOptions.CreateAmbientOptions();
+                    AdvancedOptions.CreateAdvancedOptions();
                 }
 
                 return FriendlyName;
@@ -53,8 +53,10 @@ namespace AmbientSoundsTuner
             {
                 Logger.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
             }
-            AmbientOptions.CreateAmbientOptions();
+            AdvancedOptions.CreateAdvancedOptions();
+
             PatchAmbientSounds();
+            PatchEffectSounds();
         }
 
         /// <summary>
@@ -69,19 +71,36 @@ namespace AmbientSoundsTuner
 
         internal static void PatchAmbientSounds()
         {
-            if (AudioManager.instance.m_properties.m_ambients.Length > 8)
+            int ambientSoundsCount = AmbientsPatcher.OriginalVolumes.Count;
+            int backedUpAmbientSoundsCount = AmbientsPatcher.BackupAmbientVolumes();
+            if (backedUpAmbientSoundsCount < ambientSoundsCount)
             {
-                AudioManager.instance.m_properties.m_ambients[0].m_volume = Configuration.Instance.State.AmbientWorld;
-                AudioManager.instance.m_properties.m_ambients[1].m_volume = Configuration.Instance.State.AmbientForest;
-                AudioManager.instance.m_properties.m_ambients[2].m_volume = Configuration.Instance.State.AmbientSea;
-                AudioManager.instance.m_properties.m_ambients[3].m_volume = Configuration.Instance.State.AmbientStream;
-                AudioManager.instance.m_properties.m_ambients[4].m_volume = Configuration.Instance.State.AmbientIndustrial;
-                AudioManager.instance.m_properties.m_ambients[5].m_volume = Configuration.Instance.State.AmbientPlaza;
-                AudioManager.instance.m_properties.m_ambients[6].m_volume = Configuration.Instance.State.AmbientSuburban;
-                AudioManager.instance.m_properties.m_ambients[7].m_volume = Configuration.Instance.State.AmbientCity;
-                AudioManager.instance.m_properties.m_ambients[8].m_volume = Configuration.Instance.State.AmbientAgricultural;
-                Logger.Info("Ambient audio volumes have been patched");
+                Logger.Warning("{0}/{1} ambient sound volumes have been backed up", backedUpAmbientSoundsCount, ambientSoundsCount);
             }
+            int patchedAmbientSoundsCount = AmbientsPatcher.PatchAmbientVolumes();
+            if (patchedAmbientSoundsCount < ambientSoundsCount)
+            {
+                Logger.Warning("{0}/{1} ambient sound volumes have been patched", patchedAmbientSoundsCount, ambientSoundsCount);
+            }
+
+            Logger.Info("Ambient sound volumes have been patched");
+        }
+
+        internal static void PatchEffectSounds()
+        {
+            int effectSoundsCount = EffectsPatcher.OriginalVolumes.Count;
+            int backedUpEffectSoundsCount = EffectsPatcher.BackupEffectVolumes();
+            if (backedUpEffectSoundsCount < effectSoundsCount)
+            {
+                Logger.Warning("{0}/{1} effect sound volumes have been backed up", backedUpEffectSoundsCount, effectSoundsCount);
+            }
+            int patchedEffectSoundsCount = EffectsPatcher.PatchEffectVolumes();
+            if (patchedEffectSoundsCount < effectSoundsCount)
+            {
+                Logger.Warning("{0}/{1} effect sound volumes have been patched", patchedEffectSoundsCount, effectSoundsCount);
+            }
+
+            Logger.Info("Effect sound volumes have been patched");
         }
 
     }
