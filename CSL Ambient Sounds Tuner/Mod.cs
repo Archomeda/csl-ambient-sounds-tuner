@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.UI;
 using AmbientSoundsTuner.Utils;
+using ColossalFramework.Plugins;
 using ICities;
 using UnityEngine;
 
@@ -15,19 +16,18 @@ namespace AmbientSoundsTuner
         internal const string AssemblyName = "AmbientSoundsTuner";
         internal const ulong WorkshopId = 455958878;
 
+        private bool isLoaded = false;
+
         public string Name
         {
             get
             {
                 // Here we load our stuff (only if it's enabled, to prevent confusion), hacky, but oh well...
-                if (PluginUtils.GetPluginInfo().isEnabled)
+                if (!this.isLoaded)
                 {
-                    Configuration.Load();
-                    if (Configuration.Instance.ExtraDebugLogging)
-                    {
-                        Logger.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
-                    }
-                    AdvancedOptions.CreateAdvancedOptions();
+                    this.isLoaded = true;
+                    this.Initialize();
+                    PluginManager.instance.eventPluginsStateChanged += this.Initialize;
                 }
 
                 return FriendlyName;
@@ -39,6 +39,23 @@ namespace AmbientSoundsTuner
             get { return "Tune your ambient sounds volumes individually"; }
         }
 
+
+        private void Initialize()
+        {
+            if (PluginUtils.GetPluginInfo().isEnabled)
+            {
+                Configuration.Load();
+                if (Configuration.Instance.ExtraDebugLogging)
+                {
+                    Logger.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
+                }
+                AdvancedOptions.CreateAdvancedOptions();
+            }
+            else
+            {
+                AdvancedOptions.DestroyAdvancedOptions();
+            }
+        }
 
         /// <summary>
         /// Our entry point. Here we load the mod.
