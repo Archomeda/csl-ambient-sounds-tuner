@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.Utils;
-using AmbientSoundsTuner.Extensions;
 using ColossalFramework.DataBinding;
 using ColossalFramework.UI;
+using CommonShared.Extensions;
+using CommonShared.UI;
 using UnityEngine;
 
 namespace AmbientSoundsTuner.UI
@@ -63,25 +64,25 @@ namespace AmbientSoundsTuner.UI
             this.EffectsPanel.autoLayoutPadding = new RectOffset(0, 0, 5, 5);
 
             // Settings
-            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.World, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.World], out this.ambientVolumeWorld);
-            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Forest, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Forest], out this.ambientVolumeForest);
-            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Sea, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Sea], out this.ambientVolumeSea);
-            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Stream, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Stream], out this.ambientVolumeStream);
-            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Industrial, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Industrial], out this.ambientVolumeIndustrial);
-            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Plaza, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Plaza], out this.ambientVolumePlaza);
-            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Suburban, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Suburban], out this.ambientVolumeSuburban);
-            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.City, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.City], out this.ambientVolumeCity);
-            Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Agricultural, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Agricultural], out this.ambientVolumeAgricultural);
+            Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.World, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.World], out this.ambientVolumeWorld);
+            Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Forest, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Forest], out this.ambientVolumeForest);
+            Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Sea, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Sea], out this.ambientVolumeSea);
+            Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Stream, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Stream], out this.ambientVolumeStream);
+            Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Industrial, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Industrial], out this.ambientVolumeIndustrial);
+            Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Plaza, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Plaza], out this.ambientVolumePlaza);
+            Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Suburban, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Suburban], out this.ambientVolumeSuburban);
+            Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.City, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.City], out this.ambientVolumeCity);
+            Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Agricultural, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Agricultural], out this.ambientVolumeAgricultural);
 
-            Configuration.Instance.State.EffectVolumes.TryGetValueOrDefault("Aircraft Movement", EffectsPatcher.OriginalVolumes["Aircraft Movement"], out this.effectVolumeAircraftMovement);
-            Configuration.Instance.State.EffectVolumes.TryGetValueOrDefault("Ambulance Siren", EffectsPatcher.OriginalVolumes["Ambulance Siren"], out this.effectVolumeAmbulanceSiren);
-            Configuration.Instance.State.EffectVolumes.TryGetValueOrDefault("Fire Truck Siren", EffectsPatcher.OriginalVolumes["Fire Truck Siren"], out this.effectVolumeFireTruckSiren);
-            Configuration.Instance.State.EffectVolumes.TryGetValueOrDefault("Large Car Movement", EffectsPatcher.OriginalVolumes["Large Car Movement"], out this.effectVolumeLargeCarMovement);
-            Configuration.Instance.State.EffectVolumes.TryGetValueOrDefault("Metro Movement", EffectsPatcher.OriginalVolumes["Metro Movement"], out this.effectVolumeMetroMovement);
-            Configuration.Instance.State.EffectVolumes.TryGetValueOrDefault("Police Car Siren", EffectsPatcher.OriginalVolumes["Police Car Siren"], out this.effectVolumePoliceCarSiren);
-            Configuration.Instance.State.EffectVolumes.TryGetValueOrDefault("Small Car Movement", EffectsPatcher.OriginalVolumes["Small Car Movement"], out this.effectVolumeSmallCarMovement);
-            Configuration.Instance.State.EffectVolumes.TryGetValueOrDefault("Train Movement", EffectsPatcher.OriginalVolumes["Train Movement"], out this.effectVolumeTrainMovement);
-            Configuration.Instance.State.EffectVolumes.TryGetValueOrDefault("Transport Arrive", EffectsPatcher.OriginalVolumes["Transport Arrive"], out this.effectVolumeTransportArrive);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Aircraft Movement", EffectsPatcher.OriginalVolumes["Aircraft Movement"], out this.effectVolumeAircraftMovement);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Ambulance Siren", EffectsPatcher.OriginalVolumes["Ambulance Siren"], out this.effectVolumeAmbulanceSiren);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Fire Truck Siren", EffectsPatcher.OriginalVolumes["Fire Truck Siren"], out this.effectVolumeFireTruckSiren);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Large Car Movement", EffectsPatcher.OriginalVolumes["Large Car Movement"], out this.effectVolumeLargeCarMovement);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Metro Movement", EffectsPatcher.OriginalVolumes["Metro Movement"], out this.effectVolumeMetroMovement);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Police Car Siren", EffectsPatcher.OriginalVolumes["Police Car Siren"], out this.effectVolumePoliceCarSiren);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Small Car Movement", EffectsPatcher.OriginalVolumes["Small Car Movement"], out this.effectVolumeSmallCarMovement);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Train Movement", EffectsPatcher.OriginalVolumes["Train Movement"], out this.effectVolumeTrainMovement);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Transport Arrive", EffectsPatcher.OriginalVolumes["Transport Arrive"], out this.effectVolumeTransportArrive);
 
             this.AmbientVolumeSettingObjects[0] = this.CreateVolumeSetting(this.AmbientsPanel, "AmbientVolumeSetting", "World", "ambientVolumeWorld");
             this.AmbientVolumeSettingObjects[1] = this.CreateVolumeSetting(this.AmbientsPanel, "AmbientVolumeSetting", "Forest", "ambientVolumeForest");
@@ -109,27 +110,27 @@ namespace AmbientSoundsTuner.UI
         {
             base.Close();
 
-            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.World] = ambientVolumeWorld;
-            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.Forest] = ambientVolumeForest;
-            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.Sea] = ambientVolumeSea;
-            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.Stream] = ambientVolumeStream;
-            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.Industrial] = ambientVolumeIndustrial;
-            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.Plaza] = ambientVolumePlaza;
-            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.Suburban] = ambientVolumeSuburban;
-            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.City] = ambientVolumeCity;
-            Configuration.Instance.State.AmbientVolumes[AudioManager.AmbientType.Agricultural] = ambientVolumeAgricultural;
+            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.World] = ambientVolumeWorld;
+            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.Forest] = ambientVolumeForest;
+            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.Sea] = ambientVolumeSea;
+            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.Stream] = ambientVolumeStream;
+            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.Industrial] = ambientVolumeIndustrial;
+            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.Plaza] = ambientVolumePlaza;
+            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.Suburban] = ambientVolumeSuburban;
+            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.City] = ambientVolumeCity;
+            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.Agricultural] = ambientVolumeAgricultural;
 
-            Configuration.Instance.State.EffectVolumes["Aircraft Movement"] = effectVolumeAircraftMovement;
-            Configuration.Instance.State.EffectVolumes["Ambulance Siren"] = effectVolumeAmbulanceSiren;
-            Configuration.Instance.State.EffectVolumes["Fire Truck Siren"] = effectVolumeFireTruckSiren;
-            Configuration.Instance.State.EffectVolumes["Large Car Movement"] = effectVolumeLargeCarMovement;
-            Configuration.Instance.State.EffectVolumes["Metro Movement"] = effectVolumeMetroMovement;
-            Configuration.Instance.State.EffectVolumes["Police Car Siren"] = effectVolumePoliceCarSiren;
-            Configuration.Instance.State.EffectVolumes["Small Car Movement"] = effectVolumeSmallCarMovement;
-            Configuration.Instance.State.EffectVolumes["Train Movement"] = effectVolumeTrainMovement;
-            Configuration.Instance.State.EffectVolumes["Transport Arrive"] = effectVolumeTransportArrive;
+            Mod.Settings.State.EffectVolumes["Aircraft Movement"] = effectVolumeAircraftMovement;
+            Mod.Settings.State.EffectVolumes["Ambulance Siren"] = effectVolumeAmbulanceSiren;
+            Mod.Settings.State.EffectVolumes["Fire Truck Siren"] = effectVolumeFireTruckSiren;
+            Mod.Settings.State.EffectVolumes["Large Car Movement"] = effectVolumeLargeCarMovement;
+            Mod.Settings.State.EffectVolumes["Metro Movement"] = effectVolumeMetroMovement;
+            Mod.Settings.State.EffectVolumes["Police Car Siren"] = effectVolumePoliceCarSiren;
+            Mod.Settings.State.EffectVolumes["Small Car Movement"] = effectVolumeSmallCarMovement;
+            Mod.Settings.State.EffectVolumes["Train Movement"] = effectVolumeTrainMovement;
+            Mod.Settings.State.EffectVolumes["Transport Arrive"] = effectVolumeTransportArrive;
 
-            Configuration.Save();
+            Mod.Settings.SaveConfig(Mod.SettingsFilename);
 
             AmbientsPatcher.PatchAmbientVolumes();
             EffectsPatcher.PatchEffectVolumes();

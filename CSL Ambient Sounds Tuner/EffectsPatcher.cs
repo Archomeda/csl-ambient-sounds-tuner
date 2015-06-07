@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AmbientSoundsTuner.Extensions;
+using CommonShared.Extensions;
 
 namespace AmbientSoundsTuner
 {
@@ -49,7 +49,7 @@ namespace AmbientSoundsTuner
                 }
                 else
                 {
-                    Logger.Info("Effect sound '{0}' has not been found", effectName);
+                    Mod.Log.Info("Effect sound '{0}' has not been found", effectName);
                 }
             }
             return success;
@@ -69,12 +69,12 @@ namespace AmbientSoundsTuner
                 SoundEffect soundEffect = effectInfo as SoundEffect;
                 if (soundEffect != null)
                 {
-                    Configuration.Instance.State.EffectVolumes.TryGetValueOrDefault(effectName, originalVolumes[effectName], out soundEffect.m_audioInfo.m_volume);
+                    Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(effectName, originalVolumes[effectName], out soundEffect.m_audioInfo.m_volume);
                     success++;
                 }
                 else
                 {
-                    Logger.Info("Effect sound '{0}' has not been found", effectName);
+                    Mod.Log.Info("Effect sound '{0}' has not been found", effectName);
                 }
             }
             return success;
@@ -99,7 +99,7 @@ namespace AmbientSoundsTuner
                 }
                 else
                 {
-                    Logger.Info("Effect sound '{0}' has not been found", effectName);
+                    Mod.Log.Info("Effect sound '{0}' has not been found", effectName);
                 }
             }
             return success;

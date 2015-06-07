@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.UI;
 using AmbientSoundsTuner.Utils;
 using ColossalFramework.Plugins;
+using CommonShared;
+using CommonShared.Utils;
 using ICities;
 using UnityEngine;
 
@@ -12,9 +15,9 @@ namespace AmbientSoundsTuner
 {
     public class Mod : LoadingExtensionBase, IUserMod
     {
-        internal const string FriendlyName = "Ambient Sounds Tuner";
-        internal const string AssemblyName = "AmbientSoundsTuner";
-        internal const ulong WorkshopId = 455958878;
+        internal static Configuration Settings;
+        internal static string SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(), "AmbientSoundsTuner.xml");
+        internal static Logger Log = new Logger();
 
         private bool isLoaded = false;
 
@@ -26,11 +29,11 @@ namespace AmbientSoundsTuner
                 if (!this.isLoaded)
                 {
                     this.isLoaded = true;
-                    this.Initialize();
-                    PluginManager.instance.eventPluginsStateChanged += this.Initialize;
+                    this.Initialize(PluginUtils.GetPluginInfo().isEnabled);
+                    PluginUtils.SubscribePluginStateChange(this.Initialize);
                 }
 
-                return FriendlyName;
+                return "Ambient Sounds Tuner";
             }
         }
 
@@ -40,15 +43,18 @@ namespace AmbientSoundsTuner
         }
 
 
-        private void Initialize()
+        private void Initialize(bool isEnabled)
         {
-            if (PluginUtils.GetPluginInfo().isEnabled)
+            if (isEnabled)
             {
-                Configuration.Load();
-                if (Configuration.Instance.ExtraDebugLogging)
+                Mod.Settings = Config.LoadConfig<Configuration>(Mod.SettingsFilename);
+                Mod.Log.EnableDebugLogging = Mod.Settings.ExtraDebugLogging;
+
+                if (Mod.Settings.ExtraDebugLogging)
                 {
-                    Logger.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
+                    Mod.Log.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
                 }
+
                 AdvancedOptions.CreateAdvancedOptions();
             }
             else
@@ -64,14 +70,7 @@ namespace AmbientSoundsTuner
         public override void OnLevelLoaded(LoadMode mode)
         {
             base.OnLevelLoaded(mode);
-
-            Configuration.Load();
-            if (Configuration.Instance.ExtraDebugLogging)
-            {
-                Logger.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
-            }
-            AdvancedOptions.CreateAdvancedOptions();
-
+            this.Initialize(true);
             PatchAmbientSounds();
             PatchEffectSounds();
         }
@@ -82,8 +81,7 @@ namespace AmbientSoundsTuner
         public override void OnLevelUnloading()
         {
             base.OnLevelUnloading();
-
-            Configuration.Save();
+            Settings.SaveConfig(Mod.SettingsFilename);
         }
 
         internal static void PatchAmbientSounds()
@@ -92,15 +90,15 @@ namespace AmbientSoundsTuner
             int backedUpAmbientSoundsCount = AmbientsPatcher.BackupAmbientVolumes();
             if (backedUpAmbientSoundsCount < ambientSoundsCount)
             {
-                Logger.Warning("{0}/{1} ambient sound volumes have been backed up", backedUpAmbientSoundsCount, ambientSoundsCount);
+                Mod.Log.Warning("{0}/{1} ambient sound volumes have been backed up", backedUpAmbientSoundsCount, ambientSoundsCount);
             }
             int patchedAmbientSoundsCount = AmbientsPatcher.PatchAmbientVolumes();
             if (patchedAmbientSoundsCount < ambientSoundsCount)
             {
-                Logger.Warning("{0}/{1} ambient sound volumes have been patched", patchedAmbientSoundsCount, ambientSoundsCount);
+                Mod.Log.Warning("{0}/{1} ambient sound volumes have been patched", patchedAmbientSoundsCount, ambientSoundsCount);
             }
 
-            Logger.Info("Ambient sound volumes have been patched");
+            Mod.Log.Info("Ambient sound volumes have been patched");
         }
 
         internal static void PatchEffectSounds()
@@ -109,15 +107,15 @@ namespace AmbientSoundsTuner
             int backedUpEffectSoundsCount = EffectsPatcher.BackupEffectVolumes();
             if (backedUpEffectSoundsCount < effectSoundsCount)
             {
-                Logger.Warning("{0}/{1} effect sound volumes have been backed up", backedUpEffectSoundsCount, effectSoundsCount);
+                Mod.Log.Warning("{0}/{1} effect sound volumes have been backed up", backedUpEffectSoundsCount, effectSoundsCount);
             }
             int patchedEffectSoundsCount = EffectsPatcher.PatchEffectVolumes();
             if (patchedEffectSoundsCount < effectSoundsCount)
             {
-                Logger.Warning("{0}/{1} effect sound volumes have been patched", patchedEffectSoundsCount, effectSoundsCount);
+                Mod.Log.Warning("{0}/{1} effect sound volumes have been patched", patchedEffectSoundsCount, effectSoundsCount);
             }
 
-            Logger.Info("Effect sound volumes have been patched");
+            Mod.Log.Info("Effect sound volumes have been patched");
         }
 
     }

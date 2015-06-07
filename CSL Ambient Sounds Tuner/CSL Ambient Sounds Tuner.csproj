@@ -52,19 +52,13 @@
   <ItemGroup>
     <Compile Include="AmbientsPatcher.cs" />
     <Compile Include="Configuration.cs" />
+    <Compile Include="Defs\GameObjectDefs.cs" />
     <Compile Include="EffectsPatcher.cs" />
-    <Compile Include="Extensions\DictionaryExtensions.cs" />
-    <Compile Include="Logger.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SerializableDictionary.cs" />
     <Compile Include="UI\AdvancedOptions.cs" />
     <Compile Include="UI\AdvancedOptionsWindow.cs" />
-    <Compile Include="UI\Window.cs" />
-    <Compile Include="Utils\FileUtils.cs" />
-    <Compile Include="Utils\GameObjectDefs.cs" />
     <Compile Include="Utils\OptionsPanelUtils.cs" />
-    <Compile Include="Utils\PluginUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\csl-common-shared-library\CSL Common Shared\CSL Common Shared.csproj">

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AmbientSoundsTuner.Utils
+namespace AmbientSoundsTuner.Defs
 {
-    internal static class GameObjectDefs
+    public static class GameObjectDefs
     {
         public const string ID_EFFECTS = "Effects";
         public const string ID_LIBRARY_OPTIONSPANEL = "(Library) OptionsPanel";
