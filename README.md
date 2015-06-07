@@ -6,7 +6,7 @@ contains various classes that I only needed myself. You can, however, submit
 pull requests in order to include more functionality if you want.
 
 ## Usage
-***Note:*** *Please do **not** upload this as a separate mod on the Steam
+***Note:*** *Please do* ***not*** *upload this as a separate mod on the Steam
 Workshop! I won't authorize any request!*
 
 This library is meant to be **included within your mod**. The reason for this,
