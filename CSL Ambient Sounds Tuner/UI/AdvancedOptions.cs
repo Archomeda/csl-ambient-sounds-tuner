@@ -31,6 +31,7 @@ namespace AmbientSoundsTuner.UI
             advancedOptionsButton.text = "Sounds Tuner";
             advancedOptionsButton.isLocalized = false;
             advancedOptionsButton.playAudioEvents = true;
+            advancedOptionsButton.atlas = audioOptionsPanel.atlas;
             advancedOptionsButton.normalBgSprite = "ButtonMenu";
             advancedOptionsButton.hoveredTextColor = new Color32(7, 132, 255, 255);
             advancedOptionsButton.disabledTextColor = new Color32(46, 46, 46, 255);
@@ -41,6 +42,7 @@ namespace AmbientSoundsTuner.UI
 
             advancedOptions = new GameObject("AdvancedSoundsTuner");
             advancedOptionsWindow = advancedOptions.AddComponent<AdvancedOptionsWindow>();
+
             Mod.Log.Info("Created Sounds Tuner button and window");
         }
 
