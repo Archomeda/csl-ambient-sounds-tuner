@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSL Ambient Sounds Tuner", "CSL Ambient Sounds Tuner\CSL Ambient Sounds Tuner.csproj", "{21201B76-8C56-413D-A693-147A7BCACC82}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSL Common Shared", "csl-common-shared-library\CSL Common Shared\CSL Common Shared.csproj", "{0492B5AF-5B0E-4CFB-8812-465F94070A57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{21201B76-8C56-413D-A693-147A7BCACC82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21201B76-8C56-413D-A693-147A7BCACC82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21201B76-8C56-413D-A693-147A7BCACC82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0492B5AF-5B0E-4CFB-8812-465F94070A57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0492B5AF-5B0E-4CFB-8812-465F94070A57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0492B5AF-5B0E-4CFB-8812-465F94070A57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0492B5AF-5B0E-4CFB-8812-465F94070A57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
