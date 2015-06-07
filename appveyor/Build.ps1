@@ -3,7 +3,7 @@ nuget sources Add -Name CitiesSkylines -Source $env:NUGET_CSL_URL -UserName $env
 nuget restore .\appveyor\packages.config -SolutionDirectory .\ -NonInteractive
 
 [xml]$packages = Get-Content .\appveyor\packages.config
-$referencePath = ($packages.packages.package | % {"..\packages\$($_.id).$($_.version)\lib\$($_.targetFramework)\"}) -Join ";"
+$referencePath = ($packages.packages.package | % {(Get-Location).ToString() + "\packages\$($_.id).$($_.version)\lib\$($_.targetFramework)\"}) -Join ";"
 
 
 # Do the actual build
