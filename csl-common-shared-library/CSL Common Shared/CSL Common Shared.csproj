@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
+    <Compile Include="SerializableDictionary.cs" />
     <Compile Include="Utils\DetourUtils.cs" />
     <Compile Include="Events\AssetEditorEvents.cs" />
     <Compile Include="Events\ToolbarEvents.cs" />
