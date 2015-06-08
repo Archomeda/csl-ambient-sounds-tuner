@@ -84,6 +84,9 @@ namespace AmbientSoundsTuner
             base.OnLevelUnloading();
 
             Configuration.Save();
+
+            // Set isLoaded to false again so the mod will load again at the main menu
+            this.isLoaded = false;
         }
 
         internal static void PatchAmbientSounds()
