@@ -7,7 +7,7 @@ $referencePath = ($packages.packages.package | % {"..\packages\$($_.id).$($_.ver
 
 
 # Do the actual build
-msbuild /verbosity:minimal /p:ReferencePath="$referencePath"
+msbuild /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /verbosity:minimal /p:ReferencePath="$referencePath"
 
 
 # Copy the files we need to .\bin
