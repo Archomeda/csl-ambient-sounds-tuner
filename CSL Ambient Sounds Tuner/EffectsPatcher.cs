@@ -105,7 +105,7 @@ namespace AmbientSoundsTuner
                 soundEffect.m_audioInfo.m_volume = value;
                 return true;
             }
-            Logger.Info("Effect sound '{0}' has not been found", name);
+            Mod.Log.Info("Effect sound '{0}' has not been found", name);
             return false;
         }
 

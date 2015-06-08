@@ -92,7 +92,7 @@ namespace AmbientSoundsTuner
                     return true;
                 }
             }
-            Logger.Info("Ambient sound '{0}' has not been found", type);
+            Mod.Log.Info("Ambient sound '{0}' has not been found", type);
             return false;
         }
 

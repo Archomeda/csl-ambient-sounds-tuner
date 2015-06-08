@@ -114,13 +114,13 @@ namespace AmbientSoundsTuner.UI
             if (this.isVisibleSelf && this.parent != null && !this.parent.isVisible)
             {
                 // Here we save when the parent window goes invisible (aka gets closed), this is a workaround to solve bug #2.
-                Configuration.Save();
+                Mod.Settings.SaveConfig(Mod.SettingsFilename);
             }
         }
 
         public override void Close()
         {
-            Configuration.Save();
+            Mod.Settings.SaveConfig(Mod.SettingsFilename);
             base.Close();
         }
 
@@ -128,7 +128,7 @@ namespace AmbientSoundsTuner.UI
         {
             PropertyChangedEventHandler<float> valueChangedCallback = new PropertyChangedEventHandler<float>((c, v) =>
             {
-                Configuration.Instance.State.AmbientVolumes[type] = v;
+                Mod.Settings.State.AmbientVolumes[type] = v;
                 AmbientsPatcher.PatchAmbientVolumeFor(type, v);
             });
 
@@ -139,7 +139,7 @@ namespace AmbientSoundsTuner.UI
         {
             PropertyChangedEventHandler<float> valueChangedCallback = new PropertyChangedEventHandler<float>((c, v) =>
             {
-                Configuration.Instance.State.EffectVolumes[name] = v;
+                Mod.Settings.State.EffectVolumes[name] = v;
                 EffectsPatcher.PatchEffectVolumeFor(name, v);
             });
 
