@@ -11,18 +11,28 @@ namespace AmbientSoundsTuner
     /// </summary>
     internal static class EffectsPatcher
     {
+        public const string ID_AIRCRAFT_MOVEMENT = "Aircraft Movement";
+        public const string ID_AMBULANCE_SIREN = "Ambulance Siren";
+        public const string ID_FIRE_TRUCK_SIREN = "Fire Truck Siren";
+        public const string ID_LARGE_CAR_MOVEMENT = "Large Car Movement";
+        public const string ID_METRO_MOVEMENT = "Metro Movement";
+        public const string ID_POLICE_CAR_SIREN = "Police Car Siren";
+        public const string ID_SMALL_CAR_MOVEMENT = "Small Car Movement";
+        public const string ID_TRAIN_MOVEMENT = "Train Movement";
+        public const string ID_TRANSPORT_ARRIVE = "Transport Arrive";
+
         private static Dictionary<string, float> originalVolumes = new Dictionary<string, float>()
         {
             // These are the volumes as of 6/6/2015
-            { "Aircraft Movement", 0.5f },
-            { "Ambulance Siren", 1 },
-            { "Fire Truck Siren", 3 },
-            { "Large Car Movement", 1.5f },
-            { "Metro Movement", 0.5f },
-            { "Police Car Siren", 1 },
-            { "Small Car Movement", 1.5f },
-            { "Train Movement", 0.5f },
-            { "Transport Arrive", 1 }
+            { ID_AIRCRAFT_MOVEMENT, 0.5f },
+            { ID_AMBULANCE_SIREN, 1 },
+            { ID_FIRE_TRUCK_SIREN, 3 },
+            { ID_LARGE_CAR_MOVEMENT, 1.5f },
+            { ID_METRO_MOVEMENT, 0.5f },
+            { ID_POLICE_CAR_SIREN, 1 },
+            { ID_SMALL_CAR_MOVEMENT, 1.5f },
+            { ID_TRAIN_MOVEMENT, 0.5f },
+            { ID_TRANSPORT_ARRIVE, 1 }
         };
 
         /// <summary>
@@ -78,6 +88,25 @@ namespace AmbientSoundsTuner
                 }
             }
             return success;
+        }
+
+        /// <summary>
+        /// Patches a specific effect volume with a specified value.
+        /// </summary>
+        /// <param name="name">The effect name to patch.</param>
+        /// <param name="value">The volume value to set.</param>
+        /// <returns>True if successful; false otherwise.</returns>
+        public static bool PatchEffectVolumeFor(string name, float value)
+        {
+            EffectInfo effectInfo = EffectCollection.FindEffect(name);
+            SoundEffect soundEffect = effectInfo as SoundEffect;
+            if (soundEffect != null)
+            {
+                soundEffect.m_audioInfo.m_volume = value;
+                return true;
+            }
+            Logger.Info("Effect sound '{0}' has not been found", name);
+            return false;
         }
 
         /// <summary>
