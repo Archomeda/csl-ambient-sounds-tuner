@@ -77,6 +77,26 @@ namespace AmbientSoundsTuner
         }
 
         /// <summary>
+        /// Patches a specific ambient volume with a specified value.
+        /// </summary>
+        /// <param name="type">The ambient type to patch.</param>
+        /// <param name="value">The volume value to set.</param>
+        /// <returns>True if successful; false otherwise.</returns>
+        public static bool PatchAmbientVolumeFor(AudioManager.AmbientType type, float value)
+        {
+            if (AudioManager.instance != null && AudioManager.instance.m_properties != null && AudioManager.instance.m_properties.m_ambients != null)
+            {
+                if (AudioManager.instance.m_properties.m_ambients.Length > (int)type && AudioManager.instance.m_properties.m_ambients[(int)type] != null)
+                {
+                    AudioManager.instance.m_properties.m_ambients[(int)type].m_volume = value;
+                    return true;
+                }
+            }
+            Logger.Info("Ambient sound '{0}' has not been found", type);
+            return false;
+        }
+
+        /// <summary>
         /// Resets the ambient volumes to their original values.
         /// </summary>
         /// <returns>The amount of ambient volumes that have been reset.</returns>

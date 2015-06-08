@@ -74,69 +74,79 @@ namespace AmbientSoundsTuner.UI
             Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.City, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.City], out this.ambientVolumeCity);
             Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Agricultural, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Agricultural], out this.ambientVolumeAgricultural);
 
-            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Aircraft Movement", EffectsPatcher.OriginalVolumes["Aircraft Movement"], out this.effectVolumeAircraftMovement);
-            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Ambulance Siren", EffectsPatcher.OriginalVolumes["Ambulance Siren"], out this.effectVolumeAmbulanceSiren);
-            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Fire Truck Siren", EffectsPatcher.OriginalVolumes["Fire Truck Siren"], out this.effectVolumeFireTruckSiren);
-            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Large Car Movement", EffectsPatcher.OriginalVolumes["Large Car Movement"], out this.effectVolumeLargeCarMovement);
-            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Metro Movement", EffectsPatcher.OriginalVolumes["Metro Movement"], out this.effectVolumeMetroMovement);
-            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Police Car Siren", EffectsPatcher.OriginalVolumes["Police Car Siren"], out this.effectVolumePoliceCarSiren);
-            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Small Car Movement", EffectsPatcher.OriginalVolumes["Small Car Movement"], out this.effectVolumeSmallCarMovement);
-            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Train Movement", EffectsPatcher.OriginalVolumes["Train Movement"], out this.effectVolumeTrainMovement);
-            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault("Transport Arrive", EffectsPatcher.OriginalVolumes["Transport Arrive"], out this.effectVolumeTransportArrive);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(EffectsPatcher.ID_TRANSPORT_ARRIVE, EffectsPatcher.OriginalVolumes[EffectsPatcher.ID_TRANSPORT_ARRIVE], out this.effectVolumeAircraftMovement);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(EffectsPatcher.ID_AMBULANCE_SIREN, EffectsPatcher.OriginalVolumes[EffectsPatcher.ID_AMBULANCE_SIREN], out this.effectVolumeAmbulanceSiren);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(EffectsPatcher.ID_FIRE_TRUCK_SIREN, EffectsPatcher.OriginalVolumes[EffectsPatcher.ID_FIRE_TRUCK_SIREN], out this.effectVolumeFireTruckSiren);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(EffectsPatcher.ID_LARGE_CAR_MOVEMENT, EffectsPatcher.OriginalVolumes[EffectsPatcher.ID_LARGE_CAR_MOVEMENT], out this.effectVolumeLargeCarMovement);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(EffectsPatcher.ID_METRO_MOVEMENT, EffectsPatcher.OriginalVolumes[EffectsPatcher.ID_METRO_MOVEMENT], out this.effectVolumeMetroMovement);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(EffectsPatcher.ID_POLICE_CAR_SIREN, EffectsPatcher.OriginalVolumes[EffectsPatcher.ID_POLICE_CAR_SIREN], out this.effectVolumePoliceCarSiren);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(EffectsPatcher.ID_SMALL_CAR_MOVEMENT, EffectsPatcher.OriginalVolumes[EffectsPatcher.ID_SMALL_CAR_MOVEMENT], out this.effectVolumeSmallCarMovement);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(EffectsPatcher.ID_TRAIN_MOVEMENT, EffectsPatcher.OriginalVolumes[EffectsPatcher.ID_TRAIN_MOVEMENT], out this.effectVolumeTrainMovement);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(EffectsPatcher.ID_TRANSPORT_ARRIVE, EffectsPatcher.OriginalVolumes[EffectsPatcher.ID_TRANSPORT_ARRIVE], out this.effectVolumeTransportArrive);
 
-            this.AmbientVolumeSettingObjects[0] = this.CreateVolumeSetting(this.AmbientsPanel, "AmbientVolumeSetting", "World", "ambientVolumeWorld");
-            this.AmbientVolumeSettingObjects[1] = this.CreateVolumeSetting(this.AmbientsPanel, "AmbientVolumeSetting", "Forest", "ambientVolumeForest");
-            this.AmbientVolumeSettingObjects[2] = this.CreateVolumeSetting(this.AmbientsPanel, "AmbientVolumeSetting", "Sea", "ambientVolumeSea");
-            this.AmbientVolumeSettingObjects[3] = this.CreateVolumeSetting(this.AmbientsPanel, "AmbientVolumeSetting", "Stream", "ambientVolumeStream");
-            this.AmbientVolumeSettingObjects[4] = this.CreateVolumeSetting(this.AmbientsPanel, "AmbientVolumeSetting", "Industrial", "ambientVolumeIndustrial");
-            this.AmbientVolumeSettingObjects[5] = this.CreateVolumeSetting(this.AmbientsPanel, "AmbientVolumeSetting", "Plaza", "ambientVolumePlaza");
-            this.AmbientVolumeSettingObjects[6] = this.CreateVolumeSetting(this.AmbientsPanel, "AmbientVolumeSetting", "Suburban", "ambientVolumeSuburban");
-            this.AmbientVolumeSettingObjects[7] = this.CreateVolumeSetting(this.AmbientsPanel, "AmbientVolumeSetting", "City", "ambientVolumeCity");
-            this.AmbientVolumeSettingObjects[8] = this.CreateVolumeSetting(this.AmbientsPanel, "AmbientVolumeSetting", "Agricultural", "ambientVolumeAgricultural");
+            // Sliders
+            this.AmbientVolumeSettingObjects[0] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.World, "ambientVolumeWorld");
+            this.AmbientVolumeSettingObjects[1] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Forest, "ambientVolumeForest");
+            this.AmbientVolumeSettingObjects[2] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Sea, "ambientVolumeSea");
+            this.AmbientVolumeSettingObjects[3] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Stream, "ambientVolumeStream");
+            this.AmbientVolumeSettingObjects[4] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Industrial, "ambientVolumeIndustrial");
+            this.AmbientVolumeSettingObjects[5] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Plaza, "ambientVolumePlaza");
+            this.AmbientVolumeSettingObjects[6] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Suburban, "ambientVolumeSuburban");
+            this.AmbientVolumeSettingObjects[7] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.City, "ambientVolumeCity");
+            this.AmbientVolumeSettingObjects[8] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Agricultural, "ambientVolumeAgricultural");
 
-            this.EffectVolumeSettingObjects[0] = this.CreateVolumeSetting(this.EffectsPanel, "EffectVolumeSetting", "Aircraft Movement", "effectVolumeAircraftMovement", 0, 0.5f); // Default value = 0.5f
-            this.EffectVolumeSettingObjects[1] = this.CreateVolumeSetting(this.EffectsPanel, "EffectVolumeSetting", "Ambulance Siren", "effectVolumeAmbulanceSiren");
-            this.EffectVolumeSettingObjects[2] = this.CreateVolumeSetting(this.EffectsPanel, "EffectVolumeSetting", "Fire Truck Siren", "effectVolumeFireTruckSiren", 0, 3); // Default value = 3
-            this.EffectVolumeSettingObjects[3] = this.CreateVolumeSetting(this.EffectsPanel, "EffectVolumeSetting", "Large Car Movement", "effectVolumeLargeCarMovement", 0, 1.5f); // Default value = 1.5
-            this.EffectVolumeSettingObjects[4] = this.CreateVolumeSetting(this.EffectsPanel, "EffectVolumeSetting", "Metro Movement", "effectVolumeMetroMovement", 0, 0.5f); // Default value = 0.5f
-            this.EffectVolumeSettingObjects[5] = this.CreateVolumeSetting(this.EffectsPanel, "EffectVolumeSetting", "Police Car Siren", "effectVolumePoliceCarSiren");
-            this.EffectVolumeSettingObjects[6] = this.CreateVolumeSetting(this.EffectsPanel, "EffectVolumeSetting", "Small Car Movement", "effectVolumeSmallCarMovement", 0, 1.5f); // Default value = 1.5
-            this.EffectVolumeSettingObjects[7] = this.CreateVolumeSetting(this.EffectsPanel, "EffectVolumeSetting", "Train Movement", "effectVolumeTrainMovement", 0, 0.5f); // Default value = 0.5f
-            this.EffectVolumeSettingObjects[8] = this.CreateVolumeSetting(this.EffectsPanel, "EffectVolumeSetting", "Transport Arrive", "effectVolumeTransportArrive");
+            this.EffectVolumeSettingObjects[0] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_TRANSPORT_ARRIVE, "effectVolumeAircraftMovement", 0, 0.5f); // Default value = 0.5f
+            this.EffectVolumeSettingObjects[1] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_AMBULANCE_SIREN, "effectVolumeAmbulanceSiren");
+            this.EffectVolumeSettingObjects[2] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_FIRE_TRUCK_SIREN, "effectVolumeFireTruckSiren", 0, 3); // Default value = 3
+            this.EffectVolumeSettingObjects[3] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_LARGE_CAR_MOVEMENT, "effectVolumeLargeCarMovement", 0, 1.5f); // Default value = 1.5
+            this.EffectVolumeSettingObjects[4] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_METRO_MOVEMENT, "effectVolumeMetroMovement", 0, 0.5f); // Default value = 0.5f
+            this.EffectVolumeSettingObjects[5] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_POLICE_CAR_SIREN, "effectVolumePoliceCarSiren");
+            this.EffectVolumeSettingObjects[6] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_SMALL_CAR_MOVEMENT, "effectVolumeSmallCarMovement", 0, 1.5f); // Default value = 1.5
+            this.EffectVolumeSettingObjects[7] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_TRAIN_MOVEMENT, "effectVolumeTrainMovement", 0, 0.5f); // Default value = 0.5f
+            this.EffectVolumeSettingObjects[8] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_TRANSPORT_ARRIVE, "effectVolumeTransportArrive");
 
+            // Some extra event listeners
+            this.eventVisibilityChanged += AdvancedOptionsWindow_eventVisibilityChanged;
+        }
+
+        private void AdvancedOptionsWindow_eventVisibilityChanged(UIComponent component, bool value)
+        {
+            if (this.isVisibleSelf && this.parent != null && !this.parent.isVisible)
+            {
+                // Here we save when the parent window goes invisible (aka gets closed), this is a workaround to solve bug #2.
+                Configuration.Save();
+            }
         }
 
         public override void Close()
         {
+            Configuration.Save();
             base.Close();
-
-            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.World] = ambientVolumeWorld;
-            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.Forest] = ambientVolumeForest;
-            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.Sea] = ambientVolumeSea;
-            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.Stream] = ambientVolumeStream;
-            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.Industrial] = ambientVolumeIndustrial;
-            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.Plaza] = ambientVolumePlaza;
-            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.Suburban] = ambientVolumeSuburban;
-            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.City] = ambientVolumeCity;
-            Mod.Settings.State.AmbientVolumes[AudioManager.AmbientType.Agricultural] = ambientVolumeAgricultural;
-
-            Mod.Settings.State.EffectVolumes["Aircraft Movement"] = effectVolumeAircraftMovement;
-            Mod.Settings.State.EffectVolumes["Ambulance Siren"] = effectVolumeAmbulanceSiren;
-            Mod.Settings.State.EffectVolumes["Fire Truck Siren"] = effectVolumeFireTruckSiren;
-            Mod.Settings.State.EffectVolumes["Large Car Movement"] = effectVolumeLargeCarMovement;
-            Mod.Settings.State.EffectVolumes["Metro Movement"] = effectVolumeMetroMovement;
-            Mod.Settings.State.EffectVolumes["Police Car Siren"] = effectVolumePoliceCarSiren;
-            Mod.Settings.State.EffectVolumes["Small Car Movement"] = effectVolumeSmallCarMovement;
-            Mod.Settings.State.EffectVolumes["Train Movement"] = effectVolumeTrainMovement;
-            Mod.Settings.State.EffectVolumes["Transport Arrive"] = effectVolumeTransportArrive;
-
-            Mod.Settings.SaveConfig(Mod.SettingsFilename);
-
-            AmbientsPatcher.PatchAmbientVolumes();
-            EffectsPatcher.PatchEffectVolumes();
         }
 
-        protected GameObject CreateVolumeSetting(UIComponent parent, string gameObjectName, string name, string memberName, float minValue = 0, float maxValue = 1)
+        protected GameObject CreateAmbientVolumeSetting(AudioManager.AmbientType type, string memberName, float minValue = 0, float maxValue = 1)
+        {
+            PropertyChangedEventHandler<float> valueChangedCallback = new PropertyChangedEventHandler<float>((c, v) =>
+            {
+                Configuration.Instance.State.AmbientVolumes[type] = v;
+                AmbientsPatcher.PatchAmbientVolumeFor(type, v);
+            });
+
+            return CreateVolumeSetting(this.AmbientsPanel, "AmbientVolumeSetting", type.ToString(), memberName, valueChangedCallback, minValue, maxValue);
+        }
+
+        protected GameObject CreateEffectVolumeSetting(string name, string memberName, float minValue = 0, float maxValue = 1)
+        {
+            PropertyChangedEventHandler<float> valueChangedCallback = new PropertyChangedEventHandler<float>((c, v) =>
+            {
+                Configuration.Instance.State.EffectVolumes[name] = v;
+                EffectsPatcher.PatchEffectVolumeFor(name, v);
+            });
+
+            return CreateVolumeSetting(this.EffectsPanel, "EffectVolumeSetting", name, memberName, valueChangedCallback, minValue, maxValue);
+        }
+
+        protected GameObject CreateVolumeSetting(UIComponent parent, string gameObjectName, string name, string memberName, PropertyChangedEventHandler<float> valueChangedCallback, float minValue = 0, float maxValue = 1)
         {
             GameObject setting = new GameObject(gameObjectName);
             UIPanel panel = setting.AddComponent<UIPanel>();
@@ -158,6 +168,7 @@ namespace AmbientSoundsTuner.UI
             slider.position = new Vector3(parent.width - 200, 0);
             slider.minValue = minValue;
             slider.maxValue = maxValue;
+            slider.eventValueChanged += valueChangedCallback;
 
             BindProperty binding = sliderObject.GetComponent<BindProperty>();
             binding.dataSource.component = this;
