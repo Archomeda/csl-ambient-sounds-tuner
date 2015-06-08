@@ -5,8 +5,11 @@ using System.Text;
 using ColossalFramework.UI;
 using UnityEngine;
 
-namespace AmbientSoundsTuner.UI
+namespace CommonShared.UI
 {
+    /// <summary>
+    /// A default options window.
+    /// </summary>
     public class Window : UIPanel
     {
         public const float TitleBarHeight = 40;
@@ -16,6 +19,11 @@ namespace AmbientSoundsTuner.UI
             base.Start();
             this.Hide();
             this.backgroundSprite = "UnlockingPanel2";
+            UITextureAtlas atlas = Resources.FindObjectsOfTypeAll<UITextureAtlas>().FirstOrDefault(a => a.name == "Ingame");
+            if (atlas != null)
+            {
+                this.atlas = atlas;
+            }
             this.color = new Color32(58, 88, 104, 255);
             this.canFocus = true;
             this.isInteractive = true;
@@ -77,6 +85,7 @@ namespace AmbientSoundsTuner.UI
             title.textAlignment = UIHorizontalAlignment.Center;
             title.position = new Vector3(this.width / 2 - title.width / 2, -TitleBarHeight / 2 + title.height / 2);
             title.anchor = UIAnchorStyle.Top | UIAnchorStyle.Left | UIAnchorStyle.Right;
+            title.atlas = this.atlas;
         }
 
         protected virtual void CreateDragHandle()
@@ -105,6 +114,7 @@ namespace AmbientSoundsTuner.UI
             closeButton.relativePosition = new Vector3(this.width - closeButton.width - 4, 4);
             closeButton.playAudioEvents = true;
             closeButton.eventClick += (component, eventParam) => this.Close();
+            closeButton.atlas = this.atlas;
         }
 
         protected virtual void CreateContentPanel()
@@ -117,6 +127,7 @@ namespace AmbientSoundsTuner.UI
             contentPanel.anchor = UIAnchorStyle.Bottom | UIAnchorStyle.Left | UIAnchorStyle.Right;
             contentPanel.position = new Vector3(0, -TitleBarHeight);
             contentPanel.size = new Vector2(this.width, Mathf.Max(0, this.height - TitleBarHeight));
+            contentPanel.atlas = this.atlas;
         }
 
         protected override void OnKeyDown(UIKeyEventParameter p)

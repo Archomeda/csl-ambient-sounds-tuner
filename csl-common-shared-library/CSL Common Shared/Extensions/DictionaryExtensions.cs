@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AmbientSoundsTuner.Extensions
+namespace CommonShared.Extensions
 {
     /// <summary>
     /// This static class contains extensions to <see cref="IDictionary"/> classes.
@@ -17,9 +17,9 @@ namespace AmbientSoundsTuner.Extensions
         /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
         /// <param name="dictionary">The dictionary.</param>
         /// <param name="key">The key of the value to get.</param>
-        /// <param name="defaultValue">When this method returns, contains the value associated with the specified key, if the is found; otherwise, the specified default value. This parameter is passed uninitialized.</param>
-        /// <param name="value">True if the dictionary contains an element with the specified key; otherwise, false.</param>
-        /// <returns></returns>
+        /// <param name="defaultValue">The default value to use when the key has not been found in the dictionary.</param>
+        /// <param name="value">When this method returns, contains the value associated with the specified key, if the is found; otherwise, the specified default value. This parameter is passed uninitialized.</param>
+        /// <returns>True if the dictionary contains an element with the specified key; otherwise, false.</returns>
         public static bool TryGetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue, out TValue value)
         {
             if (!dictionary.TryGetValue(key, out value))

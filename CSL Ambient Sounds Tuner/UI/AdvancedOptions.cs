@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AmbientSoundsTuner.Defs;
 using AmbientSoundsTuner.Utils;
 using ColossalFramework.UI;
+using CommonShared.UI;
 using UnityEngine;
 
 namespace AmbientSoundsTuner.UI
@@ -18,7 +20,7 @@ namespace AmbientSoundsTuner.UI
         {
             if (advancedOptions != null)
             {
-                Logger.Debug("Trying to recreate the Sounds Tuner button and window while they already exist");
+                Mod.Log.Debug("Trying to recreate the Sounds Tuner button and window while they already exist");
                 return;
             }
 
@@ -29,6 +31,7 @@ namespace AmbientSoundsTuner.UI
             advancedOptionsButton.text = "Sounds Tuner";
             advancedOptionsButton.isLocalized = false;
             advancedOptionsButton.playAudioEvents = true;
+            advancedOptionsButton.atlas = audioOptionsPanel.atlas;
             advancedOptionsButton.normalBgSprite = "ButtonMenu";
             advancedOptionsButton.hoveredTextColor = new Color32(7, 132, 255, 255);
             advancedOptionsButton.disabledTextColor = new Color32(46, 46, 46, 255);
@@ -39,7 +42,8 @@ namespace AmbientSoundsTuner.UI
 
             advancedOptions = new GameObject("AdvancedSoundsTuner");
             advancedOptionsWindow = advancedOptions.AddComponent<AdvancedOptionsWindow>();
-            Logger.Info("Created Sounds Tuner button and window");
+
+            Mod.Log.Info("Created Sounds Tuner button and window");
         }
 
         public static void DestroyAdvancedOptions()
@@ -58,7 +62,7 @@ namespace AmbientSoundsTuner.UI
 
         private static void advancedOptionsButton_eventClick(UIComponent component, UIMouseEventParameter eventParam)
         {
-            Logger.Debug("Opening Sounds Tuner window");
+            Mod.Log.Debug("Opening Sounds Tuner window");
 
             UIView.GetAView().AttachUIComponent(advancedOptions);
             advancedOptionsWindow.transform.SetParent(GameObject.Find(GameObjectDefs.ID_LIBRARY_OPTIONSPANEL).GetComponent<OptionsPanel>().component.transform);

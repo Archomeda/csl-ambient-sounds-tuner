@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace AmbientSoundsTuner
+namespace CommonShared
 {
     /// <summary>
     /// An XML serializable dictionary.

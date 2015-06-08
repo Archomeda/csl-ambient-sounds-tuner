@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AmbientSoundsTuner.Extensions;
+using CommonShared.Extensions;
 
 namespace AmbientSoundsTuner
 {
@@ -47,7 +47,7 @@ namespace AmbientSoundsTuner
                 }
                 else
                 {
-                    Logger.Info("Ambient sound '{0}' has not been found", ambientType);
+                    Mod.Log.Info("Ambient sound '{0}' has not been found", ambientType);
                 }
             }
             return success;
@@ -65,12 +65,12 @@ namespace AmbientSoundsTuner
             {
                 if (AudioManager.instance.m_properties.m_ambients.Length > (int)ambientType)
                 {
-                    Configuration.Instance.State.AmbientVolumes.TryGetValueOrDefault(ambientType, originalVolumes[ambientType], out AudioManager.instance.m_properties.m_ambients[(int)ambientType].m_volume);
+                    Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(ambientType, originalVolumes[ambientType], out AudioManager.instance.m_properties.m_ambients[(int)ambientType].m_volume);
                     success++;
                 }
                 else
                 {
-                    Logger.Info("Ambient sound '{0}' has not been found", ambientType);
+                    Mod.Log.Info("Ambient sound '{0}' has not been found", ambientType);
                 }
             }
             return success;
@@ -92,7 +92,7 @@ namespace AmbientSoundsTuner
                     return true;
                 }
             }
-            Logger.Info("Ambient sound '{0}' has not been found", type);
+            Mod.Log.Info("Ambient sound '{0}' has not been found", type);
             return false;
         }
 
@@ -113,7 +113,7 @@ namespace AmbientSoundsTuner
                 }
                 else
                 {
-                    Logger.Info("Ambient sound '{0}' has not been found", ambientType);
+                    Mod.Log.Info("Ambient sound '{0}' has not been found", ambientType);
                 }
             }
             return success;
