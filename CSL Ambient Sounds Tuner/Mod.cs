@@ -19,6 +19,11 @@ namespace AmbientSoundsTuner
         internal static string SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(), "AmbientSoundsTuner.xml");
         internal static Logger Log = new Logger();
 
+        internal static HashSet<ulong> IncompatibleMods = new HashSet<ulong>()
+        {
+            421527612, // SilenceObnoxiousSirens
+        };
+
         private bool isLoaded = false;
 
         public string Name
@@ -47,6 +52,8 @@ namespace AmbientSoundsTuner
         {
             if (isEnabled)
             {
+                this.CheckIncompatibility();
+
                 Mod.Settings = Config.LoadConfig<Configuration>(Mod.SettingsFilename);
                 Mod.Log.EnableDebugLogging = Mod.Settings.ExtraDebugLogging;
 
@@ -60,6 +67,20 @@ namespace AmbientSoundsTuner
             else
             {
                 AdvancedOptions.DestroyAdvancedOptions();
+            }
+        }
+
+        private void CheckIncompatibility()
+        {
+            var list = PluginUtils.GetPluginInfosOf(IncompatibleMods);
+            if (list.Count > 0)
+            {
+                string text = string.Join(", ",
+                    list.Where(kvp => kvp.Value.isEnabled)
+                        .Select(kvp => string.Format("{0} ({1})", kvp.Value.GetInstances<IUserMod>()[0].Name, kvp.Value.publishedFileID.AsUInt64.ToString()))
+                        .OrderBy(s => s)
+                        .ToArray());
+                Mod.Log.Warning("You've got some known incompatible mods enabled! It's possible that this mod doesn't work as expected.\nThe following incompatible mods are enabled: {0}.", text);
             }
         }
 

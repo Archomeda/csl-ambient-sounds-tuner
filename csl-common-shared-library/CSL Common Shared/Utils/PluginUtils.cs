@@ -57,6 +57,19 @@ namespace CommonShared.Utils
         }
 
 
+        /// <summary>
+        /// Gets the plugin infos of a given hash set of workshop IDs.
+        /// </summary>
+        /// <param name="workshopIds">The workshop IDs.</param>
+        /// <returns>A dictionary with the plugins that have been found.</returns>
+        public static Dictionary<ulong, PluginManager.PluginInfo> GetPluginInfosOf(HashSet<ulong> workshopIds)
+        {
+            return PluginManager.instance.GetPluginsInfo()
+                .Where(i => workshopIds.Contains(i.publishedFileID.AsUInt64))
+                .ToDictionary(i => i.publishedFileID.AsUInt64, i => i);
+        }
+
+
         private static Dictionary<string, bool> pluginEnabledList = new Dictionary<string, bool>();
         private static Dictionary<string, HashSet<Action<bool>>> pluginStateChangeCallbacks = new Dictionary<string, HashSet<Action<bool>>>();
 
