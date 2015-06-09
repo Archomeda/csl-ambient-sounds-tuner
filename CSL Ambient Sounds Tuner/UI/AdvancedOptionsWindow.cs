@@ -129,7 +129,10 @@ namespace AmbientSoundsTuner.UI
             PropertyChangedEventHandler<float> valueChangedCallback = new PropertyChangedEventHandler<float>((c, v) =>
             {
                 Mod.Settings.State.AmbientVolumes[type] = v;
-                AmbientsPatcher.PatchAmbientVolumeFor(type, v);
+                if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
+                {
+                    AmbientsPatcher.PatchAmbientVolumeFor(type, v);
+                }
             });
 
             return CreateVolumeSetting(this.AmbientsPanel, "AmbientVolumeSetting", type.ToString(), memberName, valueChangedCallback, minValue, maxValue);
@@ -140,7 +143,10 @@ namespace AmbientSoundsTuner.UI
             PropertyChangedEventHandler<float> valueChangedCallback = new PropertyChangedEventHandler<float>((c, v) =>
             {
                 Mod.Settings.State.EffectVolumes[name] = v;
-                EffectsPatcher.PatchEffectVolumeFor(name, v);
+                if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
+                {
+                    EffectsPatcher.PatchEffectVolumeFor(name, v);
+                }
             });
 
             return CreateVolumeSetting(this.EffectsPanel, "EffectVolumeSetting", name, memberName, valueChangedCallback, minValue, maxValue);
