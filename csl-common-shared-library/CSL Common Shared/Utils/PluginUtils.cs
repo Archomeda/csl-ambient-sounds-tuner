@@ -17,19 +17,21 @@ namespace CommonShared.Utils
         /// <summary>
         /// Gets the plugin info of the calling mod.
         /// </summary>
+        /// <param name="modInstance">The mod instance.</param>
         /// <returns>The plugin info.</returns>
-        public static PluginManager.PluginInfo GetPluginInfo()
+        public static PluginManager.PluginInfo GetPluginInfo(IUserMod modInstance)
         {
             Assembly mainAssembly;
-            return GetPluginInfo(out mainAssembly);
+            return GetPluginInfo(modInstance, out mainAssembly);
         }
 
         /// <summary>
         /// Gets the plugin info of the calling mod.
         /// </summary>
+        /// <param name="modInstance">The mod instance.</param>
         /// <param name="mainAssembly">The main assembly of the mod where IUserMod is being used.</param>
         /// <returns>The plugin info.</returns>
-        public static PluginManager.PluginInfo GetPluginInfo(out Assembly mainAssembly)
+        public static PluginManager.PluginInfo GetPluginInfo(IUserMod modInstance, out Assembly mainAssembly)
         {
             StackFrame[] frames = new StackTrace().GetFrames();
 
@@ -43,7 +45,7 @@ namespace CommonShared.Utils
                     foreach (var pluginInfo in PluginManager.instance.GetPluginsInfo())
                     {
                         var assemblies = ReflectionUtils.GetPrivateField<List<Assembly>>(pluginInfo, "m_Assemblies");
-                        if (assemblies.Contains(assembly))
+                        if (assemblies.Contains(assembly) && pluginInfo.userModInstance == modInstance)
                         {
                             mainAssembly = assembly;
                             return pluginInfo;
@@ -76,10 +78,11 @@ namespace CommonShared.Utils
         /// <summary>
         /// Subscribes to the event when the plugin state changes.
         /// </summary>
+        /// <param name="modInstance">The mod instance.</param>
         /// <param name="callback">The callback that will be used when the state changes, with a boolean parameter that is true when the plugin is enabled, and false otherwise.</param>
-        public static void SubscribePluginStateChange(Action<bool> callback)
+        public static void SubscribePluginStateChange(IUserMod modInstance, Action<bool> callback)
         {
-            string pluginName = GetPluginInfo().name;
+            string pluginName = GetPluginInfo(modInstance).name;
             if (pluginStateChangeCallbacks.Count == 0)
             {
                 PluginManager.instance.eventPluginsStateChanged += PluginManager_eventPluginsStateChanged;
@@ -120,10 +123,11 @@ namespace CommonShared.Utils
         /// <summary>
         /// Unsubscribes from the event when the plugin state changes.
         /// </summary>
+        /// <param name="modInstance">The mod instance.</param>
         /// <param name="callback">The callback that will be used when the state changes, with a boolean parameter that is true when the plugin is enabled, and false otherwise.</param>
-        public static void UnsubscribePluginStateChange(Action<bool> callback)
+        public static void UnsubscribePluginStateChange(IUserMod modInstance, Action<bool> callback)
         {
-            string pluginName = GetPluginInfo().name;
+            string pluginName = GetPluginInfo(modInstance).name;
             if (pluginStateChangeCallbacks.ContainsKey(pluginName))
             {
                 pluginStateChangeCallbacks[pluginName].Remove(callback);

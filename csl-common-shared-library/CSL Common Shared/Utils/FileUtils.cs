@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using ColossalFramework.IO;
+using ICities;
 
 namespace CommonShared.Utils
 {
@@ -16,21 +17,23 @@ namespace CommonShared.Utils
         /// <summary>
         /// Gets the assembly folder of the calling mod. This is where the DLL and every other static file are located.
         /// </summary>
+        /// <param name="modInstance">The mod instance.</param>
         /// <returns>The assembly folder.</returns>
-        public static string GetAssemblyFolder()
+        public static string GetAssemblyFolder(IUserMod modInstance)
         {
-            var pluginInfo = PluginUtils.GetPluginInfo();
+            var pluginInfo = PluginUtils.GetPluginInfo(modInstance);
             return pluginInfo != null ? pluginInfo.modPath : null;
         }
 
         /// <summary>
         /// Gets the storage folder of the calling mod. This is where dynamic files are located.
         /// </summary>
+        /// <param name="modInstance">The mod instance.</param>
         /// <returns>The storage folder.</returns>
-        public static string GetStorageFolder()
+        public static string GetStorageFolder(IUserMod modInstance)
         {
             Assembly assembly;
-            var pluginInfo = PluginUtils.GetPluginInfo(out assembly);
+            var pluginInfo = PluginUtils.GetPluginInfo(modInstance, out assembly);
             return Path.Combine(DataLocation.modsPath, assembly.GetName().Name);
         }
     }
