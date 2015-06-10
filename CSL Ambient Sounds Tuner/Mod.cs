@@ -16,9 +16,10 @@ namespace AmbientSoundsTuner
 {
     public class Mod : LoadingExtensionBase, IUserMod
     {
-        internal static Configuration Settings;
-        internal static string SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(), "AmbientSoundsTuner.xml");
-        internal static Logger Log = new Logger();
+        internal static Configuration Settings { get; private set; }
+        internal static string SettingsFilename { get; private set; }
+        internal static Logger Log { get; private set; }
+        internal static Mod Instance { get; private set; }
 
         internal static HashSet<ulong> IncompatibleMods = new HashSet<ulong>()
         {
@@ -31,12 +32,14 @@ namespace AmbientSoundsTuner
         {
             get
             {
-                // Here we load our stuff (only if it's enabled, to prevent confusion), hacky, but oh well...
+                // Here we load our stuff, hacky, but oh well...
+                this.Init();
+
                 if (!this.isLoaded)
                 {
                     this.isLoaded = true;
-                    this.Initialize(PluginUtils.GetPluginInfo().isEnabled);
-                    PluginUtils.SubscribePluginStateChange(this.Initialize);
+                    this.Load(PluginUtils.GetPluginInfo(this).isEnabled);
+                    PluginUtils.SubscribePluginStateChange(this, this.Load);
                 }
 
                 return "Ambient Sounds Tuner";
@@ -48,8 +51,15 @@ namespace AmbientSoundsTuner
             get { return "Tune your ambient sounds volumes individually"; }
         }
 
+        private void Init()
+        {
+            SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(this), "AmbientSoundsTuner.xml");
+            Log = new Logger(this);
+            Instance = this;
+        }
 
-        private void Initialize(bool isEnabled)
+
+        private void Load(bool isEnabled)
         {
             if (isEnabled)
             {
@@ -92,7 +102,7 @@ namespace AmbientSoundsTuner
         public override void OnLevelLoaded(LoadMode mode)
         {
             base.OnLevelLoaded(mode);
-            this.Initialize(true);
+            this.Load(true);
             PatchAmbientSounds();
             PatchEffectSounds();
         }
