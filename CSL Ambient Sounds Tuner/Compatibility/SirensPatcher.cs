@@ -68,7 +68,7 @@ namespace AmbientSoundsTuner.Compatibility
                 return PatchResult.NotFound;
             }
 
-            // Check if both AudioInfo objects are the same, if so, we have to patch it.
+            // Check if the AudioInfo object has our name, if not, we have to patch it.
             if (policeSirenSoundEffect.m_audioInfo.name != AUDIOINFO_POLICE_CAR_SIREN)
             {
                 AudioInfo policeSirenAudioInfo = GameObject.Instantiate(policeSirenSoundEffect.m_audioInfo);
