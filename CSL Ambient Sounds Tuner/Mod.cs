@@ -27,6 +27,7 @@ namespace AmbientSoundsTuner
         };
 
         private bool isLoaded = false;
+        private bool isActivated = false;
 
         public string Name
         {
@@ -37,9 +38,21 @@ namespace AmbientSoundsTuner
 
                 if (!this.isLoaded)
                 {
-                    this.isLoaded = true;
-                    this.Load(PluginUtils.GetPluginInfo(this).isEnabled);
-                    PluginUtils.SubscribePluginStateChange(this, this.Load);
+                    PluginUtils.SubscribePluginStateChange(this, isEnabled =>
+                    {
+                        if (isEnabled) this.Load();
+                        else this.Unload();
+                    });
+                }
+
+                if (!this.isActivated)
+                {
+                    var pluginInfo = PluginUtils.GetPluginInfo(this);
+                    if (pluginInfo.isEnabled)
+                    {
+                        this.isActivated = true;
+                        this.Load();
+                    }
                 }
 
                 return "Ambient Sounds Tuner";
@@ -51,6 +64,7 @@ namespace AmbientSoundsTuner
             get { return "Tune your ambient sounds volumes individually"; }
         }
 
+
         private void Init()
         {
             SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(this), "AmbientSoundsTuner.xml");
@@ -58,28 +72,26 @@ namespace AmbientSoundsTuner
             Instance = this;
         }
 
-
-        private void Load(bool isEnabled)
+        private void Load()
         {
-            if (isEnabled)
+            this.CheckIncompatibility();
+
+            Mod.Settings = Config.LoadConfig<Configuration>(Mod.SettingsFilename);
+            Mod.Log.EnableDebugLogging = Mod.Settings.ExtraDebugLogging;
+
+            if (Mod.Settings.ExtraDebugLogging)
             {
-                this.CheckIncompatibility();
-
-                Mod.Settings = Config.LoadConfig<Configuration>(Mod.SettingsFilename);
-                Mod.Log.EnableDebugLogging = Mod.Settings.ExtraDebugLogging;
-
-                if (Mod.Settings.ExtraDebugLogging)
-                {
-                    Mod.Log.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
-                }
-
-                AdvancedOptions.CreateAdvancedOptions();
+                Mod.Log.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
             }
-            else
-            {
-                AdvancedOptions.DestroyAdvancedOptions();
-            }
+
+            AdvancedOptions.CreateAdvancedOptions();
         }
+
+        private void Unload()
+        {
+            AdvancedOptions.DestroyAdvancedOptions();
+        }
+
 
         private void CheckIncompatibility()
         {
@@ -95,6 +107,7 @@ namespace AmbientSoundsTuner
             }
         }
 
+
         /// <summary>
         /// Our entry point. Here we load the mod.
         /// </summary>
@@ -102,7 +115,7 @@ namespace AmbientSoundsTuner
         public override void OnLevelLoaded(LoadMode mode)
         {
             base.OnLevelLoaded(mode);
-            this.Load(true);
+            this.Load();
             PatchAmbientSounds();
             PatchEffectSounds();
         }
@@ -118,6 +131,7 @@ namespace AmbientSoundsTuner
             // Set isLoaded to false again so the mod will load again at the main menu
             this.isLoaded = false;
         }
+
 
         internal static void PatchAmbientSounds()
         {
@@ -167,6 +181,5 @@ namespace AmbientSoundsTuner
 
             Mod.Log.Info("Effect sound volumes have been patched");
         }
-
     }
 }
