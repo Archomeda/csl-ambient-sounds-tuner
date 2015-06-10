@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using AmbientSoundsTuner.Compatibility;
 using AmbientSoundsTuner.UI;
 using AmbientSoundsTuner.Utils;
 using ColossalFramework.Plugins;
@@ -127,6 +128,21 @@ namespace AmbientSoundsTuner
 
         internal static void PatchEffectSounds()
         {
+            // Patch the sirens for compatibility first!
+            var patchResult = SirensPatcher.PatchPoliceSiren();
+            switch (patchResult)
+            {
+                case SirensPatcher.PatchResult.Success:
+                    Mod.Log.Info("Police sirens have been patched");
+                    break;
+                case SirensPatcher.PatchResult.AlreadyPatched:
+                    Mod.Log.Info("Police sirens have been patched already");
+                    break;
+                case SirensPatcher.PatchResult.NotFound:
+                    Mod.Log.Warning("Could not patch the police sirens to be different from the ambulance sirens");
+                    break;
+            }
+
             int effectSoundsCount = EffectsPatcher.OriginalVolumes.Count;
             int backedUpEffectSoundsCount = EffectsPatcher.BackupEffectVolumes();
             if (backedUpEffectSoundsCount < effectSoundsCount)
