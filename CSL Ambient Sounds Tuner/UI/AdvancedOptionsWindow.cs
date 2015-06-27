@@ -74,7 +74,7 @@ namespace AmbientSoundsTuner.UI
             Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.City, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.City], out this.ambientVolumeCity);
             Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Agricultural, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.Agricultural], out this.ambientVolumeAgricultural);
 
-            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(EffectsPatcher.ID_TRANSPORT_ARRIVE, EffectsPatcher.OriginalVolumes[EffectsPatcher.ID_TRANSPORT_ARRIVE], out this.effectVolumeAircraftMovement);
+            Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(EffectsPatcher.ID_AIRCRAFT_MOVEMENT, EffectsPatcher.OriginalVolumes[EffectsPatcher.ID_AIRCRAFT_MOVEMENT], out this.effectVolumeAircraftMovement);
             Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(EffectsPatcher.ID_AMBULANCE_SIREN, EffectsPatcher.OriginalVolumes[EffectsPatcher.ID_AMBULANCE_SIREN], out this.effectVolumeAmbulanceSiren);
             Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(EffectsPatcher.ID_FIRE_TRUCK_SIREN, EffectsPatcher.OriginalVolumes[EffectsPatcher.ID_FIRE_TRUCK_SIREN], out this.effectVolumeFireTruckSiren);
             Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(EffectsPatcher.ID_LARGE_CAR_MOVEMENT, EffectsPatcher.OriginalVolumes[EffectsPatcher.ID_LARGE_CAR_MOVEMENT], out this.effectVolumeLargeCarMovement);
@@ -95,7 +95,7 @@ namespace AmbientSoundsTuner.UI
             this.AmbientVolumeSettingObjects[7] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.City, "ambientVolumeCity");
             this.AmbientVolumeSettingObjects[8] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Agricultural, "ambientVolumeAgricultural");
 
-            this.EffectVolumeSettingObjects[0] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_TRANSPORT_ARRIVE, "effectVolumeAircraftMovement", 0, 0.5f); // Default value = 0.5f
+            this.EffectVolumeSettingObjects[0] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_AIRCRAFT_MOVEMENT, "effectVolumeAircraftMovement", 0, 0.5f); // Default value = 0.5f
             this.EffectVolumeSettingObjects[1] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_AMBULANCE_SIREN, "effectVolumeAmbulanceSiren");
             this.EffectVolumeSettingObjects[2] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_FIRE_TRUCK_SIREN, "effectVolumeFireTruckSiren", 0, 3); // Default value = 3
             this.EffectVolumeSettingObjects[3] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_LARGE_CAR_MOVEMENT, "effectVolumeLargeCarMovement", 0, 1.5f); // Default value = 1.5
