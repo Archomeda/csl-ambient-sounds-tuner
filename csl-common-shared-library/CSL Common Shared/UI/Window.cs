@@ -143,6 +143,7 @@ namespace CommonShared.UI
         public static void ShowWindow(Window window)
         {
             window.CenterToParent();
+            window.position = window.position.RoundToInt();
             window.Show(true);
             window.Focus();
         }

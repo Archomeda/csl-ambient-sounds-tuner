@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AmbientSoundsTuner.Defs;
 using AmbientSoundsTuner.Utils;
 using ColossalFramework.DataBinding;
 using ColossalFramework.UI;
@@ -16,6 +17,11 @@ namespace AmbientSoundsTuner.UI
         protected GameObject[] AmbientVolumeSettingObjects = new GameObject[9];
         protected GameObject[] EffectVolumeSettingObjects = new GameObject[9];
 
+        protected UITabstrip Tabstrip;
+        protected UIButton AmbientsTabButton;
+        protected UIButton EffectsTabButton;
+
+        protected UITabContainer TabContainer;
         protected UIPanel AmbientsPanel;
         protected UIPanel EffectsPanel;
 
@@ -41,27 +47,50 @@ namespace AmbientSoundsTuner.UI
 
         public override void Start()
         {
-            this.width = 741;
-            this.height = 381;
+            this.width = 451;
+            this.height = 431;
             this.Title = "SOUNDS TUNER";
             base.Start();
 
-            // Layout
-            this.ContentPanel.autoLayout = true;
-            this.ContentPanel.autoLayoutDirection = LayoutDirection.Horizontal;
-            this.ContentPanel.autoLayoutPadding = new RectOffset(20, 20, 10, 10);
+            this.Tabstrip = this.ContentPanel.AddUIComponent<UITabstrip>();
+            this.Tabstrip.relativePosition = new Vector3(20, 20);
+            this.Tabstrip.width = 410;
+            this.Tabstrip.anchor = UIAnchorStyle.Top | UIAnchorStyle.Left | UIAnchorStyle.Right;
 
-            this.AmbientsPanel = this.ContentPanel.AddUIComponent<UIPanel>();
-            this.AmbientsPanel.size = new Vector2(300, 320);
+            this.TabContainer = this.ContentPanel.AddUIComponent<UITabContainer>();
+            this.TabContainer.size = new Vector2(410, 330);
+            this.TabContainer.relativePosition = new Vector3(20, 20 + this.Tabstrip.height);
+            this.TabContainer.anchor = UIAnchorStyle.All;
+            this.Tabstrip.tabPages = this.TabContainer;
+
+            // Get template button from the options panel tabstrip
+            UITabstrip optionTabStrip = GameObject.Find(GameObjectDefs.ID_OPTIONTABSTRIP).GetComponent<UITabstrip>();
+            UIButton tabStripButtonTemplate = optionTabStrip.GetComponentInChildren<UIButton>();
+
+            UIButton ambientsTabButton = this.Tabstrip.AddTab("AMBIENTS", tabStripButtonTemplate, true);
+            ambientsTabButton.playAudioEvents = true;
+            ambientsTabButton.focusedTextColor = tabStripButtonTemplate.focusedTextColor;
+            UIButton effectsTabButton = this.Tabstrip.AddTab("EFFECTS", tabStripButtonTemplate, true);
+            effectsTabButton.playAudioEvents = true;
+            effectsTabButton.focusedTextColor = tabStripButtonTemplate.focusedTextColor;
+
+            // Tabs layout
+            UIPanel[] tabs = this.TabContainer.GetComponentsInChildren<UIPanel>();
+            this.AmbientsPanel = tabs[0];
+            this.EffectsPanel = tabs[1];
+
+            this.AmbientsPanel.padding = new RectOffset(5, 5, 10, 10);
             this.AmbientsPanel.autoLayout = true;
             this.AmbientsPanel.autoLayoutDirection = LayoutDirection.Vertical;
             this.AmbientsPanel.autoLayoutPadding = new RectOffset(0, 0, 5, 5);
+            this.AmbientsPanel.wrapLayout = true;
 
-            this.EffectsPanel = this.ContentPanel.AddUIComponent<UIPanel>();
-            this.EffectsPanel.size = new Vector2(360, 320);
+            this.EffectsPanel.Hide();
+            this.EffectsPanel.padding = new RectOffset(5, 5, 10, 10);
             this.EffectsPanel.autoLayout = true;
             this.EffectsPanel.autoLayoutDirection = LayoutDirection.Vertical;
             this.EffectsPanel.autoLayoutPadding = new RectOffset(0, 0, 5, 5);
+            this.EffectsPanel.wrapLayout = true;
 
             // Settings
             Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.World, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.World], out this.ambientVolumeWorld);
@@ -154,24 +183,28 @@ namespace AmbientSoundsTuner.UI
 
         protected GameObject CreateVolumeSetting(UIComponent parent, string gameObjectName, string name, string memberName, PropertyChangedEventHandler<float> valueChangedCallback, float minValue = 0, float maxValue = 1)
         {
+            float panelWidth = parent.width - ((UIPanel)parent).padding.left - ((UIPanel)parent).padding.right;
+            float sliderX = panelWidth - 210;
+
             GameObject setting = new GameObject(gameObjectName);
             UIPanel panel = setting.AddComponent<UIPanel>();
             panel.transform.SetParent(parent.transform);
-            panel.width = parent.width;
+            panel.width = panelWidth;
             panel.height = 25;
 
             UILabel label = panel.AddUIComponent<UILabel>();
-            label.width = parent.width - 200;
+            label.width = sliderX;
             label.text = name;
             label.isLocalized = false;
-            label.position = new Vector3(0, 0);
+            label.position = new Vector3(0, -(panel.height - label.height) / 2).RoundToInt();
+            label.verticalAlignment = UIVerticalAlignment.Middle;
 
             GameObject sliderObject = UnityEngine.Object.Instantiate(GameObject.Find("SliderAmbientVolume"));
             panel.AttachUIComponent(sliderObject);
 
             UISlider slider = sliderObject.GetComponent<UISlider>();
             slider.width = 200;
-            slider.position = new Vector3(parent.width - 200, 0);
+            slider.position = new Vector3(sliderX, 0);
             slider.minValue = minValue;
             slider.maxValue = maxValue;
             slider.eventValueChanged += valueChangedCallback;
