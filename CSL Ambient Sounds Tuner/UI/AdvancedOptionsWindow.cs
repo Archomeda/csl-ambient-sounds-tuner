@@ -19,12 +19,12 @@ namespace AmbientSoundsTuner.UI
         protected readonly Dictionary<string, string> SliderNames = new Dictionary<string, string>()
         {
             { EffectsPatcher.ID_AIRCRAFT_MOVEMENT, "Aircrafts" },
+            { EffectsPatcher.ID_SMALL_CAR_MOVEMENT, "Cars (small)" },
+            { EffectsPatcher.ID_LARGE_CAR_MOVEMENT, "Cars (large)" },
             { EffectsPatcher.ID_AMBULANCE_SIREN, "Sirens (ambulances)" },
             { EffectsPatcher.ID_FIRE_TRUCK_SIREN, "Sirens (fire trucks)" },
-            { EffectsPatcher.ID_LARGE_CAR_MOVEMENT, "Cars (large)" },
-            { EffectsPatcher.ID_METRO_MOVEMENT, "Metros" },
             { EffectsPatcher.ID_POLICE_CAR_SIREN, "Sirens (police cars)" },
-            { EffectsPatcher.ID_SMALL_CAR_MOVEMENT, "Cars (small)" },
+            { EffectsPatcher.ID_METRO_MOVEMENT, "Metros" },
             { EffectsPatcher.ID_TRAIN_MOVEMENT, "Trains" },
             { EffectsPatcher.ID_TRANSPORT_ARRIVE, "Transportation arrivals" },
         };
