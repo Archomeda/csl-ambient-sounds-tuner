@@ -141,14 +141,14 @@ namespace AmbientSoundsTuner.UI
             this.AmbientVolumeSettingObjects[7] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.City, "ambientVolumeCity");
             this.AmbientVolumeSettingObjects[8] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Agricultural, "ambientVolumeAgricultural");
 
-            this.EffectVolumeSettingObjects[0] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_TRANSPORT_ARRIVE, "effectVolumeAircraftMovement", 0, 0.5f); // Default value = 0.5f
+            this.EffectVolumeSettingObjects[0] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_TRANSPORT_ARRIVE, "effectVolumeAircraftMovement", 0, 1); // Default value = 0.5f
             this.EffectVolumeSettingObjects[1] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_AMBULANCE_SIREN, "effectVolumeAmbulanceSiren");
             this.EffectVolumeSettingObjects[2] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_FIRE_TRUCK_SIREN, "effectVolumeFireTruckSiren", 0, 3); // Default value = 3
             this.EffectVolumeSettingObjects[3] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_LARGE_CAR_MOVEMENT, "effectVolumeLargeCarMovement", 0, 1.5f); // Default value = 1.5
-            this.EffectVolumeSettingObjects[4] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_METRO_MOVEMENT, "effectVolumeMetroMovement", 0, 0.5f); // Default value = 0.5f
+            this.EffectVolumeSettingObjects[4] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_METRO_MOVEMENT, "effectVolumeMetroMovement", 0, 1); // Default value = 0.5f
             this.EffectVolumeSettingObjects[5] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_POLICE_CAR_SIREN, "effectVolumePoliceCarSiren");
             this.EffectVolumeSettingObjects[6] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_SMALL_CAR_MOVEMENT, "effectVolumeSmallCarMovement", 0, 1.5f); // Default value = 1.5
-            this.EffectVolumeSettingObjects[7] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_TRAIN_MOVEMENT, "effectVolumeTrainMovement", 0, 0.5f); // Default value = 0.5f
+            this.EffectVolumeSettingObjects[7] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_TRAIN_MOVEMENT, "effectVolumeTrainMovement", 0, 1); // Default value = 0.5f
             this.EffectVolumeSettingObjects[8] = this.CreateEffectVolumeSetting(EffectsPatcher.ID_TRANSPORT_ARRIVE, "effectVolumeTransportArrive");
 
             // Some extra event listeners
