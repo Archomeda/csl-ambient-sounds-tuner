@@ -4,16 +4,31 @@ using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.Defs;
 using AmbientSoundsTuner.Utils;
+using ColossalFramework;
 using ColossalFramework.DataBinding;
 using ColossalFramework.UI;
 using CommonShared.Extensions;
 using CommonShared.UI;
+using CommonShared.Utils;
 using UnityEngine;
 
 namespace AmbientSoundsTuner.UI
 {
     public class AdvancedOptionsWindow : Window
     {
+        protected readonly Dictionary<string, string> SliderNames = new Dictionary<string, string>()
+        {
+            { EffectsPatcher.ID_AIRCRAFT_MOVEMENT, "Aircrafts" },
+            { EffectsPatcher.ID_AMBULANCE_SIREN, "Sirens (ambulances)" },
+            { EffectsPatcher.ID_FIRE_TRUCK_SIREN, "Sirens (fire trucks)" },
+            { EffectsPatcher.ID_LARGE_CAR_MOVEMENT, "Cars (large)" },
+            { EffectsPatcher.ID_METRO_MOVEMENT, "Metros" },
+            { EffectsPatcher.ID_POLICE_CAR_SIREN, "Sirens (police cars)" },
+            { EffectsPatcher.ID_SMALL_CAR_MOVEMENT, "Cars (small)" },
+            { EffectsPatcher.ID_TRAIN_MOVEMENT, "Trains" },
+            { EffectsPatcher.ID_TRANSPORT_ARRIVE, "Transportation arrivals" },
+        };
+
         protected GameObject[] AmbientVolumeSettingObjects = new GameObject[9];
         protected GameObject[] EffectVolumeSettingObjects = new GameObject[9];
 
@@ -24,6 +39,8 @@ namespace AmbientSoundsTuner.UI
         protected UITabContainer TabContainer;
         protected UIPanel AmbientsPanel;
         protected UIPanel EffectsPanel;
+
+        private bool slidersSorted = false;
 
         public float ambientVolumeWorld;
         public float ambientVolumeForest;
@@ -83,14 +100,14 @@ namespace AmbientSoundsTuner.UI
             this.AmbientsPanel.autoLayout = true;
             this.AmbientsPanel.autoLayoutDirection = LayoutDirection.Vertical;
             this.AmbientsPanel.autoLayoutPadding = new RectOffset(0, 0, 5, 5);
-            this.AmbientsPanel.wrapLayout = true;
+            //this.AmbientsPanel.wrapLayout = true;
 
             this.EffectsPanel.Hide();
             this.EffectsPanel.padding = new RectOffset(5, 5, 10, 10);
             this.EffectsPanel.autoLayout = true;
             this.EffectsPanel.autoLayoutDirection = LayoutDirection.Vertical;
             this.EffectsPanel.autoLayoutPadding = new RectOffset(0, 0, 5, 5);
-            this.EffectsPanel.wrapLayout = true;
+            //this.EffectsPanel.wrapLayout = true;
 
             // Settings
             Mod.Settings.State.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.World, AmbientsPatcher.OriginalVolumes[AudioManager.AmbientType.World], out this.ambientVolumeWorld);
@@ -138,6 +155,22 @@ namespace AmbientSoundsTuner.UI
             this.eventVisibilityChanged += AdvancedOptionsWindow_eventVisibilityChanged;
         }
 
+        public override void Update()
+        {
+            // Order sliders by name if not already sorted.
+            // We have to do this here, since the list of child components is empty in Start().
+            if (!this.slidersSorted && this.isVisible)
+            {
+                var ambientsPanelChildComponents = ReflectionUtils.GetPrivateField<PoolList<UIComponent>>(this.AmbientsPanel, "m_ChildComponents");
+                ambientsPanelChildComponents.Sort(new SortSlidersByTextComparer());
+                var effectsPanelChildComponents = ReflectionUtils.GetPrivateField<PoolList<UIComponent>>(this.EffectsPanel, "m_ChildComponents");
+                effectsPanelChildComponents.Sort(new SortSlidersByTextComparer());
+
+                this.slidersSorted = true;
+            }
+            base.Update();
+        }
+
         private void AdvancedOptionsWindow_eventVisibilityChanged(UIComponent component, bool value)
         {
             if (this.isVisibleSelf && this.parent != null && !this.parent.isVisible)
@@ -183,6 +216,8 @@ namespace AmbientSoundsTuner.UI
 
         protected GameObject CreateVolumeSetting(UIComponent parent, string gameObjectName, string name, string memberName, PropertyChangedEventHandler<float> valueChangedCallback, float minValue = 0, float maxValue = 1)
         {
+            this.SliderNames.TryGetValueOrDefault(name, name, out name);
+
             float panelWidth = parent.width - ((UIPanel)parent).padding.left - ((UIPanel)parent).padding.right;
             float sliderX = panelWidth - 210;
 
@@ -216,6 +251,22 @@ namespace AmbientSoundsTuner.UI
             binding.dataTarget.memberName = "value";
 
             return setting;
+        }
+
+
+        private class SortSlidersByTextComparer : Comparer<UIComponent>
+        {
+            public override int Compare(UIComponent x, UIComponent y)
+            {
+                UILabel xLabel = x.GetComponentInChildren<UILabel>();
+                UILabel yLabel = y.GetComponentInChildren<UILabel>();
+                if (xLabel != null && yLabel != null)
+                {
+                    int result = xLabel.text.CompareTo(yLabel.text);
+                    return result;
+                }
+                return 0;
+            }
         }
     }
 }
