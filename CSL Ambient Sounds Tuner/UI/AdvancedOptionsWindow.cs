@@ -233,8 +233,12 @@ namespace AmbientSoundsTuner.UI
             {
                 var ambientsPanelChildComponents = ReflectionUtils.GetPrivateField<PoolList<UIComponent>>(this.AmbientsPanel, "m_ChildComponents");
                 ambientsPanelChildComponents.Sort(new SortSlidersByTextComparer());
-                var effectsPanelChildComponents = ReflectionUtils.GetPrivateField<PoolList<UIComponent>>(this.VehiclesPanel, "m_ChildComponents");
-                effectsPanelChildComponents.Sort(new SortSlidersByTextComparer());
+                var animalsPanelChildComponents = ReflectionUtils.GetPrivateField<PoolList<UIComponent>>(this.AnimalsPanel, "m_ChildComponents");
+                animalsPanelChildComponents.Sort(new SortSlidersByTextComparer());
+                var buildingsPanelChildComponents = ReflectionUtils.GetPrivateField<PoolList<UIComponent>>(this.BuildingsPanel, "m_ChildComponents");
+                buildingsPanelChildComponents.Sort(new SortSlidersByTextComparer());
+                var vehiclesPanelChildComponents = ReflectionUtils.GetPrivateField<PoolList<UIComponent>>(this.VehiclesPanel, "m_ChildComponents");
+                vehiclesPanelChildComponents.Sort(new SortSlidersByTextComparer());
 
                 this.slidersSorted = true;
             }
