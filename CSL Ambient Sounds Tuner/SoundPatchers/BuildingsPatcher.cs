@@ -18,6 +18,8 @@ namespace AmbientSoundsTuner.SoundPatchers
         public const string ID_INCINERATION_PLANT = "Incineration Plant";
         public const string ID_NUCLEAR_POWER_PLANT = "Nuclear Power Plant";
         public const string ID_SOLAR_POWER_PLANT = "Solar Power Plant";
+        public const string ID_WATER_DRAIN_PIPE = "Water Drain/Treatment Plant";
+        public const string ID_WATER_PUMPING_STATION = "Water Pumping Station";
         public const string ID_WIND_TURBINE = "Wind Turbine";
 
         public BuildingsPatcher()
@@ -30,6 +32,8 @@ namespace AmbientSoundsTuner.SoundPatchers
             this.DefaultVolumes.Add(ID_INCINERATION_PLANT, 1);
             this.DefaultVolumes.Add(ID_NUCLEAR_POWER_PLANT, 1);
             this.DefaultVolumes.Add(ID_SOLAR_POWER_PLANT, 1);
+            this.DefaultVolumes.Add(ID_WATER_DRAIN_PIPE, 1);
+            this.DefaultVolumes.Add(ID_WATER_PUMPING_STATION, 1);
             this.DefaultVolumes.Add(ID_WIND_TURBINE, 1);
         }
 
@@ -58,6 +62,12 @@ namespace AmbientSoundsTuner.SoundPatchers
                     break;
                 case ID_SOLAR_POWER_PLANT:
                     audioInfo = SoundsCollection.SolarPowerPlant;
+                    break;
+                case ID_WATER_DRAIN_PIPE:
+                    audioInfo = SoundsCollection.WaterDrainPipe;
+                    break;
+                case ID_WATER_PUMPING_STATION:
+                    audioInfo = SoundsCollection.WaterPumpingStation;
                     break;
                 case ID_WIND_TURBINE:
                     audioInfo = SoundsCollection.WindTurbine;

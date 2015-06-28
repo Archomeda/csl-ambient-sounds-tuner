@@ -72,6 +72,8 @@ namespace AmbientSoundsTuner.UI
         public float buildingVolumeIncinerationPlant;
         public float buildingVolumeNuclearPowerPlant;
         public float buildingVolumeSolarPowerPlant;
+        public float buildingVolumeWaterDrainPipe;
+        public float buildingVolumeWaterPumpingStation;
         public float buildingVolumeWindTurbine;
         public float vehicleVolumeAircraftMovement;
         public float vehicleVolumeAmbulanceSiren;
@@ -175,6 +177,8 @@ namespace AmbientSoundsTuner.UI
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_INCINERATION_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_INCINERATION_PLANT], out this.buildingVolumeIncinerationPlant);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_NUCLEAR_POWER_PLANT], out this.buildingVolumeNuclearPowerPlant);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_SOLAR_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_SOLAR_POWER_PLANT], out this.buildingVolumeSolarPowerPlant);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_WATER_DRAIN_PIPE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_WATER_DRAIN_PIPE], out this.buildingVolumeWaterDrainPipe);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_WATER_PUMPING_STATION, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_WATER_PUMPING_STATION], out this.buildingVolumeWaterPumpingStation);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_WIND_TURBINE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_WIND_TURBINE], out this.buildingVolumeWindTurbine);
 
             Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_AIRCRAFT_MOVEMENT], out this.vehicleVolumeAircraftMovement);
@@ -209,6 +213,8 @@ namespace AmbientSoundsTuner.UI
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_INCINERATION_PLANT, "buildingVolumeIncinerationPlant"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, "buildingVolumeNuclearPowerPlant"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_SOLAR_POWER_PLANT, "buildingVolumeSolarPowerPlant"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_WATER_DRAIN_PIPE, "buildingVolumeWaterDrainPipe"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_WATER_PUMPING_STATION, "buildingVolumeWaterPumpingStation"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_WIND_TURBINE, "buildingVolumeWindTurbine"));
 
             this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, "vehicleVolumeAircraftMovement", 0, 1));
