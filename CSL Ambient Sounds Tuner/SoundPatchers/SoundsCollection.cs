@@ -26,6 +26,14 @@ namespace AmbientSoundsTuner.SoundPatchers
         private const string ID_WATER_PUMPING_STATION_INFO = "Water Intake";
         private const string ID_WIND_TURBINE_INFO = "Wind Turbine";
 
+        private const string ID_BUILDING_BULLDOZE = "Building Bulldoze Sound";
+        private const string ID_BUILDING_LEVELUP = "Levelup Sound";
+        private const string ID_BUILDING_PLACEMENT = "Building Placement Sound";
+        private const string ID_PROP_BULLDOZE = "Prop Bulldoze Sound";
+        private const string ID_PROP_PLACEMENT = "Prop Placement Sound";
+        private const string ID_ROAD_BULLDOZE = "Road Bulldoze Sound";
+        private const string ID_ROAD_PLACEMENT = "Road Placement Sound";
+
         /// <summary>
         /// Gets the ambient sounds; or null if they don't exist.
         /// </summary>
@@ -211,6 +219,147 @@ namespace AmbientSoundsTuner.SoundPatchers
                 return GetAudioInfoFromBuildingInfo(ID_WIND_TURBINE_INFO);
             }
         }
+
+
+        /// <summary>
+        /// Gets the building bulldoze sound effect; or null if it doesn't exist.
+        /// </summary>
+        public static SoundEffect BuildingBulldoze
+        {
+            get
+            {
+                MultiEffect effect = BuildingManager.instance.m_properties.m_bulldozeEffect as MultiEffect;
+                if (effect != null)
+                {
+                    return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_BUILDING_BULLDOZE).m_effect as SoundEffect;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the building fire sound effect; or null if it doesn't exist.
+        /// </summary>
+        public static SoundEffect BuildingFire
+        {
+            get
+            {
+                FireEffect effect = BuildingManager.instance.m_properties.m_fireEffect as FireEffect;
+                if (effect != null)
+                {
+                    return effect.m_soundEffect;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the building level up sound effect; or null if it doesn't exist.
+        /// </summary>
+        public static SoundEffect BuildingLevelUp
+        {
+            get
+            {
+                MultiEffect effect = BuildingManager.instance.m_properties.m_levelupEffect as MultiEffect;
+                if (effect != null)
+                {
+                    return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_BUILDING_LEVELUP).m_effect as SoundEffect;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the building placement sound effect; or null if it doesn't exist.
+        /// </summary>
+        public static SoundEffect BuildingPlacement
+        {
+            get
+            {
+                MultiEffect effect = BuildingManager.instance.m_properties.m_placementEffect as MultiEffect;
+                if (effect != null)
+                {
+                    return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_BUILDING_PLACEMENT).m_effect as SoundEffect;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the prop bulldoze sound effect; or null if it doesn't exist.
+        /// </summary>
+        public static SoundEffect PropBulldoze
+        {
+            get
+            {
+                MultiEffect effect = PropManager.instance.m_properties.m_bulldozeEffect as MultiEffect;
+                if (effect != null)
+                {
+                    return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_PROP_BULLDOZE).m_effect as SoundEffect;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the prop placement sound effect; or null if it doesn't exist.
+        /// </summary>
+        public static SoundEffect PropPlacement
+        {
+            get
+            {
+                MultiEffect effect = PropManager.instance.m_properties.m_placementEffect as MultiEffect;
+                if (effect != null)
+                {
+                    return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_PROP_PLACEMENT).m_effect as SoundEffect;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the road bulldoze sound effect; or null if it doesn't exist.
+        /// </summary>
+        public static SoundEffect RoadBulldoze
+        {
+            get
+            {
+                MultiEffect effect = NetManager.instance.m_properties.m_bulldozeEffect as MultiEffect;
+                if (effect != null)
+                {
+                    return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_ROAD_BULLDOZE).m_effect as SoundEffect;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the road draw audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo RoadDraw
+        {
+            get
+            {
+                return NetManager.instance.m_properties.m_drawSound;
+            }
+        }
+
+        /// <summary>
+        /// Gets the road placement sound effect; or null if it doesn't exist.
+        /// </summary>
+        public static SoundEffect RoadPlacement
+        {
+            get
+            {
+                MultiEffect effect = NetManager.instance.m_properties.m_placementEffect as MultiEffect;
+                if (effect != null)
+                {
+                    return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_ROAD_PLACEMENT).m_effect as SoundEffect;
+                }
+                return null;
+            }
+        }
+
 
         private static AudioInfo GetAudioInfoFromBuildingInfo(string id)
         {

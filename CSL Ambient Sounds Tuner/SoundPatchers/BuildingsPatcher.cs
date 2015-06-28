@@ -22,6 +22,9 @@ namespace AmbientSoundsTuner.SoundPatchers
         public const string ID_WATER_PUMPING_STATION = "Water Pumping Station";
         public const string ID_WIND_TURBINE = "Wind Turbine";
 
+        public const string ID_FIRE = "On Fire";
+        public const string ID_LEVELUP = "On Level Up";
+
         public BuildingsPatcher()
             : base()
         {
@@ -35,6 +38,9 @@ namespace AmbientSoundsTuner.SoundPatchers
             this.DefaultVolumes.Add(ID_WATER_DRAIN_PIPE, 1);
             this.DefaultVolumes.Add(ID_WATER_PUMPING_STATION, 1);
             this.DefaultVolumes.Add(ID_WIND_TURBINE, 1);
+
+            this.DefaultVolumes.Add(ID_FIRE, 1);
+            this.DefaultVolumes.Add(ID_LEVELUP, 0.25f);
         }
 
         protected override AudioInfo GetAudioInfoById(string id)
@@ -71,6 +77,19 @@ namespace AmbientSoundsTuner.SoundPatchers
                     break;
                 case ID_WIND_TURBINE:
                     audioInfo = SoundsCollection.WindTurbine;
+                    break;
+
+                case ID_FIRE:
+                    if (SoundsCollection.BuildingFire != null)
+                    {
+                        audioInfo = SoundsCollection.BuildingFire.m_audioInfo;
+                    }
+                    break;
+                case ID_LEVELUP:
+                    if (SoundsCollection.BuildingLevelUp != null)
+                    {
+                        audioInfo = SoundsCollection.BuildingLevelUp.m_audioInfo;
+                    }
                     break;
             }
 

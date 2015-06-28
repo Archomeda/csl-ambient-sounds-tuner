@@ -26,6 +26,7 @@ namespace AmbientSoundsTuner
         internal AnimalsPatcher AnimalsPatcher { get; private set; }
         internal BuildingsPatcher BuildingsPatcher { get; private set; }
         internal VehiclesPatcher VehiclesPatcher { get; private set; }
+        internal MiscPatcher MiscPatcher { get; private set; }
 
         internal static HashSet<ulong> IncompatibleMods = new HashSet<ulong>()
         {
@@ -82,6 +83,7 @@ namespace AmbientSoundsTuner
             this.AnimalsPatcher = new AnimalsPatcher();
             this.BuildingsPatcher = new BuildingsPatcher();
             this.VehiclesPatcher = new VehiclesPatcher();
+            this.MiscPatcher = new MiscPatcher();
         }
 
         private void Load()
@@ -185,6 +187,9 @@ namespace AmbientSoundsTuner
 
             total += this.VehiclesPatcher.DefaultVolumes.Count;
             patched += this.PatchSounds(this.VehiclesPatcher, Settings.VehicleVolumes);
+
+            total += this.MiscPatcher.DefaultVolumes.Count;
+            patched += this.PatchSounds(this.MiscPatcher, Settings.MiscVolumes);
 
             if (total == patched)
             {

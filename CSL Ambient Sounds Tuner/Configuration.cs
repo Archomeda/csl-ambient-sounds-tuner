@@ -28,6 +28,7 @@ namespace AmbientSoundsTuner
             this.AnimalVolumes = new SerializableDictionary<string, float>();
             this.BuildingVolumes = new SerializableDictionary<string, float>();
             this.VehicleVolumes = new SerializableDictionary<string, float>();
+            this.MiscVolumes = new SerializableDictionary<string, float>();
         }
 
         public StateConfig State { get; set; }
@@ -45,5 +46,8 @@ namespace AmbientSoundsTuner
 
         [XmlElement("VehicleVolumes")]
         public SerializableDictionary<string, float> VehicleVolumes { get; set; }
+
+        [XmlElement("MiscVolumes")]
+        public SerializableDictionary<string, float> MiscVolumes { get; set; }
     }
 }

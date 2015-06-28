@@ -38,18 +38,21 @@ namespace AmbientSoundsTuner.UI
         protected List<GameObject> AnimalSettingObjects = new List<GameObject>();
         protected List<GameObject> BuildingSettingObjects = new List<GameObject>();
         protected List<GameObject> VehiclesSettingObjects = new List<GameObject>();
+        protected List<GameObject> MiscSettingObjects = new List<GameObject>();
 
         protected UITabstrip Tabstrip;
         protected UIButton AmbientsTabButton;
         protected UIButton AnimalsTabButton;
         protected UIButton BuildingsTabButton;
         protected UIButton VehiclesTabButton;
+        protected UIButton MiscTabButton;
 
         protected UITabContainer TabContainer;
         protected UIPanel AmbientsPanel;
         protected UIPanel AnimalsPanel;
         protected UIPanel BuildingsPanel;
         protected UIPanel VehiclesPanel;
+        protected UIPanel MiscPanel;
 
         private bool slidersSorted = false;
 
@@ -75,6 +78,8 @@ namespace AmbientSoundsTuner.UI
         public float buildingVolumeWaterDrainPipe;
         public float buildingVolumeWaterPumpingStation;
         public float buildingVolumeWindTurbine;
+        public float buildingVolumeOnFire;
+        public float buildingVolumeOnLevelUp;
         public float vehicleVolumeAircraftMovement;
         public float vehicleVolumeAmbulanceSiren;
         public float vehicleVolumeFireTruckSiren;
@@ -84,6 +89,13 @@ namespace AmbientSoundsTuner.UI
         public float vehicleVolumeSmallCarMovement;
         public float vehicleVolumeTrainMovement;
         public float vehicleVolumeTransportArrive;
+        public float miscVolumeBuildingBulldoze;
+        public float miscVolumeBuildingPlacement;
+        public float miscVolumePropBulldoze;
+        public float miscVolumePropPlacement;
+        public float miscVolumeRoadBulldoze;
+        public float miscVolumeRoadDraw;
+        public float miscVolumeRoadPlacement;
 
         public override void Start()
         {
@@ -110,7 +122,7 @@ namespace AmbientSoundsTuner.UI
             this.AmbientsTabButton = this.Tabstrip.AddTab("AMBIENTS", tabStripButtonTemplate, true);
             this.AmbientsTabButton.playAudioEvents = true;
             this.AmbientsTabButton.focusedTextColor = tabStripButtonTemplate.focusedTextColor;
-            this.AmbientsTabButton.width = 150;
+            this.AmbientsTabButton.width = 140;
             this.AnimalsTabButton = this.Tabstrip.AddTab("ANIMALS", this.AmbientsTabButton, true);
             this.AnimalsTabButton.playAudioEvents = true;
             this.AnimalsTabButton.focusedTextColor = tabStripButtonTemplate.focusedTextColor;
@@ -120,6 +132,9 @@ namespace AmbientSoundsTuner.UI
             this.VehiclesTabButton = this.Tabstrip.AddTab("VEHICLES", this.AmbientsTabButton, true);
             this.VehiclesTabButton.playAudioEvents = true;
             this.VehiclesTabButton.focusedTextColor = tabStripButtonTemplate.focusedTextColor;
+            this.MiscTabButton = this.Tabstrip.AddTab("MISC", this.AmbientsTabButton, true);
+            this.MiscTabButton.playAudioEvents = true;
+            this.MiscTabButton.focusedTextColor = tabStripButtonTemplate.focusedTextColor;
 
             // Tabs layout
             UIPanel[] tabs = this.TabContainer.GetComponentsInChildren<UIPanel>();
@@ -127,6 +142,7 @@ namespace AmbientSoundsTuner.UI
             this.AnimalsPanel = tabs[1];
             this.BuildingsPanel = tabs[2];
             this.VehiclesPanel = tabs[3];
+            this.MiscPanel = tabs[4];
 
             this.AmbientsPanel.padding = new RectOffset(0, 0, 10, 10);
             this.AmbientsPanel.autoLayout = true;
@@ -155,6 +171,13 @@ namespace AmbientSoundsTuner.UI
             this.VehiclesPanel.autoLayoutPadding = new RectOffset(15, 15, 5, 5);
             this.VehiclesPanel.wrapLayout = true;
 
+            this.MiscPanel.Hide();
+            this.MiscPanel.padding = new RectOffset(0, 0, 10, 10);
+            this.MiscPanel.autoLayout = true;
+            this.MiscPanel.autoLayoutDirection = LayoutDirection.Vertical;
+            this.MiscPanel.autoLayoutPadding = new RectOffset(15, 15, 5, 5);
+            this.MiscPanel.wrapLayout = true;
+
             // Settings
             Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Agricultural, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Agricultural], out this.ambientVolumeAgricultural);
             Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.City, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.City], out this.ambientVolumeCity);
@@ -180,6 +203,8 @@ namespace AmbientSoundsTuner.UI
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_WATER_DRAIN_PIPE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_WATER_DRAIN_PIPE], out this.buildingVolumeWaterDrainPipe);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_WATER_PUMPING_STATION, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_WATER_PUMPING_STATION], out this.buildingVolumeWaterPumpingStation);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_WIND_TURBINE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_WIND_TURBINE], out this.buildingVolumeWindTurbine);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_FIRE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_FIRE], out this.buildingVolumeOnFire);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_LEVELUP, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_LEVELUP], out this.buildingVolumeOnLevelUp);
 
             Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_AIRCRAFT_MOVEMENT], out this.vehicleVolumeAircraftMovement);
             Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_AMBULANCE_SIREN, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_AMBULANCE_SIREN], out this.vehicleVolumeAmbulanceSiren);
@@ -190,6 +215,14 @@ namespace AmbientSoundsTuner.UI
             Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_SMALL_CAR_MOVEMENT, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_SMALL_CAR_MOVEMENT], out this.vehicleVolumeSmallCarMovement);
             Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_TRAIN_MOVEMENT, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_TRAIN_MOVEMENT], out this.vehicleVolumeTrainMovement);
             Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_TRANSPORT_ARRIVE, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_TRANSPORT_ARRIVE], out this.vehicleVolumeTransportArrive);
+
+            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_BUILDING_BULLDOZE, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_BUILDING_BULLDOZE], out this.miscVolumeBuildingBulldoze);
+            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_BUILDING_PLACEMENT, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_BUILDING_PLACEMENT], out this.miscVolumeBuildingPlacement);
+            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_PROP_BULLDOZE, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_PROP_BULLDOZE], out this.miscVolumePropBulldoze);
+            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_PROP_PLACEMENT, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_PROP_PLACEMENT], out this.miscVolumePropPlacement);
+            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_ROAD_BULLDOZE, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_ROAD_BULLDOZE], out this.miscVolumeRoadBulldoze);
+            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_ROAD_DRAW, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_ROAD_DRAW], out this.miscVolumeRoadDraw);
+            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_ROAD_PLACEMENT, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_ROAD_PLACEMENT], out this.miscVolumeRoadPlacement);
 
             // Sliders
             this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Agricultural, "ambientVolumeAgricultural"));
@@ -216,16 +249,26 @@ namespace AmbientSoundsTuner.UI
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_WATER_DRAIN_PIPE, "buildingVolumeWaterDrainPipe"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_WATER_PUMPING_STATION, "buildingVolumeWaterPumpingStation"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_WIND_TURBINE, "buildingVolumeWindTurbine"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_FIRE, "buildingVolumeOnFire"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_LEVELUP, "buildingVolumeOnLevelUp", 0, 0.25f));
 
-            this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, "vehicleVolumeAircraftMovement", 0, 1));
+            this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, "vehicleVolumeAircraftMovement"));
             this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_AMBULANCE_SIREN, "vehicleVolumeAmbulanceSiren"));
             this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_FIRE_TRUCK_SIREN, "vehicleVolumeFireTruckSiren", 0, 3));
             this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_LARGE_CAR_MOVEMENT, "vehicleVolumeLargeCarMovement", 0, 1.5f));
-            this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_METRO_MOVEMENT, "vehicleVolumeMetroMovement", 0, 1));
+            this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_METRO_MOVEMENT, "vehicleVolumeMetroMovement"));
             this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_POLICE_CAR_SIREN, "vehicleVolumePoliceCarSiren"));
             this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_SMALL_CAR_MOVEMENT, "vehicleVolumeSmallCarMovement", 0, 1.5f));
-            this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_TRAIN_MOVEMENT, "vehicleVolumeTrainMovement", 0, 1));
+            this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_TRAIN_MOVEMENT, "vehicleVolumeTrainMovement"));
             this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_TRANSPORT_ARRIVE, "vehicleVolumeTransportArrive"));
+
+            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_BUILDING_BULLDOZE, "miscVolumeBuildingBulldoze"));
+            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_BUILDING_PLACEMENT, "miscVolumeBuildingPlacement"));
+            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_PROP_BULLDOZE, "miscVolumePropBulldoze"));
+            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_PROP_PLACEMENT, "miscVolumePropPlacement"));
+            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_ROAD_BULLDOZE, "miscVolumeRoadBulldoze"));
+            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_ROAD_DRAW, "miscVolumeRoadDraw"));
+            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_ROAD_PLACEMENT, "miscVolumeRoadPlacement"));
 
             // Some extra event listeners
             this.eventVisibilityChanged += AdvancedOptionsWindow_eventVisibilityChanged;
@@ -245,6 +288,8 @@ namespace AmbientSoundsTuner.UI
                 buildingsPanelChildComponents.Sort(new SortSlidersByTextComparer());
                 var vehiclesPanelChildComponents = ReflectionUtils.GetPrivateField<PoolList<UIComponent>>(this.VehiclesPanel, "m_ChildComponents");
                 vehiclesPanelChildComponents.Sort(new SortSlidersByTextComparer());
+                var miscPanelChildComponents = ReflectionUtils.GetPrivateField<PoolList<UIComponent>>(this.MiscPanel, "m_ChildComponents");
+                miscPanelChildComponents.Sort(new SortSlidersByTextComparer());
 
                 this.slidersSorted = true;
             }
@@ -284,6 +329,11 @@ namespace AmbientSoundsTuner.UI
         protected GameObject CreateVehicleVolumeSetting(string id, string memberName, float minValue = 0, float maxValue = 1)
         {
             return CreateVolumeSetting(Mod.Settings.VehicleVolumes, Mod.Instance.VehiclesPatcher, this.VehiclesPanel, "VehicleVolumeSetting", id, memberName, minValue, maxValue);
+        }
+
+        protected GameObject CreateMiscVolumeSetting(string id, string memberName, float minValue = 0, float maxValue = 1)
+        {
+            return CreateVolumeSetting(Mod.Settings.MiscVolumes, Mod.Instance.MiscPatcher, this.MiscPanel, "MiscVolumeSetting", id, memberName, minValue, maxValue);
         }
 
         protected GameObject CreateVolumeSetting<T>(IDictionary<T, float> volumeDictionary, SoundsInstancePatcher<T> patcher, UIComponent parent, string gameObjectName, T id, string memberName, float minValue = 0, float maxValue = 1)
