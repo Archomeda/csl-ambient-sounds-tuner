@@ -32,14 +32,20 @@ time being until an update of this mod is released.
 This mod should be compatible with all mods, as long as they don't change the
 following stuff:
 - The values of `AudioManager.instance.m_properties.m_ambients`.
-- The values of `m_audioInfo` within an `EffectInfo` that is an `SoundEffect`.
+- The values of `m_audioInfo` within an `EffectInfo` that is a `SoundEffect`.
 
 *Incompatible:*
+- [ARIS] Remove Seagulls
+  - This mod basically removes the sound effects of the seagulls in the same
+    location where Ambient Sounds Tuner changes the volume. However, Ambient
+    Sounds Tuner allows you to customize the volume of the seagulls. Therefore,
+    [ARIS] Remove Seagulls is not needed when using Ambient Sounds Tuner and has
+    to be disabled or removed.
 - SilenceObnoxiousSirens
   - This mod basically sets the volume of every siren to 0 in the same location
     as Ambient Sounds Tuner does. However, Ambient Sounds Tuner allows you to
-    customize the volume of each effect sound to your likings. Therefore,
-    SilenceObnoxiousSirens is not needed when using Ambient Sounds Tuner.
+    customize the volume of each siren. Therefore, SilenceObnoxiousSirens is not
+    needed when using Ambient Sounds Tuner and has to be disabled or removed.
 
 ## Contributing
 I'm open for any contributions you can make. If you find a bug, create an issue
