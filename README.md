@@ -41,18 +41,18 @@ The following mods are known to be **incompatible**:
   allows you to customize the volume of the cows. Therefore, [ARIS] Remove Cows
   is not needed when using Ambient Sounds Tuner and has to be disabled or
   removed.
-- *[ARIS] Remove Seagulls* <br>
-  This mod basically removes the sound effects of the seagulls in the same
-  location where Ambient Sounds Tuner changes the volume. However, Ambient
-  Sounds Tuner allows you to customize the volume of the seagulls. Therefore,
-  [ARIS] Remove Seagulls is not needed when using Ambient Sounds Tuner and has
-  to be disabled or removed.
 - *[ARIS] Remove Pigs* <br>
   This mod basically removes the sound effects of the pigs in the same location
   where Ambient Sounds Tuner changes the volume. However, Ambient Sounds Tuner
   allows you to customize the volume of the pigs. Therefore, [ARIS] Remove Pigs
   is not needed when using Ambient Sounds Tuner and has to be disabled or
   removed.
+- *[ARIS] Remove Seagulls* <br>
+  This mod basically removes the sound effects of the seagulls in the same
+  location where Ambient Sounds Tuner changes the volume. However, Ambient
+  Sounds Tuner allows you to customize the volume of the seagulls. Therefore,
+  [ARIS] Remove Seagulls is not needed when using Ambient Sounds Tuner and has
+  to be disabled or removed.
 - *SilenceObnoxiousSirens* <br>
   This mod basically sets the volume of every siren to 0 in the same location as
   Ambient Sounds Tuner does. However, Ambient Sounds Tuner allows you to
