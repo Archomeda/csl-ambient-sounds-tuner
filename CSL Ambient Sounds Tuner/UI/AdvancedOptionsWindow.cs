@@ -241,7 +241,7 @@ namespace AmbientSoundsTuner.UI
 
         protected GameObject CreateBuildingVolumeSetting(string id, string memberName, float minValue = 0, float maxValue = 1)
         {
-            return CreateVolumeSetting(Mod.Settings.BuildingVolumes, Mod.Instance.AnimalsPatcher, this.BuildingsPanel, "BuildingVolumeSetting", id, memberName, minValue, maxValue);
+            return CreateVolumeSetting(Mod.Settings.BuildingVolumes, Mod.Instance.BuildingsPatcher, this.BuildingsPanel, "BuildingVolumeSetting", id, memberName, minValue, maxValue);
         }
 
         protected GameObject CreateVehicleVolumeSetting(string id, string memberName, float minValue = 0, float maxValue = 1)
