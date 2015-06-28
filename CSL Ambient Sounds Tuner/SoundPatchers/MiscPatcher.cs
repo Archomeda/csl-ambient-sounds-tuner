@@ -11,13 +11,13 @@ namespace AmbientSoundsTuner.SoundPatchers
     /// </summary>
     public class MiscPatcher : MiscellaneousSoundsInstancePatcher<string>
     {
-        public const string ID_BUILDING_BULLDOZE = "Bulldoze (Buildings)";
+        public const string ID_BUILDING_BULLDOZE = "Bulldozer (Buildings)";
+        public const string ID_PROP_BULLDOZE = "Bulldozer (Props)";
+        public const string ID_ROAD_BULLDOZE = "Bulldozer (Roads)";
         public const string ID_BUILDING_PLACEMENT = "Placement (Buildings)";
-        public const string ID_PROP_BULLDOZE = "Bulldoze (Props)";
         public const string ID_PROP_PLACEMENT = "Placement (Props)";
-        public const string ID_ROAD_BULLDOZE = "Bulldoze (Roads)";
-        public const string ID_ROAD_DRAW = "Road Drawer";
         public const string ID_ROAD_PLACEMENT = "Placement (Roads)";
+        public const string ID_ROAD_DRAW = "Road Drawer";
         public const string ID_CLICK_SOUND = "UI Clicks";
         public const string ID_DISABLED_CLICK_SOUND = "UI Clicks (Disabled)";
 
@@ -25,12 +25,12 @@ namespace AmbientSoundsTuner.SoundPatchers
             : base()
         {
             this.DefaultVolumes.Add(ID_BUILDING_BULLDOZE, 1);
-            this.DefaultVolumes.Add(ID_BUILDING_PLACEMENT, 1);
             this.DefaultVolumes.Add(ID_PROP_BULLDOZE, 1);
-            this.DefaultVolumes.Add(ID_PROP_PLACEMENT, 1);
             this.DefaultVolumes.Add(ID_ROAD_BULLDOZE, 1);
-            this.DefaultVolumes.Add(ID_ROAD_DRAW, 1);
+            this.DefaultVolumes.Add(ID_BUILDING_PLACEMENT, 1);
+            this.DefaultVolumes.Add(ID_PROP_PLACEMENT, 1);
             this.DefaultVolumes.Add(ID_ROAD_PLACEMENT, 1);
+            this.DefaultVolumes.Add(ID_ROAD_DRAW, 1);
             this.DefaultVolumes.Add(ID_CLICK_SOUND, 1);
             this.DefaultVolumes.Add(ID_DISABLED_CLICK_SOUND, 1);
         }
@@ -43,17 +43,17 @@ namespace AmbientSoundsTuner.SoundPatchers
                 case ID_BUILDING_BULLDOZE:
                     soundEffect = SoundsCollection.BuildingBulldoze;
                     break;
-                case ID_BUILDING_PLACEMENT:
-                    soundEffect = SoundsCollection.BuildingPlacement;
-                    break;
                 case ID_PROP_BULLDOZE:
                     soundEffect = SoundsCollection.PropBulldoze;
                     break;
-                case ID_PROP_PLACEMENT:
-                    soundEffect = SoundsCollection.PropPlacement;
-                    break;
                 case ID_ROAD_BULLDOZE:
                     soundEffect = SoundsCollection.RoadBulldoze;
+                    break;
+                case ID_BUILDING_PLACEMENT:
+                    soundEffect = SoundsCollection.BuildingPlacement;
+                    break;
+                case ID_PROP_PLACEMENT:
+                    soundEffect = SoundsCollection.PropPlacement;
                     break;
                 case ID_ROAD_PLACEMENT:
                     soundEffect = SoundsCollection.RoadPlacement;
