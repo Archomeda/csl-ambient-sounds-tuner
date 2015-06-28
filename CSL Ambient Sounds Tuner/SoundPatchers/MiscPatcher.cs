@@ -18,6 +18,8 @@ namespace AmbientSoundsTuner.SoundPatchers
         public const string ID_ROAD_BULLDOZE = "Road Bulldoze";
         public const string ID_ROAD_DRAW = "Road Draw";
         public const string ID_ROAD_PLACEMENT = "Road Placement";
+        public const string ID_CLICK_SOUND = "UI Click";
+        public const string ID_DISABLED_CLICK_SOUND = "UI Click (Disabled)";
 
         public MiscPatcher()
             : base()
@@ -29,6 +31,8 @@ namespace AmbientSoundsTuner.SoundPatchers
             this.DefaultVolumes.Add(ID_ROAD_BULLDOZE, 1);
             this.DefaultVolumes.Add(ID_ROAD_DRAW, 1);
             this.DefaultVolumes.Add(ID_ROAD_PLACEMENT, 1);
+            this.DefaultVolumes.Add(ID_CLICK_SOUND, 1);
+            this.DefaultVolumes.Add(ID_DISABLED_CLICK_SOUND, 1);
         }
 
         protected override AudioInfo GetAudioInfoById(string id)
@@ -73,6 +77,34 @@ namespace AmbientSoundsTuner.SoundPatchers
             }
 
             return audioInfo;
+        }
+
+        public override bool BackupVolume(string id)
+        {
+            switch (id)
+            {
+                case ID_CLICK_SOUND:
+                case ID_DISABLED_CLICK_SOUND:
+                    // Do nothing, since there is nothing to back up
+                    return true;
+                default:
+                    return base.BackupVolume(id);
+            }
+        }
+
+        public override bool PatchVolume(string id, float newVolume)
+        {
+            switch (id)
+            {
+                case ID_CLICK_SOUND:
+                    SoundsCollection.MenuClickSoundVolume = newVolume;
+                    return true;
+                case ID_DISABLED_CLICK_SOUND:
+                    SoundsCollection.MenuDisabledClickSoundVolume = newVolume;
+                    return true;
+                default:
+                    return base.PatchVolume(id, newVolume);
+            }
         }
     }
 }

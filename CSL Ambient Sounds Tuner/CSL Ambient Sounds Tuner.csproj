@@ -50,6 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Detour\CustomPlayClickSound.cs" />
     <Compile Include="SoundPatchers\MiscPatcher.cs" />
     <Compile Include="SoundPatchers\VehiclesPatcher.cs" />
     <Compile Include="SoundPatchers\AmbientsPatcher.cs" />

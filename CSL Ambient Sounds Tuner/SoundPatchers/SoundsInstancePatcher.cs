@@ -37,7 +37,7 @@ namespace AmbientSoundsTuner.SoundPatchers
                 }
                 else
                 {
-                    Mod.Log.Info("Sound instance of '{0}' has not been found.", key);
+                    Mod.Log.Info("Sound instance of '{0}' has not been found", key);
                 }
             }
             return counter;
@@ -66,7 +66,7 @@ namespace AmbientSoundsTuner.SoundPatchers
                 }
                 else
                 {
-                    Mod.Log.Info("Sound instance of '{0}' has not been found.", newVolume.Key);
+                    Mod.Log.Info("Sound instance of '{0}' has not been found", newVolume.Key);
                 }
             }
             return counter;

@@ -37,14 +37,17 @@ namespace AmbientSoundsTuner.SoundPatchers
 
         public override bool BackupVolume(string id)
         {
-            SoundEffect soundEffect = SoundsCollection.Effects[id];
-            if (soundEffect != null)
+            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
             {
-                float? volume = SoundsPatcher.GetVolume(soundEffect);
-                if (volume.HasValue)
+                SoundEffect soundEffect = SoundsCollection.Effects[id];
+                if (soundEffect != null)
                 {
-                    this.DefaultVolumes[id] = volume.Value;
-                    return true;
+                    float? volume = SoundsPatcher.GetVolume(soundEffect);
+                    if (volume.HasValue)
+                    {
+                        this.DefaultVolumes[id] = volume.Value;
+                        return true;
+                    }
                 }
             }
             return false;
@@ -52,10 +55,13 @@ namespace AmbientSoundsTuner.SoundPatchers
 
         public override bool PatchVolume(string id, float newVolume)
         {
-            SoundEffect soundEffect = SoundsCollection.Effects[id];
-            if (soundEffect != null)
+            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
             {
-                return SoundsPatcher.SetVolume(soundEffect, newVolume);
+                SoundEffect soundEffect = SoundsCollection.Effects[id];
+                if (soundEffect != null)
+                {
+                    return SoundsPatcher.SetVolume(soundEffect, newVolume);
+                }
             }
             return false;
         }

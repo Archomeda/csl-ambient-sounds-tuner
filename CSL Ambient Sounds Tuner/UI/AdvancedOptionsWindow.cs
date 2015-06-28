@@ -96,6 +96,8 @@ namespace AmbientSoundsTuner.UI
         public float miscVolumeRoadBulldoze;
         public float miscVolumeRoadDraw;
         public float miscVolumeRoadPlacement;
+        public float miscVolumeClick;
+        public float miscVolumeDisabledClick;
 
         public override void Start()
         {
@@ -223,6 +225,8 @@ namespace AmbientSoundsTuner.UI
             Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_ROAD_BULLDOZE, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_ROAD_BULLDOZE], out this.miscVolumeRoadBulldoze);
             Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_ROAD_DRAW, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_ROAD_DRAW], out this.miscVolumeRoadDraw);
             Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_ROAD_PLACEMENT, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_ROAD_PLACEMENT], out this.miscVolumeRoadPlacement);
+            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_CLICK_SOUND, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_CLICK_SOUND], out this.miscVolumeClick);
+            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_DISABLED_CLICK_SOUND, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_DISABLED_CLICK_SOUND], out this.miscVolumeDisabledClick);
 
             // Sliders
             this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Agricultural, "ambientVolumeAgricultural"));
@@ -269,6 +273,8 @@ namespace AmbientSoundsTuner.UI
             this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_ROAD_BULLDOZE, "miscVolumeRoadBulldoze"));
             this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_ROAD_DRAW, "miscVolumeRoadDraw"));
             this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_ROAD_PLACEMENT, "miscVolumeRoadPlacement"));
+            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_CLICK_SOUND, "miscVolumeClick"));
+            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_DISABLED_CLICK_SOUND, "miscVolumeDisabledClick"));
 
             // Some extra event listeners
             this.eventVisibilityChanged += AdvancedOptionsWindow_eventVisibilityChanged;
@@ -341,10 +347,7 @@ namespace AmbientSoundsTuner.UI
             PropertyChangedEventHandler<float> valueChangedCallback = new PropertyChangedEventHandler<float>((c, v) =>
             {
                 volumeDictionary[id] = v;
-                if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
-                {
-                    patcher.PatchVolume(id, v);
-                }
+                patcher.PatchVolume(id, v);
             });
 
             string name = id.ToString();

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.Compatibility;
+using AmbientSoundsTuner.Detour;
 using AmbientSoundsTuner.SoundPatchers;
 using AmbientSoundsTuner.UI;
 using AmbientSoundsTuner.Utils;
@@ -101,10 +102,13 @@ namespace AmbientSoundsTuner
             }
 
             AdvancedOptions.CreateAdvancedOptions();
+            CustomPlayClickSound.Detour();
+            this.PatchUISounds();
         }
 
         private void Unload()
         {
+            CustomPlayClickSound.UnDetour();
             AdvancedOptions.DestroyAdvancedOptions();
         }
 
@@ -146,6 +150,8 @@ namespace AmbientSoundsTuner
         {
             base.OnLevelUnloading();
             Settings.SaveConfig(Mod.SettingsFilename);
+
+            this.Unload();
 
             // Set isLoaded to false again so the mod will load again at the main menu
             this.isLoaded = false;
@@ -201,6 +207,12 @@ namespace AmbientSoundsTuner
             {
                 Mod.Log.Warning("{0}/{1} sound volumes have been patched", patched, total);
             }
+        }
+
+        internal void PatchUISounds()
+        {
+            this.MiscPatcher.PatchVolume(MiscPatcher.ID_CLICK_SOUND, Mod.Settings.MiscVolumes[MiscPatcher.ID_CLICK_SOUND]);
+            this.MiscPatcher.PatchVolume(MiscPatcher.ID_DISABLED_CLICK_SOUND, Mod.Settings.MiscVolumes[MiscPatcher.ID_DISABLED_CLICK_SOUND]);
         }
     }
 }

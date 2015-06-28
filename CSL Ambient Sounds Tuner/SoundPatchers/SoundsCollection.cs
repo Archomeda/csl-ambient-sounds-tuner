@@ -228,10 +228,13 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                MultiEffect effect = BuildingManager.instance.m_properties.m_bulldozeEffect as MultiEffect;
-                if (effect != null)
+                if (BuildingManager.instance.m_properties != null)
                 {
-                    return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_BUILDING_BULLDOZE).m_effect as SoundEffect;
+                    MultiEffect effect = BuildingManager.instance.m_properties.m_bulldozeEffect as MultiEffect;
+                    if (effect != null)
+                    {
+                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_BUILDING_BULLDOZE).m_effect as SoundEffect;
+                    }
                 }
                 return null;
             }
@@ -244,10 +247,13 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                FireEffect effect = BuildingManager.instance.m_properties.m_fireEffect as FireEffect;
-                if (effect != null)
+                if (BuildingManager.instance.m_properties != null)
                 {
-                    return effect.m_soundEffect;
+                    FireEffect effect = BuildingManager.instance.m_properties.m_fireEffect as FireEffect;
+                    if (effect != null)
+                    {
+                        return effect.m_soundEffect;
+                    }
                 }
                 return null;
             }
@@ -260,10 +266,13 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                MultiEffect effect = BuildingManager.instance.m_properties.m_levelupEffect as MultiEffect;
-                if (effect != null)
+                if (BuildingManager.instance.m_properties != null)
                 {
-                    return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_BUILDING_LEVELUP).m_effect as SoundEffect;
+                    MultiEffect effect = BuildingManager.instance.m_properties.m_levelupEffect as MultiEffect;
+                    if (effect != null)
+                    {
+                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_BUILDING_LEVELUP).m_effect as SoundEffect;
+                    }
                 }
                 return null;
             }
@@ -276,10 +285,13 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                MultiEffect effect = BuildingManager.instance.m_properties.m_placementEffect as MultiEffect;
-                if (effect != null)
+                if (BuildingManager.instance.m_properties != null)
                 {
-                    return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_BUILDING_PLACEMENT).m_effect as SoundEffect;
+                    MultiEffect effect = BuildingManager.instance.m_properties.m_placementEffect as MultiEffect;
+                    if (effect != null)
+                    {
+                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_BUILDING_PLACEMENT).m_effect as SoundEffect;
+                    }
                 }
                 return null;
             }
@@ -292,10 +304,13 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                MultiEffect effect = PropManager.instance.m_properties.m_bulldozeEffect as MultiEffect;
-                if (effect != null)
+                if (PropManager.instance.m_properties != null)
                 {
-                    return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_PROP_BULLDOZE).m_effect as SoundEffect;
+                    MultiEffect effect = PropManager.instance.m_properties.m_bulldozeEffect as MultiEffect;
+                    if (effect != null)
+                    {
+                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_PROP_BULLDOZE).m_effect as SoundEffect;
+                    }
                 }
                 return null;
             }
@@ -308,10 +323,13 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                MultiEffect effect = PropManager.instance.m_properties.m_placementEffect as MultiEffect;
-                if (effect != null)
+                if (PropManager.instance.m_properties != null)
                 {
-                    return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_PROP_PLACEMENT).m_effect as SoundEffect;
+                    MultiEffect effect = PropManager.instance.m_properties.m_placementEffect as MultiEffect;
+                    if (effect != null)
+                    {
+                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_PROP_PLACEMENT).m_effect as SoundEffect;
+                    }
                 }
                 return null;
             }
@@ -324,10 +342,13 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                MultiEffect effect = NetManager.instance.m_properties.m_bulldozeEffect as MultiEffect;
-                if (effect != null)
+                if (NetManager.instance.m_properties != null)
                 {
-                    return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_ROAD_BULLDOZE).m_effect as SoundEffect;
+                    MultiEffect effect = NetManager.instance.m_properties.m_bulldozeEffect as MultiEffect;
+                    if (effect != null)
+                    {
+                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_ROAD_BULLDOZE).m_effect as SoundEffect;
+                    }
                 }
                 return null;
             }
@@ -340,7 +361,11 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                return NetManager.instance.m_properties.m_drawSound;
+                if (NetManager.instance.m_properties != null)
+                {
+                    return NetManager.instance.m_properties.m_drawSound;
+                }
+                return null;
             }
         }
 
@@ -351,10 +376,13 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                MultiEffect effect = NetManager.instance.m_properties.m_placementEffect as MultiEffect;
-                if (effect != null)
+                if (NetManager.instance.m_properties != null)
                 {
-                    return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_ROAD_PLACEMENT).m_effect as SoundEffect;
+                    MultiEffect effect = NetManager.instance.m_properties.m_placementEffect as MultiEffect;
+                    if (effect != null)
+                    {
+                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_ROAD_PLACEMENT).m_effect as SoundEffect;
+                    }
                 }
                 return null;
             }
@@ -369,6 +397,28 @@ namespace AmbientSoundsTuner.SoundPatchers
                 return info.m_customLoopSound;
             }
             return null;
+        }
+
+
+        private static float menuClickSoundVolume = 1;
+        /// <summary>
+        /// Gets or sets the click sound volume in menus.
+        /// </summary>
+        public static float MenuClickSoundVolume
+        {
+            get { return menuClickSoundVolume; }
+            set { menuClickSoundVolume = value; }
+        }
+
+
+        private static float menuDisabledClickSoundVolume = 1;
+        /// <summary>
+        /// Gets or sets the disabled click sound volume in menus.
+        /// </summary>
+        public static float MenuDisabledClickSoundVolume
+        {
+            get { return menuDisabledClickSoundVolume; }
+            set { menuDisabledClickSoundVolume = value; }
         }
 
         /// <summary>
