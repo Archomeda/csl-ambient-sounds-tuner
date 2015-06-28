@@ -13,6 +13,13 @@ namespace AmbientSoundsTuner.SoundPatchers
         private const string ID_SEAGULL_INFO = "Seagull";
         private const string ID_SEAGULL_SCREAM = "Seagull Scream";
         private const string ID_INCINERATION_PLANT_INFO = "Combustion Plant";
+        private const string ID_NUCLEAR_POWER_PLANT_INFO = "Nuclear Power Plant";
+        private const string ID_WIND_TURBINE_INFO = "Wind Turbine";
+        private const string ID_SOLAR_POWER_PLANT_INFO = "Solar Power Plant";
+        private const string ID_HYDRO_POWER_PLANT_INFO = "Dam Power House";
+        private const string ID_ADVANCED_WIND_TURBINE_INFO = "Advanced Wind Turbine";
+        private const string ID_COAL_POWER_PLANT_INFO = "Coal Power Plant";
+        private const string ID_FUSION_POWER_PLANT_INFO = "Fusion Power Plant";
 
         /// <summary>
         /// Gets the ambient sounds; or null if they don't exist.
@@ -64,13 +71,95 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                BuildingInfo incinerationPlantInfo = PrefabCollection<BuildingInfo>.FindLoaded(ID_INCINERATION_PLANT_INFO);
-                if (incinerationPlantInfo != null)
-                {
-                    return incinerationPlantInfo.m_customLoopSound;
-                }
-                return null;
+                return GetAudioInfoFromBuildingInfo(ID_INCINERATION_PLANT_INFO);
             }
+        }
+
+        /// <summary>
+        /// Gets the nuclear power plant audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo NuclearPowerPlant
+        {
+            get
+            {
+                return GetAudioInfoFromBuildingInfo(ID_NUCLEAR_POWER_PLANT_INFO);
+            }
+        }
+
+        /// <summary>
+        /// Gets the wind turbine audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo WindTurbine
+        {
+            get
+            {
+                return GetAudioInfoFromBuildingInfo(ID_WIND_TURBINE_INFO);
+            }
+        }
+
+        /// <summary>
+        /// Gets the solar power plant audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo SolarPowerPlant
+        {
+            get
+            {
+                return GetAudioInfoFromBuildingInfo(ID_SOLAR_POWER_PLANT_INFO);
+            }
+        }
+
+        /// <summary>
+        /// Gets the hydro power plant audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo HydroPowerPlant
+        {
+            get
+            {
+                return GetAudioInfoFromBuildingInfo(ID_HYDRO_POWER_PLANT_INFO);
+            }
+        }
+
+        /// <summary>
+        /// Gets the hydro power plant audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo AdvancedWindTurbine
+        {
+            get
+            {
+                return GetAudioInfoFromBuildingInfo(ID_ADVANCED_WIND_TURBINE_INFO);
+            }
+        }
+
+        /// <summary>
+        /// Gets the coal/oil power plant audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo CoalOilPowerPlant
+        {
+            get
+            {
+                return GetAudioInfoFromBuildingInfo(ID_COAL_POWER_PLANT_INFO);
+            }
+        }
+
+        /// <summary>
+        /// Gets the fusion power plant audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo FusionPowerPlant
+        {
+            get
+            {
+                return GetAudioInfoFromBuildingInfo(ID_FUSION_POWER_PLANT_INFO);
+            }
+        }
+
+        private static AudioInfo GetAudioInfoFromBuildingInfo(string id)
+        {
+            BuildingInfo info = PrefabCollection<BuildingInfo>.FindLoaded(id);
+            if (info != null)
+            {
+                return info.m_customLoopSound;
+            }
+            return null;
         }
 
         /// <summary>

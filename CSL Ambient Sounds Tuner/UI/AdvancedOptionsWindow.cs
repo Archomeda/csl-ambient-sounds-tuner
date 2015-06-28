@@ -21,8 +21,6 @@ namespace AmbientSoundsTuner.UI
         {
             { AnimalsPatcher.ID_SEAGULL_SCREAM, "Seagulls" },
 
-            { BuildingsPatcher.ID_INCINERATION_PLANT, "Incineration Plant" },
-
             { VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, "Aircrafts" },
             { VehiclesPatcher.ID_SMALL_CAR_MOVEMENT, "Cars (small)" },
             { VehiclesPatcher.ID_LARGE_CAR_MOVEMENT, "Cars (large)" },
@@ -64,6 +62,13 @@ namespace AmbientSoundsTuner.UI
         public float ambientVolumeAgricultural;
         public float animalVolumeSeagullScream;
         public float buildingVolumeIncinerationPlant;
+        public float buildingVolumeNuclearPowerPlant;
+        public float buildingVolumeWindTurbine;
+        public float buildingVolumeSolarPowerPlant;
+        public float buildingVolumeHydroPowerPlant;
+        public float buildingVolumeAdvancedWindTurbine;
+        public float buildingVolumeCoalOilPowerPlant;
+        public float buildingVolumeFusionPowerPlant;
         public float vehicleVolumeAircraftMovement;
         public float vehicleVolumeAmbulanceSiren;
         public float vehicleVolumeFireTruckSiren;
@@ -158,6 +163,13 @@ namespace AmbientSoundsTuner.UI
             Mod.Settings.AnimalVolumes.TryGetValueOrDefault(AnimalsPatcher.ID_SEAGULL_SCREAM, Mod.Instance.AnimalsPatcher.DefaultVolumes[AnimalsPatcher.ID_SEAGULL_SCREAM], out this.animalVolumeSeagullScream);
 
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_INCINERATION_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_INCINERATION_PLANT], out this.buildingVolumeIncinerationPlant);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_NUCLEAR_POWER_PLANT], out this.buildingVolumeNuclearPowerPlant);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_WIND_TURBINE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_WIND_TURBINE], out this.buildingVolumeWindTurbine);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_SOLAR_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_SOLAR_POWER_PLANT], out this.buildingVolumeSolarPowerPlant);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_HYDRO_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_HYDRO_POWER_PLANT], out this.buildingVolumeHydroPowerPlant);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_ADVANCED_WIND_TURBINE], out this.buildingVolumeAdvancedWindTurbine);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_COAL_OIL_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_COAL_OIL_POWER_PLANT], out this.buildingVolumeCoalOilPowerPlant);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_FUSION_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_FUSION_POWER_PLANT], out this.buildingVolumeFusionPowerPlant);
 
             Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_AIRCRAFT_MOVEMENT], out this.vehicleVolumeAircraftMovement);
             Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_AMBULANCE_SIREN, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_AMBULANCE_SIREN], out this.vehicleVolumeAmbulanceSiren);
@@ -183,6 +195,13 @@ namespace AmbientSoundsTuner.UI
             this.AnimalSettingObjects.Add(this.CreateAnimalVolumeSetting(AnimalsPatcher.ID_SEAGULL_SCREAM, "animalVolumeSeagullScream"));
 
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_INCINERATION_PLANT, "buildingVolumeIncinerationPlant"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, "buildingVolumeNuclearPowerPlant"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_WIND_TURBINE, "buildingVolumeWindTurbine"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_SOLAR_POWER_PLANT, "buildingVolumeSolarPowerPlant"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_HYDRO_POWER_PLANT, "buildingVolumeHydroPowerPlant"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, "buildingVolumeAdvancedWindTurbine"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_COAL_OIL_POWER_PLANT, "buildingVolumeCoalOilPowerPlant"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_FUSION_POWER_PLANT, "buildingVolumeFusionPowerPlant", 0, 4));
 
             this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, "vehicleVolumeAircraftMovement", 0, 1));
             this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_AMBULANCE_SIREN, "vehicleVolumeAmbulanceSiren"));
