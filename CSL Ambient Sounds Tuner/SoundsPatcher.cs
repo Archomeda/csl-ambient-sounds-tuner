@@ -43,6 +43,10 @@ namespace AmbientSoundsTuner
                 if (info != null)
                 {
                     info.m_volume = volume;
+                    for (int i = 0; i < info.m_variations.Length; i++)
+                    {
+                        info.m_variations[i].m_sound.m_volume = volume;
+                    }
                     return true;
                 }
             }

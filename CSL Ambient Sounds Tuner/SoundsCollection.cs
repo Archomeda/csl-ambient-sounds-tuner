@@ -37,6 +37,26 @@ namespace AmbientSoundsTuner
         }
 
         /// <summary>
+        /// Gets the seagull scream sound effect; or null if it doesn't exist.
+        /// </summary>
+        public static SoundEffect SeagullScream
+        {
+            get
+            {
+                CitizenInfo seagullInfo = PrefabCollection<CitizenInfo>.FindLoaded(ID_SEAGULL_INFO);
+                if (seagullInfo != null)
+                {
+                    MultiEffect effect = ((BirdAI)seagullInfo.m_citizenAI).m_randomEffect as MultiEffect;
+                    if (effect != null)
+                    {
+                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_SEAGULL_SCREAM).m_effect as SoundEffect;
+                    }
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
         /// A class that's basically a shortcut to generic effect sounds.
         /// </summary>
         public class EffectSounds

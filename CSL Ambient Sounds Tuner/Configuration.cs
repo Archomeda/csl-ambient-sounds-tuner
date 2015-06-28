@@ -20,6 +20,7 @@ namespace AmbientSoundsTuner
             {
                 this.AmbientVolumes = new SerializableDictionary<AudioManager.AmbientType, float>();
                 this.EffectVolumes = new SerializableDictionary<string, float>();
+                this.MiscellaneousVolumes = new SerializableDictionary<string, float>();
             }
 
             [XmlElement("AmbientVolumes")]
@@ -27,6 +28,9 @@ namespace AmbientSoundsTuner
 
             [XmlElement("EffectVolumes")]
             public SerializableDictionary<string, float> EffectVolumes { get; set; }
+
+            [XmlElement("MiscellaneousVolumes")]
+            public SerializableDictionary<string, float> MiscellaneousVolumes { get; set; }
         }
 
         public Configuration()

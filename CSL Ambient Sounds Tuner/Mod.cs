@@ -23,6 +23,7 @@ namespace AmbientSoundsTuner
 
         internal SoundsInstanceAmbientsPatcher AmbientsPatcher { get; private set; }
         internal SoundsInstanceEffectsPatcher EffectsPatcher { get; private set; }
+        internal SoundsInstanceMiscellaneousPatcher MiscellaneousPatcher { get; private set; }
 
         internal static HashSet<ulong> IncompatibleMods = new HashSet<ulong>()
         {
@@ -76,6 +77,7 @@ namespace AmbientSoundsTuner
 
             this.AmbientsPatcher = new SoundsInstanceAmbientsPatcher();
             this.EffectsPatcher = new SoundsInstanceEffectsPatcher();
+            this.MiscellaneousPatcher = new SoundsInstanceMiscellaneousPatcher();
         }
 
         private void Load()
@@ -128,6 +130,7 @@ namespace AmbientSoundsTuner
             this.Load();
             PatchAmbientSounds();
             PatchEffectSounds();
+            PatchMiscellaneousSounds();
         }
 
         /// <summary>
@@ -184,6 +187,12 @@ namespace AmbientSoundsTuner
 
             this.PatchSounds(this.EffectsPatcher, Settings.State.EffectVolumes);
             Mod.Log.Info("Effect sound volumes have been patched");
+        }
+
+        internal void PatchMiscellaneousSounds()
+        {
+            this.PatchSounds(this.MiscellaneousPatcher, Settings.State.MiscellaneousVolumes);
+            Mod.Log.Info("Miscellaneous sound volumes have been patched");
         }
     }
 }

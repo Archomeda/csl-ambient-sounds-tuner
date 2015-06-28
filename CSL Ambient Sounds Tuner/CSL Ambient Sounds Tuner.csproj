@@ -58,6 +58,7 @@
     <Compile Include="Mod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoundsCollection.cs" />
+    <Compile Include="SoundsInstanceMiscellaneousPatcher.cs" />
     <Compile Include="SoundsInstancePatcher.cs" />
     <Compile Include="SoundsPatcher.cs" />
     <Compile Include="UI\AdvancedOptions.cs" />

@@ -27,10 +27,13 @@ namespace AmbientSoundsTuner.UI
             { SoundsInstanceEffectsPatcher.ID_METRO_MOVEMENT, "Metros" },
             { SoundsInstanceEffectsPatcher.ID_TRAIN_MOVEMENT, "Trains" },
             { SoundsInstanceEffectsPatcher.ID_TRANSPORT_ARRIVE, "Transportation arrivals" },
+
+            { SoundsInstanceMiscellaneousPatcher.ID_SEAGULL_SCREAM, "Seagulls" },
         };
 
-        protected GameObject[] AmbientVolumeSettingObjects = new GameObject[9];
-        protected GameObject[] EffectVolumeSettingObjects = new GameObject[9];
+        protected List<GameObject> AmbientVolumeSettingObjects = new List<GameObject>();
+        protected List<GameObject> EffectVolumeSettingObjects = new List<GameObject>();
+        protected List<GameObject> MiscellaneousVolumeSettingObjects = new List<GameObject>();
 
         protected UITabstrip Tabstrip;
         protected UIButton AmbientsTabButton;
@@ -62,10 +65,12 @@ namespace AmbientSoundsTuner.UI
         public float effectVolumeTrainMovement;
         public float effectVolumeTransportArrive;
 
+        public float miscellanousVolumeSeagullScream;
+
         public override void Start()
         {
             this.width = 451;
-            this.height = 431;
+            this.height = 471;
             this.Title = "SOUNDS TUNER";
             base.Start();
 
@@ -75,7 +80,7 @@ namespace AmbientSoundsTuner.UI
             this.Tabstrip.anchor = UIAnchorStyle.Top | UIAnchorStyle.Left | UIAnchorStyle.Right;
 
             this.TabContainer = this.ContentPanel.AddUIComponent<UITabContainer>();
-            this.TabContainer.size = new Vector2(410, 330);
+            this.TabContainer.size = new Vector2(410, 370);
             this.TabContainer.relativePosition = new Vector3(20, 20 + this.Tabstrip.height);
             this.TabContainer.anchor = UIAnchorStyle.All;
             this.Tabstrip.tabPages = this.TabContainer;
@@ -84,12 +89,12 @@ namespace AmbientSoundsTuner.UI
             UITabstrip optionTabStrip = GameObject.Find(GameObjectDefs.ID_OPTIONTABSTRIP).GetComponent<UITabstrip>();
             UIButton tabStripButtonTemplate = optionTabStrip.GetComponentInChildren<UIButton>();
 
-            UIButton ambientsTabButton = this.Tabstrip.AddTab("AMBIENTS", tabStripButtonTemplate, true);
-            ambientsTabButton.playAudioEvents = true;
-            ambientsTabButton.focusedTextColor = tabStripButtonTemplate.focusedTextColor;
-            UIButton effectsTabButton = this.Tabstrip.AddTab("EFFECTS", tabStripButtonTemplate, true);
-            effectsTabButton.playAudioEvents = true;
-            effectsTabButton.focusedTextColor = tabStripButtonTemplate.focusedTextColor;
+            this.AmbientsTabButton = this.Tabstrip.AddTab("AMBIENTS", tabStripButtonTemplate, true);
+            this.AmbientsTabButton.playAudioEvents = true;
+            this.AmbientsTabButton.focusedTextColor = tabStripButtonTemplate.focusedTextColor;
+            this.EffectsTabButton = this.Tabstrip.AddTab("EFFECTS", tabStripButtonTemplate, true);
+            this.EffectsTabButton.playAudioEvents = true;
+            this.EffectsTabButton.focusedTextColor = tabStripButtonTemplate.focusedTextColor;
 
             // Tabs layout
             UIPanel[] tabs = this.TabContainer.GetComponentsInChildren<UIPanel>();
@@ -130,26 +135,30 @@ namespace AmbientSoundsTuner.UI
             Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(SoundsInstanceEffectsPatcher.ID_TRAIN_MOVEMENT, Mod.Instance.EffectsPatcher.DefaultVolumes[SoundsInstanceEffectsPatcher.ID_TRAIN_MOVEMENT], out this.effectVolumeTrainMovement);
             Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(SoundsInstanceEffectsPatcher.ID_TRANSPORT_ARRIVE, Mod.Instance.EffectsPatcher.DefaultVolumes[SoundsInstanceEffectsPatcher.ID_TRANSPORT_ARRIVE], out this.effectVolumeTransportArrive);
 
-            // Sliders
-            this.AmbientVolumeSettingObjects[0] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.World, "ambientVolumeWorld");
-            this.AmbientVolumeSettingObjects[1] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Forest, "ambientVolumeForest");
-            this.AmbientVolumeSettingObjects[2] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Sea, "ambientVolumeSea");
-            this.AmbientVolumeSettingObjects[3] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Stream, "ambientVolumeStream");
-            this.AmbientVolumeSettingObjects[4] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Industrial, "ambientVolumeIndustrial");
-            this.AmbientVolumeSettingObjects[5] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Plaza, "ambientVolumePlaza");
-            this.AmbientVolumeSettingObjects[6] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Suburban, "ambientVolumeSuburban");
-            this.AmbientVolumeSettingObjects[7] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.City, "ambientVolumeCity");
-            this.AmbientVolumeSettingObjects[8] = this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Agricultural, "ambientVolumeAgricultural");
+            Mod.Settings.State.MiscellaneousVolumes.TryGetValueOrDefault(SoundsInstanceMiscellaneousPatcher.ID_SEAGULL_SCREAM, Mod.Instance.MiscellaneousPatcher.DefaultVolumes[SoundsInstanceMiscellaneousPatcher.ID_SEAGULL_SCREAM], out this.miscellanousVolumeSeagullScream);
 
-            this.EffectVolumeSettingObjects[0] = this.CreateEffectVolumeSetting(SoundsInstanceEffectsPatcher.ID_AIRCRAFT_MOVEMENT, "effectVolumeAircraftMovement", 0, 1); // Default value = 0.5f
-            this.EffectVolumeSettingObjects[1] = this.CreateEffectVolumeSetting(SoundsInstanceEffectsPatcher.ID_AMBULANCE_SIREN, "effectVolumeAmbulanceSiren");
-            this.EffectVolumeSettingObjects[2] = this.CreateEffectVolumeSetting(SoundsInstanceEffectsPatcher.ID_FIRE_TRUCK_SIREN, "effectVolumeFireTruckSiren", 0, 3); // Default value = 3
-            this.EffectVolumeSettingObjects[3] = this.CreateEffectVolumeSetting(SoundsInstanceEffectsPatcher.ID_LARGE_CAR_MOVEMENT, "effectVolumeLargeCarMovement", 0, 1.5f); // Default value = 1.5
-            this.EffectVolumeSettingObjects[4] = this.CreateEffectVolumeSetting(SoundsInstanceEffectsPatcher.ID_METRO_MOVEMENT, "effectVolumeMetroMovement", 0, 1); // Default value = 0.5f
-            this.EffectVolumeSettingObjects[5] = this.CreateEffectVolumeSetting(SoundsInstanceEffectsPatcher.ID_POLICE_CAR_SIREN, "effectVolumePoliceCarSiren");
-            this.EffectVolumeSettingObjects[6] = this.CreateEffectVolumeSetting(SoundsInstanceEffectsPatcher.ID_SMALL_CAR_MOVEMENT, "effectVolumeSmallCarMovement", 0, 1.5f); // Default value = 1.5
-            this.EffectVolumeSettingObjects[7] = this.CreateEffectVolumeSetting(SoundsInstanceEffectsPatcher.ID_TRAIN_MOVEMENT, "effectVolumeTrainMovement", 0, 1); // Default value = 0.5f
-            this.EffectVolumeSettingObjects[8] = this.CreateEffectVolumeSetting(SoundsInstanceEffectsPatcher.ID_TRANSPORT_ARRIVE, "effectVolumeTransportArrive");
+            // Sliders
+            this.AmbientVolumeSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.World, "ambientVolumeWorld"));
+            this.AmbientVolumeSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Forest, "ambientVolumeForest"));
+            this.AmbientVolumeSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Sea, "ambientVolumeSea"));
+            this.AmbientVolumeSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Stream, "ambientVolumeStream"));
+            this.AmbientVolumeSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Industrial, "ambientVolumeIndustrial"));
+            this.AmbientVolumeSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Plaza, "ambientVolumePlaza"));
+            this.AmbientVolumeSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Suburban, "ambientVolumeSuburban"));
+            this.AmbientVolumeSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.City, "ambientVolumeCity"));
+            this.AmbientVolumeSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Agricultural, "ambientVolumeAgricultural"));
+
+            this.EffectVolumeSettingObjects.Add(this.CreateEffectVolumeSetting(Mod.Settings.State.EffectVolumes, Mod.Instance.EffectsPatcher, SoundsInstanceEffectsPatcher.ID_AIRCRAFT_MOVEMENT, "effectVolumeAircraftMovement", 0, 1)); // Default value = 0.5f
+            this.EffectVolumeSettingObjects.Add(this.CreateEffectVolumeSetting(Mod.Settings.State.EffectVolumes, Mod.Instance.EffectsPatcher, SoundsInstanceEffectsPatcher.ID_AMBULANCE_SIREN, "effectVolumeAmbulanceSiren"));
+            this.EffectVolumeSettingObjects.Add(this.CreateEffectVolumeSetting(Mod.Settings.State.EffectVolumes, Mod.Instance.EffectsPatcher, SoundsInstanceEffectsPatcher.ID_FIRE_TRUCK_SIREN, "effectVolumeFireTruckSiren", 0, 3)); // Default value = 3
+            this.EffectVolumeSettingObjects.Add(this.CreateEffectVolumeSetting(Mod.Settings.State.EffectVolumes, Mod.Instance.EffectsPatcher, SoundsInstanceEffectsPatcher.ID_LARGE_CAR_MOVEMENT, "effectVolumeLargeCarMovement", 0, 1.5f)); // Default value = 1.5
+            this.EffectVolumeSettingObjects.Add(this.CreateEffectVolumeSetting(Mod.Settings.State.EffectVolumes, Mod.Instance.EffectsPatcher, SoundsInstanceEffectsPatcher.ID_METRO_MOVEMENT, "effectVolumeMetroMovement", 0, 1)); // Default value = 0.5f
+            this.EffectVolumeSettingObjects.Add(this.CreateEffectVolumeSetting(Mod.Settings.State.EffectVolumes, Mod.Instance.EffectsPatcher, SoundsInstanceEffectsPatcher.ID_POLICE_CAR_SIREN, "effectVolumePoliceCarSiren"));
+            this.EffectVolumeSettingObjects.Add(this.CreateEffectVolumeSetting(Mod.Settings.State.EffectVolumes, Mod.Instance.EffectsPatcher, SoundsInstanceEffectsPatcher.ID_SMALL_CAR_MOVEMENT, "effectVolumeSmallCarMovement", 0, 1.5f)); // Default value = 1.5
+            this.EffectVolumeSettingObjects.Add(this.CreateEffectVolumeSetting(Mod.Settings.State.EffectVolumes, Mod.Instance.EffectsPatcher, SoundsInstanceEffectsPatcher.ID_TRAIN_MOVEMENT, "effectVolumeTrainMovement", 0, 1)); // Default value = 0.5f
+            this.EffectVolumeSettingObjects.Add(this.CreateEffectVolumeSetting(Mod.Settings.State.EffectVolumes, Mod.Instance.EffectsPatcher, SoundsInstanceEffectsPatcher.ID_TRANSPORT_ARRIVE, "effectVolumeTransportArrive"));
+
+            this.MiscellaneousVolumeSettingObjects.Add(this.CreateEffectVolumeSetting(Mod.Settings.State.MiscellaneousVolumes, Mod.Instance.MiscellaneousPatcher, SoundsInstanceMiscellaneousPatcher.ID_SEAGULL_SCREAM, "miscellanousVolumeSeagullScream"));
 
             // Some extra event listeners
             this.eventVisibilityChanged += AdvancedOptionsWindow_eventVisibilityChanged;
@@ -200,14 +209,14 @@ namespace AmbientSoundsTuner.UI
             return CreateVolumeSetting(this.AmbientsPanel, "AmbientVolumeSetting", type.ToString(), memberName, valueChangedCallback, minValue, maxValue);
         }
 
-        protected GameObject CreateEffectVolumeSetting(string name, string memberName, float minValue = 0, float maxValue = 1)
+        protected GameObject CreateEffectVolumeSetting(IDictionary<string, float> savedState, SoundsInstancePatcher<string> patcher, string name, string memberName, float minValue = 0, float maxValue = 1)
         {
             PropertyChangedEventHandler<float> valueChangedCallback = new PropertyChangedEventHandler<float>((c, v) =>
             {
-                Mod.Settings.State.EffectVolumes[name] = v;
+                savedState[name] = v;
                 if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
                 {
-                    Mod.Instance.EffectsPatcher.PatchVolume(name, v);
+                    patcher.PatchVolume(name, v);
                 }
             });
 
