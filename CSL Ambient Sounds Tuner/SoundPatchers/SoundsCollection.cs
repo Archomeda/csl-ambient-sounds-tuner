@@ -12,6 +12,8 @@ namespace AmbientSoundsTuner.SoundPatchers
     {
         private const string ID_SEAGULL_INFO = "Seagull";
         private const string ID_SEAGULL_SCREAM = "Seagull Scream";
+        private const string ID_COW_INFO = "Cow";
+        private const string ID_PIG_INFO = "Pig";
         private const string ID_INCINERATION_PLANT_INFO = "Combustion Plant";
         private const string ID_NUCLEAR_POWER_PLANT_INFO = "Nuclear Power Plant";
         private const string ID_WIND_TURBINE_INFO = "Wind Turbine";
@@ -59,6 +61,38 @@ namespace AmbientSoundsTuner.SoundPatchers
                     {
                         return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_SEAGULL_SCREAM).m_effect as SoundEffect;
                     }
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the cow sound effect; or null if it doesn't exist.
+        /// </summary>
+        public static SoundEffect Cow
+        {
+            get
+            {
+                CitizenInfo cowInfo = PrefabCollection<CitizenInfo>.FindLoaded(ID_COW_INFO);
+                if (cowInfo != null)
+                {
+                    return ((LivestockAI)cowInfo.m_citizenAI).m_randomEffect as SoundEffect;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the pig sound effect; or null if it doesn't exist.
+        /// </summary>
+        public static SoundEffect Pig
+        {
+            get
+            {
+                CitizenInfo pigInfo = PrefabCollection<CitizenInfo>.FindLoaded(ID_COW_INFO);
+                if (pigInfo != null)
+                {
+                    return ((LivestockAI)pigInfo.m_citizenAI).m_randomEffect as SoundEffect;
                 }
                 return null;
             }

@@ -11,11 +11,15 @@ namespace AmbientSoundsTuner.SoundPatchers
     /// </summary>
     public class AnimalsPatcher : MiscellaneousSoundsInstancePatcher<string>
     {
+        public const string ID_COW = "Cow";
+        public const string ID_PIG = "Pig";
         public const string ID_SEAGULL_SCREAM = "Seagull Scream";
 
         public AnimalsPatcher()
             : base()
         {
+            this.DefaultVolumes.Add(ID_COW, 1);
+            this.DefaultVolumes.Add(ID_PIG, 1);
             this.DefaultVolumes.Add(ID_SEAGULL_SCREAM, 1);
         }
 
@@ -24,6 +28,12 @@ namespace AmbientSoundsTuner.SoundPatchers
             SoundEffect soundEffect = null;
             switch (id)
             {
+                case ID_COW:
+                    soundEffect = SoundsCollection.Cow;
+                    break;
+                case ID_PIG:
+                    soundEffect = SoundsCollection.Pig;
+                    break;
                 case ID_SEAGULL_SCREAM:
                     soundEffect = SoundsCollection.SeagullScream;
                     break;

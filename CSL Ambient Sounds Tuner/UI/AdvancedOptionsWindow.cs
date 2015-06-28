@@ -19,6 +19,8 @@ namespace AmbientSoundsTuner.UI
     {
         protected readonly Dictionary<string, string> SliderNames = new Dictionary<string, string>()
         {
+            { AnimalsPatcher.ID_COW, "Cows" },
+            { AnimalsPatcher.ID_PIG, "Pigs" },
             { AnimalsPatcher.ID_SEAGULL_SCREAM, "Seagulls" },
 
             { VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, "Aircrafts" },
@@ -51,24 +53,26 @@ namespace AmbientSoundsTuner.UI
 
         private bool slidersSorted = false;
 
-        public float ambientVolumeWorld;
+        public float ambientVolumeAgricultural;
+        public float ambientVolumeCity;
         public float ambientVolumeForest;
-        public float ambientVolumeSea;
-        public float ambientVolumeStream;
         public float ambientVolumeIndustrial;
         public float ambientVolumePlaza;
+        public float ambientVolumeSea;
+        public float ambientVolumeStream;
         public float ambientVolumeSuburban;
-        public float ambientVolumeCity;
-        public float ambientVolumeAgricultural;
+        public float ambientVolumeWorld;
+        public float animalVolumeCow;
+        public float animalVolumePig;
         public float animalVolumeSeagullScream;
-        public float buildingVolumeIncinerationPlant;
-        public float buildingVolumeNuclearPowerPlant;
-        public float buildingVolumeWindTurbine;
-        public float buildingVolumeSolarPowerPlant;
-        public float buildingVolumeHydroPowerPlant;
         public float buildingVolumeAdvancedWindTurbine;
         public float buildingVolumeCoalOilPowerPlant;
         public float buildingVolumeFusionPowerPlant;
+        public float buildingVolumeHydroPowerPlant;
+        public float buildingVolumeIncinerationPlant;
+        public float buildingVolumeNuclearPowerPlant;
+        public float buildingVolumeSolarPowerPlant;
+        public float buildingVolumeWindTurbine;
         public float vehicleVolumeAircraftMovement;
         public float vehicleVolumeAmbulanceSiren;
         public float vehicleVolumeFireTruckSiren;
@@ -150,26 +154,28 @@ namespace AmbientSoundsTuner.UI
             this.VehiclesPanel.wrapLayout = true;
 
             // Settings
-            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.World, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.World], out this.ambientVolumeWorld);
+            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Agricultural, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Agricultural], out this.ambientVolumeAgricultural);
+            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.City, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.City], out this.ambientVolumeCity);
             Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Forest, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Forest], out this.ambientVolumeForest);
-            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Sea, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Sea], out this.ambientVolumeSea);
-            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Stream, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Stream], out this.ambientVolumeStream);
             Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Industrial, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Industrial], out this.ambientVolumeIndustrial);
             Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Plaza, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Plaza], out this.ambientVolumePlaza);
+            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Sea, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Sea], out this.ambientVolumeSea);
+            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Stream, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Stream], out this.ambientVolumeStream);
             Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Suburban, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Suburban], out this.ambientVolumeSuburban);
-            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.City, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.City], out this.ambientVolumeCity);
-            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Agricultural, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Agricultural], out this.ambientVolumeAgricultural);
+            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.World, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.World], out this.ambientVolumeWorld);
 
+            Mod.Settings.AnimalVolumes.TryGetValueOrDefault(AnimalsPatcher.ID_COW, Mod.Instance.AnimalsPatcher.DefaultVolumes[AnimalsPatcher.ID_COW], out this.animalVolumeCow);
+            Mod.Settings.AnimalVolumes.TryGetValueOrDefault(AnimalsPatcher.ID_PIG, Mod.Instance.AnimalsPatcher.DefaultVolumes[AnimalsPatcher.ID_PIG], out this.animalVolumePig);
             Mod.Settings.AnimalVolumes.TryGetValueOrDefault(AnimalsPatcher.ID_SEAGULL_SCREAM, Mod.Instance.AnimalsPatcher.DefaultVolumes[AnimalsPatcher.ID_SEAGULL_SCREAM], out this.animalVolumeSeagullScream);
 
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_INCINERATION_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_INCINERATION_PLANT], out this.buildingVolumeIncinerationPlant);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_NUCLEAR_POWER_PLANT], out this.buildingVolumeNuclearPowerPlant);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_WIND_TURBINE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_WIND_TURBINE], out this.buildingVolumeWindTurbine);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_SOLAR_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_SOLAR_POWER_PLANT], out this.buildingVolumeSolarPowerPlant);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_HYDRO_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_HYDRO_POWER_PLANT], out this.buildingVolumeHydroPowerPlant);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_ADVANCED_WIND_TURBINE], out this.buildingVolumeAdvancedWindTurbine);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_COAL_OIL_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_COAL_OIL_POWER_PLANT], out this.buildingVolumeCoalOilPowerPlant);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_FUSION_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_FUSION_POWER_PLANT], out this.buildingVolumeFusionPowerPlant);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_HYDRO_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_HYDRO_POWER_PLANT], out this.buildingVolumeHydroPowerPlant);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_INCINERATION_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_INCINERATION_PLANT], out this.buildingVolumeIncinerationPlant);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_NUCLEAR_POWER_PLANT], out this.buildingVolumeNuclearPowerPlant);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_SOLAR_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_SOLAR_POWER_PLANT], out this.buildingVolumeSolarPowerPlant);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_WIND_TURBINE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_WIND_TURBINE], out this.buildingVolumeWindTurbine);
 
             Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_AIRCRAFT_MOVEMENT], out this.vehicleVolumeAircraftMovement);
             Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_AMBULANCE_SIREN, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_AMBULANCE_SIREN], out this.vehicleVolumeAmbulanceSiren);
@@ -182,26 +188,28 @@ namespace AmbientSoundsTuner.UI
             Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_TRANSPORT_ARRIVE, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_TRANSPORT_ARRIVE], out this.vehicleVolumeTransportArrive);
 
             // Sliders
-            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.World, "ambientVolumeWorld"));
+            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Agricultural, "ambientVolumeAgricultural"));
+            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.City, "ambientVolumeCity"));
             this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Forest, "ambientVolumeForest"));
-            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Sea, "ambientVolumeSea"));
-            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Stream, "ambientVolumeStream"));
             this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Industrial, "ambientVolumeIndustrial"));
             this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Plaza, "ambientVolumePlaza"));
+            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Sea, "ambientVolumeSea"));
+            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Stream, "ambientVolumeStream"));
             this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Suburban, "ambientVolumeSuburban"));
-            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.City, "ambientVolumeCity"));
-            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Agricultural, "ambientVolumeAgricultural"));
+            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.World, "ambientVolumeWorld"));
 
+            this.AnimalSettingObjects.Add(this.CreateAnimalVolumeSetting(AnimalsPatcher.ID_COW, "animalVolumeCow"));
+            this.AnimalSettingObjects.Add(this.CreateAnimalVolumeSetting(AnimalsPatcher.ID_PIG, "animalVolumePig"));
             this.AnimalSettingObjects.Add(this.CreateAnimalVolumeSetting(AnimalsPatcher.ID_SEAGULL_SCREAM, "animalVolumeSeagullScream"));
 
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_INCINERATION_PLANT, "buildingVolumeIncinerationPlant"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, "buildingVolumeNuclearPowerPlant"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_WIND_TURBINE, "buildingVolumeWindTurbine"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_SOLAR_POWER_PLANT, "buildingVolumeSolarPowerPlant"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_HYDRO_POWER_PLANT, "buildingVolumeHydroPowerPlant"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, "buildingVolumeAdvancedWindTurbine"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_COAL_OIL_POWER_PLANT, "buildingVolumeCoalOilPowerPlant"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_FUSION_POWER_PLANT, "buildingVolumeFusionPowerPlant", 0, 4));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_HYDRO_POWER_PLANT, "buildingVolumeHydroPowerPlant"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_INCINERATION_PLANT, "buildingVolumeIncinerationPlant"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, "buildingVolumeNuclearPowerPlant"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_SOLAR_POWER_PLANT, "buildingVolumeSolarPowerPlant"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_WIND_TURBINE, "buildingVolumeWindTurbine"));
 
             this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, "vehicleVolumeAircraftMovement", 0, 1));
             this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_AMBULANCE_SIREN, "vehicleVolumeAmbulanceSiren"));

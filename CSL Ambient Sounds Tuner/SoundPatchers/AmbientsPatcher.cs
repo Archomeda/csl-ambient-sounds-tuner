@@ -14,15 +14,15 @@ namespace AmbientSoundsTuner.SoundPatchers
         public AmbientsPatcher()
             : base()
         {
-            this.DefaultVolumes.Add(AudioManager.AmbientType.World, 1);
+            this.DefaultVolumes.Add(AudioManager.AmbientType.Agricultural, 1);
+            this.DefaultVolumes.Add(AudioManager.AmbientType.City, 1);
             this.DefaultVolumes.Add(AudioManager.AmbientType.Forest, 1);
-            this.DefaultVolumes.Add(AudioManager.AmbientType.Sea, 1);
-            this.DefaultVolumes.Add(AudioManager.AmbientType.Stream, 1);
             this.DefaultVolumes.Add(AudioManager.AmbientType.Industrial, 1);
             this.DefaultVolumes.Add(AudioManager.AmbientType.Plaza, 1);
+            this.DefaultVolumes.Add(AudioManager.AmbientType.Sea, 1);
+            this.DefaultVolumes.Add(AudioManager.AmbientType.Stream, 1);
             this.DefaultVolumes.Add(AudioManager.AmbientType.Suburban, 1);
-            this.DefaultVolumes.Add(AudioManager.AmbientType.City, 1);
-            this.DefaultVolumes.Add(AudioManager.AmbientType.Agricultural, 1);
+            this.DefaultVolumes.Add(AudioManager.AmbientType.World, 1);
         }
 
         public override bool BackupVolume(AudioManager.AmbientType id)
