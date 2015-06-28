@@ -16,31 +16,34 @@ namespace AmbientSoundsTuner
         [XmlRoot("State")]
         public class StateConfig
         {
-            public StateConfig()
-            {
-                this.AmbientVolumes = new SerializableDictionary<AudioManager.AmbientType, float>();
-                this.EffectVolumes = new SerializableDictionary<string, float>();
-                this.MiscellaneousVolumes = new SerializableDictionary<string, float>();
-            }
-
-            [XmlElement("AmbientVolumes")]
-            public SerializableDictionary<AudioManager.AmbientType, float> AmbientVolumes { get; set; }
-
-            [XmlElement("EffectVolumes")]
-            public SerializableDictionary<string, float> EffectVolumes { get; set; }
-
-            [XmlElement("MiscellaneousVolumes")]
-            public SerializableDictionary<string, float> MiscellaneousVolumes { get; set; }
+            public StateConfig() { }
         }
 
         public Configuration()
         {
             this.State = new StateConfig();
             this.ExtraDebugLogging = false;
+
+            this.AmbientVolumes = new SerializableDictionary<AudioManager.AmbientType, float>();
+            this.AnimalVolumes = new SerializableDictionary<string, float>();
+            this.BuildingVolumes = new SerializableDictionary<string, float>();
+            this.VehicleVolumes = new SerializableDictionary<string, float>();
         }
 
         public StateConfig State { get; set; }
 
         public bool ExtraDebugLogging { get; set; }
+
+        [XmlElement("AmbientVolumes")]
+        public SerializableDictionary<AudioManager.AmbientType, float> AmbientVolumes { get; set; }
+
+        [XmlElement("AnimalVolumes")]
+        public SerializableDictionary<string, float> AnimalVolumes { get; set; }
+
+        [XmlElement("BuildingVolumes")]
+        public SerializableDictionary<string, float> BuildingVolumes { get; set; }
+
+        [XmlElement("VehicleVolumes")]
+        public SerializableDictionary<string, float> VehicleVolumes { get; set; }
     }
 }

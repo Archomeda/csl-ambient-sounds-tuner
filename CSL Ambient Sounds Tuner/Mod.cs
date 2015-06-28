@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.Compatibility;
+using AmbientSoundsTuner.SoundPatchers;
 using AmbientSoundsTuner.UI;
 using AmbientSoundsTuner.Utils;
 using ColossalFramework.Plugins;
@@ -21,9 +22,10 @@ namespace AmbientSoundsTuner
         internal static Logger Log { get; private set; }
         internal static Mod Instance { get; private set; }
 
-        internal SoundsInstanceAmbientsPatcher AmbientsPatcher { get; private set; }
-        internal SoundsInstanceEffectsPatcher EffectsPatcher { get; private set; }
-        internal SoundsInstanceMiscellaneousPatcher MiscellaneousPatcher { get; private set; }
+        internal AmbientsPatcher AmbientsPatcher { get; private set; }
+        internal AnimalsPatcher AnimalsPatcher { get; private set; }
+        internal BuildingsPatcher BuildingsPatcher { get; private set; }
+        internal VehiclesPatcher VehiclesPatcher { get; private set; }
 
         internal static HashSet<ulong> IncompatibleMods = new HashSet<ulong>()
         {
@@ -75,9 +77,10 @@ namespace AmbientSoundsTuner
             Log = new Logger(this);
             Instance = this;
 
-            this.AmbientsPatcher = new SoundsInstanceAmbientsPatcher();
-            this.EffectsPatcher = new SoundsInstanceEffectsPatcher();
-            this.MiscellaneousPatcher = new SoundsInstanceMiscellaneousPatcher();
+            this.AmbientsPatcher = new AmbientsPatcher();
+            this.AnimalsPatcher = new AnimalsPatcher();
+            this.BuildingsPatcher = new BuildingsPatcher();
+            this.VehiclesPatcher = new VehiclesPatcher();
         }
 
         private void Load()
@@ -128,9 +131,7 @@ namespace AmbientSoundsTuner
         {
             base.OnLevelLoaded(mode);
             this.Load();
-            PatchAmbientSounds();
-            PatchEffectSounds();
-            PatchMiscellaneousSounds();
+            PatchSounds();
         }
 
         /// <summary>
@@ -146,29 +147,13 @@ namespace AmbientSoundsTuner
         }
 
 
-        private void PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, float> newVolumes)
+        private int PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, float> newVolumes)
         {
-            int soundsCount = patcher.DefaultVolumes.Count;
-            int backedUpCount = patcher.BackupVolumes();
-            if (backedUpCount < soundsCount)
-            {
-                Mod.Log.Warning("{0}/{1} sound volumes have been backed up", backedUpCount, soundsCount);
-            }
-
-            int patchedCount = patcher.PatchVolumes(newVolumes);
-            if (patchedCount < soundsCount)
-            {
-                Mod.Log.Warning("{0}/{1} sound volumes have been patched", patchedCount, soundsCount);
-            }
+            patcher.BackupVolumes();
+            return patcher.PatchVolumes(newVolumes);
         }
 
-        internal void PatchAmbientSounds()
-        {
-            this.PatchSounds(this.AmbientsPatcher, Settings.State.AmbientVolumes);
-            Mod.Log.Info("Ambient sound volumes have been patched");
-        }
-
-        internal void PatchEffectSounds()
+        internal void PatchSounds()
         {
             // Patch the sirens for compatibility first!
             var patchResult = SirensPatcher.PatchPoliceSiren();
@@ -185,14 +170,29 @@ namespace AmbientSoundsTuner
                     break;
             }
 
-            this.PatchSounds(this.EffectsPatcher, Settings.State.EffectVolumes);
-            Mod.Log.Info("Effect sound volumes have been patched");
-        }
+            int total = 0;
+            int patched = 0;
 
-        internal void PatchMiscellaneousSounds()
-        {
-            this.PatchSounds(this.MiscellaneousPatcher, Settings.State.MiscellaneousVolumes);
-            Mod.Log.Info("Miscellaneous sound volumes have been patched");
+            total += this.AmbientsPatcher.DefaultVolumes.Count;
+            patched += this.PatchSounds(this.AmbientsPatcher, Settings.AmbientVolumes);
+
+            total += this.AnimalsPatcher.DefaultVolumes.Count;
+            patched += this.PatchSounds(this.AnimalsPatcher, Settings.AnimalVolumes);
+
+            total += this.BuildingsPatcher.DefaultVolumes.Count;
+            patched += this.PatchSounds(this.BuildingsPatcher, Settings.BuildingVolumes);
+
+            total += this.VehiclesPatcher.DefaultVolumes.Count;
+            patched += this.PatchSounds(this.VehiclesPatcher, Settings.VehicleVolumes);
+
+            if (total == patched)
+            {
+                Mod.Log.Info("All {0} sound volumes have been patched", patched);
+            }
+            else
+            {
+                Mod.Log.Warning("{0}/{1} sound volumes have been patched", patched, total);
+            }
         }
     }
 }

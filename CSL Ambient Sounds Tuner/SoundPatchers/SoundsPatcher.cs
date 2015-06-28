@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AmbientSoundsTuner
+namespace AmbientSoundsTuner.SoundPatchers
 {
     /// <summary>
     /// A static class that contains various methods related to sounds patching.

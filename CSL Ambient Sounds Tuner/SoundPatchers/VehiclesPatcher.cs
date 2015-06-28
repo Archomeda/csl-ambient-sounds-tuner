@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using CommonShared.Extensions;
 
-namespace AmbientSoundsTuner
+namespace AmbientSoundsTuner.SoundPatchers
 {
     /// <summary>
-    /// A class that can patch instances of effect sounds.
+    /// A class that can patch instances of vehicle sounds.
     /// </summary>
-    public class SoundsInstanceEffectsPatcher : SoundsInstancePatcher<string>
+    public class VehiclesPatcher : SoundsInstancePatcher<string>
     {
         public const string ID_AIRCRAFT_MOVEMENT = "Aircraft Movement";
         public const string ID_AMBULANCE_SIREN = "Ambulance Siren";
@@ -21,7 +21,7 @@ namespace AmbientSoundsTuner
         public const string ID_TRAIN_MOVEMENT = "Train Movement";
         public const string ID_TRANSPORT_ARRIVE = "Transport Arrive";
 
-        public SoundsInstanceEffectsPatcher()
+        public VehiclesPatcher()
             : base()
         {
             this.DefaultVolumes.Add(ID_AIRCRAFT_MOVEMENT, 0.5f);

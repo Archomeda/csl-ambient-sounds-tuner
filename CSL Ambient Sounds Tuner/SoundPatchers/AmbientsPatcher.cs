@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using CommonShared.Extensions;
 
-namespace AmbientSoundsTuner
+namespace AmbientSoundsTuner.SoundPatchers
 {
     /// <summary>
     /// A class that can patch instances of ambient sounds.
     /// </summary>
-    public class SoundsInstanceAmbientsPatcher : SoundsInstancePatcher<AudioManager.AmbientType>
+    public class AmbientsPatcher : SoundsInstancePatcher<AudioManager.AmbientType>
     {
-        public SoundsInstanceAmbientsPatcher()
+        public AmbientsPatcher()
             : base()
         {
             this.DefaultVolumes.Add(AudioManager.AmbientType.World, 1);

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AmbientSoundsTuner
+namespace AmbientSoundsTuner.SoundPatchers
 {
     /// <summary>
-    /// A class that holds a generic implementation to patch sound instances.
+    /// An abstract class that holds a generic implementation to patch sound instances.
     /// </summary>
     /// <typeparam name="T">The type of the sound ids.</typeparam>
     public abstract class SoundsInstancePatcher<T>
