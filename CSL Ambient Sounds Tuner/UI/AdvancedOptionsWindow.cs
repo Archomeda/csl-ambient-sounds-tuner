@@ -19,19 +19,15 @@ namespace AmbientSoundsTuner.UI
     {
         protected readonly Dictionary<string, string> SliderNames = new Dictionary<string, string>()
         {
-            { AnimalsPatcher.ID_COW, "Cows" },
-            { AnimalsPatcher.ID_PIG, "Pigs" },
-            { AnimalsPatcher.ID_SEAGULL_SCREAM, "Seagulls" },
-
             { VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, "Aircrafts" },
-            { VehiclesPatcher.ID_SMALL_CAR_MOVEMENT, "Cars (small)" },
-            { VehiclesPatcher.ID_LARGE_CAR_MOVEMENT, "Cars (large)" },
-            { VehiclesPatcher.ID_AMBULANCE_SIREN, "Sirens (ambulances)" },
-            { VehiclesPatcher.ID_FIRE_TRUCK_SIREN, "Sirens (fire trucks)" },
-            { VehiclesPatcher.ID_POLICE_CAR_SIREN, "Sirens (police cars)" },
+            { VehiclesPatcher.ID_SMALL_CAR_MOVEMENT, "Cars (Small)" },
+            { VehiclesPatcher.ID_LARGE_CAR_MOVEMENT, "Cars (Large)" },
+            { VehiclesPatcher.ID_AMBULANCE_SIREN, "Sirens (Ambulances)" },
+            { VehiclesPatcher.ID_FIRE_TRUCK_SIREN, "Sirens (Fire Trucks)" },
+            { VehiclesPatcher.ID_POLICE_CAR_SIREN, "Sirens (Police Cars)" },
             { VehiclesPatcher.ID_METRO_MOVEMENT, "Metros" },
             { VehiclesPatcher.ID_TRAIN_MOVEMENT, "Trains" },
-            { VehiclesPatcher.ID_TRANSPORT_ARRIVE, "Transportation arrivals" },
+            { VehiclesPatcher.ID_TRANSPORT_ARRIVE, "Transportation Arrivals" },
         };
 
         protected List<GameObject> AmbientSettingObjects = new List<GameObject>();
@@ -193,7 +189,7 @@ namespace AmbientSoundsTuner.UI
 
             Mod.Settings.AnimalVolumes.TryGetValueOrDefault(AnimalsPatcher.ID_COW, Mod.Instance.AnimalsPatcher.DefaultVolumes[AnimalsPatcher.ID_COW], out this.animalVolumeCow);
             Mod.Settings.AnimalVolumes.TryGetValueOrDefault(AnimalsPatcher.ID_PIG, Mod.Instance.AnimalsPatcher.DefaultVolumes[AnimalsPatcher.ID_PIG], out this.animalVolumePig);
-            Mod.Settings.AnimalVolumes.TryGetValueOrDefault(AnimalsPatcher.ID_SEAGULL_SCREAM, Mod.Instance.AnimalsPatcher.DefaultVolumes[AnimalsPatcher.ID_SEAGULL_SCREAM], out this.animalVolumeSeagullScream);
+            Mod.Settings.AnimalVolumes.TryGetValueOrDefault(AnimalsPatcher.ID_SEAGULL, Mod.Instance.AnimalsPatcher.DefaultVolumes[AnimalsPatcher.ID_SEAGULL], out this.animalVolumeSeagullScream);
 
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_ADVANCED_WIND_TURBINE], out this.buildingVolumeAdvancedWindTurbine);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_COAL_OIL_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_COAL_OIL_POWER_PLANT], out this.buildingVolumeCoalOilPowerPlant);
@@ -241,7 +237,7 @@ namespace AmbientSoundsTuner.UI
 
             this.AnimalSettingObjects.Add(this.CreateAnimalVolumeSetting(AnimalsPatcher.ID_COW, "animalVolumeCow"));
             this.AnimalSettingObjects.Add(this.CreateAnimalVolumeSetting(AnimalsPatcher.ID_PIG, "animalVolumePig"));
-            this.AnimalSettingObjects.Add(this.CreateAnimalVolumeSetting(AnimalsPatcher.ID_SEAGULL_SCREAM, "animalVolumeSeagullScream"));
+            this.AnimalSettingObjects.Add(this.CreateAnimalVolumeSetting(AnimalsPatcher.ID_SEAGULL, "animalVolumeSeagullScream"));
 
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, "buildingVolumeAdvancedWindTurbine"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_COAL_OIL_POWER_PLANT, "buildingVolumeCoalOilPowerPlant"));

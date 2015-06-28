@@ -11,15 +11,15 @@ namespace AmbientSoundsTuner.SoundPatchers
     /// </summary>
     public class MiscPatcher : MiscellaneousSoundsInstancePatcher<string>
     {
-        public const string ID_BUILDING_BULLDOZE = "Building Bulldoze";
-        public const string ID_BUILDING_PLACEMENT = "Building Placement";
-        public const string ID_PROP_BULLDOZE = "Prop Bulldoze";
-        public const string ID_PROP_PLACEMENT = "Prop Placement";
-        public const string ID_ROAD_BULLDOZE = "Road Bulldoze";
-        public const string ID_ROAD_DRAW = "Road Draw";
-        public const string ID_ROAD_PLACEMENT = "Road Placement";
-        public const string ID_CLICK_SOUND = "UI Click";
-        public const string ID_DISABLED_CLICK_SOUND = "UI Click (Disabled)";
+        public const string ID_BUILDING_BULLDOZE = "Bulldoze (Buildings)";
+        public const string ID_BUILDING_PLACEMENT = "Placement (Buildings)";
+        public const string ID_PROP_BULLDOZE = "Bulldoze (Props)";
+        public const string ID_PROP_PLACEMENT = "Placement (Props)";
+        public const string ID_ROAD_BULLDOZE = "Bulldoze (Roads)";
+        public const string ID_ROAD_DRAW = "Road Drawer";
+        public const string ID_ROAD_PLACEMENT = "Placement (Roads)";
+        public const string ID_CLICK_SOUND = "UI Clicks";
+        public const string ID_DISABLED_CLICK_SOUND = "UI Clicks (Disabled)";
 
         public MiscPatcher()
             : base()

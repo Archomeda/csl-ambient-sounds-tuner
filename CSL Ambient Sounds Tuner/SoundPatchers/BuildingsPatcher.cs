@@ -23,7 +23,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         public const string ID_WIND_TURBINE = "Wind Turbine";
 
         public const string ID_FIRE = "On Fire";
-        public const string ID_LEVELUP = "On Level Up";
+        public const string ID_LEVELUP = "On Upgrade";
 
         public BuildingsPatcher()
             : base()
