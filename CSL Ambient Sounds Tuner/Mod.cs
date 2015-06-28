@@ -211,8 +211,13 @@ namespace AmbientSoundsTuner
 
         internal void PatchUISounds()
         {
-            this.MiscPatcher.PatchVolume(MiscPatcher.ID_CLICK_SOUND, Mod.Settings.MiscVolumes[MiscPatcher.ID_CLICK_SOUND]);
-            this.MiscPatcher.PatchVolume(MiscPatcher.ID_DISABLED_CLICK_SOUND, Mod.Settings.MiscVolumes[MiscPatcher.ID_DISABLED_CLICK_SOUND]);
+            float clickVolume = 1;
+            float disabledClickVolume = 1;
+            Mod.Settings.MiscVolumes.TryGetValue(MiscPatcher.ID_CLICK_SOUND, out clickVolume);
+            Mod.Settings.MiscVolumes.TryGetValue(MiscPatcher.ID_DISABLED_CLICK_SOUND, out disabledClickVolume);
+
+            this.MiscPatcher.PatchVolume(MiscPatcher.ID_CLICK_SOUND, clickVolume);
+            this.MiscPatcher.PatchVolume(MiscPatcher.ID_DISABLED_CLICK_SOUND, disabledClickVolume);
         }
     }
 }
