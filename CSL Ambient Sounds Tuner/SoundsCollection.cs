@@ -12,6 +12,7 @@ namespace AmbientSoundsTuner
     {
         private const string ID_SEAGULL_INFO = "Seagull";
         private const string ID_SEAGULL_SCREAM = "Seagull Scream";
+        private const string ID_INCINERATION_PLANT_INFO = "Combustion Plant";
 
         /// <summary>
         /// Gets the ambient sounds; or null if they don't exist.
@@ -51,6 +52,22 @@ namespace AmbientSoundsTuner
                     {
                         return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_SEAGULL_SCREAM).m_effect as SoundEffect;
                     }
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the incineration plant audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo IncinerationPlant
+        {
+            get
+            {
+                BuildingInfo incinerationPlantInfo = PrefabCollection<BuildingInfo>.FindLoaded(ID_INCINERATION_PLANT_INFO);
+                if (incinerationPlantInfo != null)
+                {
+                    return incinerationPlantInfo.m_customLoopSound;
                 }
                 return null;
             }

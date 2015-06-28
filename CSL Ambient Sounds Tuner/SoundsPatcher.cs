@@ -19,13 +19,23 @@ namespace AmbientSoundsTuner
         {
             if (effect != null)
             {
-                AudioInfo info = effect.m_audioInfo;
-                if (info != null)
-                {
-                    return info.m_volume;
-                }
+                return GetVolume(effect.m_audioInfo);
             }
 
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the volume of an audio info.
+        /// </summary>
+        /// <param name="info">The audio info.</param>
+        /// <returns>The volume of the audio info if it's not null; otherwise null.</returns>
+        public static float? GetVolume(AudioInfo info)
+        {
+            if (info != null)
+            {
+                return info.m_volume;
+            }
             return null;
         }
 
@@ -39,18 +49,29 @@ namespace AmbientSoundsTuner
         {
             if (effect != null)
             {
-                AudioInfo info = effect.m_audioInfo;
-                if (info != null)
-                {
-                    info.m_volume = volume;
-                    for (int i = 0; i < info.m_variations.Length; i++)
-                    {
-                        info.m_variations[i].m_sound.m_volume = volume;
-                    }
-                    return true;
-                }
+                return SetVolume(effect.m_audioInfo, volume);
             }
 
+            return false;
+        }
+
+        /// <summary>
+        /// Sets the volume of an audio info and its variations.
+        /// </summary>
+        /// <param name="info">The audio info.</param>
+        /// <param name="volume">The new volume.</param>
+        /// <returns>True if successful; false otherwise.</returns>
+        public static bool SetVolume(AudioInfo info, float volume)
+        {
+            if (info != null)
+            {
+                info.m_volume = volume;
+                for (int i = 0; i < info.m_variations.Length; i++)
+                {
+                    info.m_variations[i].m_sound.m_volume = volume;
+                }
+                return true;
+            }
             return false;
         }
     }

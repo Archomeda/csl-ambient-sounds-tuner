@@ -29,6 +29,7 @@ namespace AmbientSoundsTuner.UI
             { SoundsInstanceEffectsPatcher.ID_TRANSPORT_ARRIVE, "Transportation arrivals" },
 
             { SoundsInstanceMiscellaneousPatcher.ID_SEAGULL_SCREAM, "Seagulls" },
+            { SoundsInstanceMiscellaneousPatcher.ID_INCINERATION_PLANT, "Incineration Plant" },
         };
 
         protected List<GameObject> AmbientVolumeSettingObjects = new List<GameObject>();
@@ -65,12 +66,13 @@ namespace AmbientSoundsTuner.UI
         public float effectVolumeTrainMovement;
         public float effectVolumeTransportArrive;
 
-        public float miscellanousVolumeSeagullScream;
+        public float miscellaneousVolumeSeagullScream;
+        public float miscellaneousVolumeIncinerationPlant;
 
         public override void Start()
         {
             this.width = 451;
-            this.height = 471;
+            this.height = 511;
             this.Title = "SOUNDS TUNER";
             base.Start();
 
@@ -80,7 +82,7 @@ namespace AmbientSoundsTuner.UI
             this.Tabstrip.anchor = UIAnchorStyle.Top | UIAnchorStyle.Left | UIAnchorStyle.Right;
 
             this.TabContainer = this.ContentPanel.AddUIComponent<UITabContainer>();
-            this.TabContainer.size = new Vector2(410, 370);
+            this.TabContainer.size = new Vector2(410, 410);
             this.TabContainer.relativePosition = new Vector3(20, 20 + this.Tabstrip.height);
             this.TabContainer.anchor = UIAnchorStyle.All;
             this.Tabstrip.tabPages = this.TabContainer;
@@ -135,7 +137,8 @@ namespace AmbientSoundsTuner.UI
             Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(SoundsInstanceEffectsPatcher.ID_TRAIN_MOVEMENT, Mod.Instance.EffectsPatcher.DefaultVolumes[SoundsInstanceEffectsPatcher.ID_TRAIN_MOVEMENT], out this.effectVolumeTrainMovement);
             Mod.Settings.State.EffectVolumes.TryGetValueOrDefault(SoundsInstanceEffectsPatcher.ID_TRANSPORT_ARRIVE, Mod.Instance.EffectsPatcher.DefaultVolumes[SoundsInstanceEffectsPatcher.ID_TRANSPORT_ARRIVE], out this.effectVolumeTransportArrive);
 
-            Mod.Settings.State.MiscellaneousVolumes.TryGetValueOrDefault(SoundsInstanceMiscellaneousPatcher.ID_SEAGULL_SCREAM, Mod.Instance.MiscellaneousPatcher.DefaultVolumes[SoundsInstanceMiscellaneousPatcher.ID_SEAGULL_SCREAM], out this.miscellanousVolumeSeagullScream);
+            Mod.Settings.State.MiscellaneousVolumes.TryGetValueOrDefault(SoundsInstanceMiscellaneousPatcher.ID_SEAGULL_SCREAM, Mod.Instance.MiscellaneousPatcher.DefaultVolumes[SoundsInstanceMiscellaneousPatcher.ID_SEAGULL_SCREAM], out this.miscellaneousVolumeSeagullScream);
+            Mod.Settings.State.MiscellaneousVolumes.TryGetValueOrDefault(SoundsInstanceMiscellaneousPatcher.ID_INCINERATION_PLANT, Mod.Instance.MiscellaneousPatcher.DefaultVolumes[SoundsInstanceMiscellaneousPatcher.ID_INCINERATION_PLANT], out this.miscellaneousVolumeIncinerationPlant);
 
             // Sliders
             this.AmbientVolumeSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.World, "ambientVolumeWorld"));
@@ -158,7 +161,8 @@ namespace AmbientSoundsTuner.UI
             this.EffectVolumeSettingObjects.Add(this.CreateEffectVolumeSetting(Mod.Settings.State.EffectVolumes, Mod.Instance.EffectsPatcher, SoundsInstanceEffectsPatcher.ID_TRAIN_MOVEMENT, "effectVolumeTrainMovement", 0, 1)); // Default value = 0.5f
             this.EffectVolumeSettingObjects.Add(this.CreateEffectVolumeSetting(Mod.Settings.State.EffectVolumes, Mod.Instance.EffectsPatcher, SoundsInstanceEffectsPatcher.ID_TRANSPORT_ARRIVE, "effectVolumeTransportArrive"));
 
-            this.MiscellaneousVolumeSettingObjects.Add(this.CreateEffectVolumeSetting(Mod.Settings.State.MiscellaneousVolumes, Mod.Instance.MiscellaneousPatcher, SoundsInstanceMiscellaneousPatcher.ID_SEAGULL_SCREAM, "miscellanousVolumeSeagullScream"));
+            this.MiscellaneousVolumeSettingObjects.Add(this.CreateEffectVolumeSetting(Mod.Settings.State.MiscellaneousVolumes, Mod.Instance.MiscellaneousPatcher, SoundsInstanceMiscellaneousPatcher.ID_SEAGULL_SCREAM, "miscellaneousVolumeSeagullScream"));
+            this.MiscellaneousVolumeSettingObjects.Add(this.CreateEffectVolumeSetting(Mod.Settings.State.MiscellaneousVolumes, Mod.Instance.MiscellaneousPatcher, SoundsInstanceMiscellaneousPatcher.ID_INCINERATION_PLANT, "miscellaneousVolumeIncinerationPlant"));
 
             // Some extra event listeners
             this.eventVisibilityChanged += AdvancedOptionsWindow_eventVisibilityChanged;

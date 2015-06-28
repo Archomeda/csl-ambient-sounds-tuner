@@ -27,20 +27,23 @@ namespace AmbientSoundsTuner
 
         public override bool BackupVolume(AudioManager.AmbientType id)
         {
-            if (SoundsCollection.Ambients.Length > (int)id && SoundsCollection.Ambients[(int)id] != null)
+            if (SoundsCollection.Ambients.Length > (int)id)
             {
-                this.DefaultVolumes[id] = SoundsCollection.Ambients[(int)id].m_volume;
-                return true;
+                float? volume = SoundsPatcher.GetVolume(SoundsCollection.Ambients[(int)id]);
+                if (volume.HasValue)
+                {
+                    this.DefaultVolumes[id] = volume.Value;
+                    return true;
+                }
             }
             return false;
         }
 
         public override bool PatchVolume(AudioManager.AmbientType id, float newVolume)
         {
-            if (SoundsCollection.Ambients.Length > (int)id && SoundsCollection.Ambients[(int)id] != null)
+            if (SoundsCollection.Ambients.Length > (int)id)
             {
-                SoundsCollection.Ambients[(int)id].m_volume = newVolume;
-                return true;
+                return SoundsPatcher.SetVolume(SoundsCollection.Ambients[(int)id], newVolume);
             }
             return false;
         }
