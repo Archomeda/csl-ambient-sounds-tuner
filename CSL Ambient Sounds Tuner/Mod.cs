@@ -21,6 +21,9 @@ namespace AmbientSoundsTuner
         internal static Logger Log { get; private set; }
         internal static Mod Instance { get; private set; }
 
+        internal SoundsInstanceAmbientsPatcher AmbientsPatcher { get; private set; }
+        internal SoundsInstanceEffectsPatcher EffectsPatcher { get; private set; }
+
         internal static HashSet<ulong> IncompatibleMods = new HashSet<ulong>()
         {
             421527612, // SilenceObnoxiousSirens
@@ -70,6 +73,9 @@ namespace AmbientSoundsTuner
             SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(this), "AmbientSoundsTuner.xml");
             Log = new Logger(this);
             Instance = this;
+
+            this.AmbientsPatcher = new SoundsInstanceAmbientsPatcher();
+            this.EffectsPatcher = new SoundsInstanceEffectsPatcher();
         }
 
         private void Load()
@@ -137,24 +143,29 @@ namespace AmbientSoundsTuner
         }
 
 
-        internal static void PatchAmbientSounds()
+        private void PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, float> newVolumes)
         {
-            int ambientSoundsCount = AmbientsPatcher.OriginalVolumes.Count;
-            int backedUpAmbientSoundsCount = AmbientsPatcher.BackupAmbientVolumes();
-            if (backedUpAmbientSoundsCount < ambientSoundsCount)
+            int soundsCount = patcher.DefaultVolumes.Count;
+            int backedUpCount = patcher.BackupVolumes();
+            if (backedUpCount < soundsCount)
             {
-                Mod.Log.Warning("{0}/{1} ambient sound volumes have been backed up", backedUpAmbientSoundsCount, ambientSoundsCount);
-            }
-            int patchedAmbientSoundsCount = AmbientsPatcher.PatchAmbientVolumes();
-            if (patchedAmbientSoundsCount < ambientSoundsCount)
-            {
-                Mod.Log.Warning("{0}/{1} ambient sound volumes have been patched", patchedAmbientSoundsCount, ambientSoundsCount);
+                Mod.Log.Warning("{0}/{1} sound volumes have been backed up", backedUpCount, soundsCount);
             }
 
+            int patchedCount = patcher.PatchVolumes(newVolumes);
+            if (patchedCount < soundsCount)
+            {
+                Mod.Log.Warning("{0}/{1} sound volumes have been patched", patchedCount, soundsCount);
+            }
+        }
+
+        internal void PatchAmbientSounds()
+        {
+            this.PatchSounds(this.AmbientsPatcher, Settings.State.AmbientVolumes);
             Mod.Log.Info("Ambient sound volumes have been patched");
         }
 
-        internal static void PatchEffectSounds()
+        internal void PatchEffectSounds()
         {
             // Patch the sirens for compatibility first!
             var patchResult = SirensPatcher.PatchPoliceSiren();
@@ -171,18 +182,7 @@ namespace AmbientSoundsTuner
                     break;
             }
 
-            int effectSoundsCount = EffectsPatcher.OriginalVolumes.Count;
-            int backedUpEffectSoundsCount = EffectsPatcher.BackupEffectVolumes();
-            if (backedUpEffectSoundsCount < effectSoundsCount)
-            {
-                Mod.Log.Warning("{0}/{1} effect sound volumes have been backed up", backedUpEffectSoundsCount, effectSoundsCount);
-            }
-            int patchedEffectSoundsCount = EffectsPatcher.PatchEffectVolumes();
-            if (patchedEffectSoundsCount < effectSoundsCount)
-            {
-                Mod.Log.Warning("{0}/{1} effect sound volumes have been patched", patchedEffectSoundsCount, effectSoundsCount);
-            }
-
+            this.PatchSounds(this.EffectsPatcher, Settings.State.EffectVolumes);
             Mod.Log.Info("Effect sound volumes have been patched");
         }
     }
