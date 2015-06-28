@@ -34,18 +34,34 @@ following stuff:
 - The values of `AudioManager.instance.m_properties.m_ambients`.
 - The values of `m_audioInfo` within an `EffectInfo` that is a `SoundEffect`.
 
-*Incompatible:*
-- [ARIS] Remove Seagulls
-  - This mod basically removes the sound effects of the seagulls in the same
-    location where Ambient Sounds Tuner changes the volume. However, Ambient
-    Sounds Tuner allows you to customize the volume of the seagulls. Therefore,
-    [ARIS] Remove Seagulls is not needed when using Ambient Sounds Tuner and has
-    to be disabled or removed.
-- SilenceObnoxiousSirens
-  - This mod basically sets the volume of every siren to 0 in the same location
-    as Ambient Sounds Tuner does. However, Ambient Sounds Tuner allows you to
-    customize the volume of each siren. Therefore, SilenceObnoxiousSirens is not
-    needed when using Ambient Sounds Tuner and has to be disabled or removed.
+The following mods are known to be **incompatible**:
+- *[ARIS] Remove Cows* <br>
+  This mod basically removes the sound effects of the cows in the same location
+  where Ambient Sounds Tuner changes the volume. However, Ambient Sounds Tuner
+  allows you to customize the volume of the cows. Therefore, [ARIS] Remove Cows
+  is not needed when using Ambient Sounds Tuner and has to be disabled or
+  removed.
+- *[ARIS] Remove Seagulls* <br>
+  This mod basically removes the sound effects of the seagulls in the same
+  location where Ambient Sounds Tuner changes the volume. However, Ambient
+  Sounds Tuner allows you to customize the volume of the seagulls. Therefore,
+  [ARIS] Remove Seagulls is not needed when using Ambient Sounds Tuner and has
+  to be disabled or removed.
+- *[ARIS] Remove Pigs* <br>
+  This mod basically removes the sound effects of the pigs in the same location
+  where Ambient Sounds Tuner changes the volume. However, Ambient Sounds Tuner
+  allows you to customize the volume of the pigs. Therefore, [ARIS] Remove Pigs
+  is not needed when using Ambient Sounds Tuner and has to be disabled or
+  removed.
+- *SilenceObnoxiousSirens* <br>
+  This mod basically sets the volume of every siren to 0 in the same location as
+  Ambient Sounds Tuner does. However, Ambient Sounds Tuner allows you to
+  customize the volume of each siren. Therefore, SilenceObnoxiousSirens is not
+  needed when using Ambient Sounds Tuner and has to be disabled or removed.
+
+If you happen to have one or more of these mods installed and enabled, you will
+be warned in the debug log (F7). Please do not report issues with these mods as
+they are incompatible.
 
 ## Contributing
 I'm open for any contributions you can make. If you find a bug, create an issue
