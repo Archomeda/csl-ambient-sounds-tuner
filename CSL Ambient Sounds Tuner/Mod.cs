@@ -132,8 +132,9 @@ namespace AmbientSoundsTuner
             base.OnLevelUnloading();
             Settings.SaveConfig(Mod.SettingsFilename);
 
-            // Set isLoaded to false again so the mod will load again at the main menu
+            // Set isLoaded and isActivated to false again so the mod will load again at the main menu
             this.isLoaded = false;
+            this.isActivated = false;
         }
 
 
