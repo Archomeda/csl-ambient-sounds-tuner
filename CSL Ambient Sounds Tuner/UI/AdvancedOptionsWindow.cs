@@ -308,6 +308,13 @@ namespace AmbientSoundsTuner.UI
                 // Here we save when the parent window goes invisible (aka gets closed), this is a workaround to solve bug #2.
                 Mod.Settings.SaveConfig(Mod.SettingsFilename);
             }
+
+            if (!this.isVisible)
+            {
+                // Reset the slider sorting, since otherwise the sliders are not correctly sorted anymore after closing the game menu for some reason.
+                // This is still partly a workaround, as the sliders might not be sorted sometimes, but it should fix itself.
+                this.slidersSorted = false;
+            }
         }
 
         public override void Close()
