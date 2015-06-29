@@ -391,8 +391,8 @@ namespace AmbientSoundsTuner.UI
             panel.height = 25;
 
             UILabel label = panel.AddUIComponent<UILabel>();
-            label.width = sliderX;
             label.text = name;
+            while (label.width > sliderX) label.textScale -= 0.01f;
             label.isLocalized = false;
             label.position = new Vector3(0, -(panel.height - label.height) / 2).RoundToInt();
             label.verticalAlignment = UIVerticalAlignment.Middle;
