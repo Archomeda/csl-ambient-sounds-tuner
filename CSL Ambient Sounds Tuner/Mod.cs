@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.Compatibility;
+using AmbientSoundsTuner.Detour;
+using AmbientSoundsTuner.SoundPatchers;
 using AmbientSoundsTuner.UI;
 using AmbientSoundsTuner.Utils;
 using ColossalFramework.Plugins;
@@ -21,8 +23,17 @@ namespace AmbientSoundsTuner
         internal static Logger Log { get; private set; }
         internal static Mod Instance { get; private set; }
 
+        internal AmbientsPatcher AmbientsPatcher { get; private set; }
+        internal AnimalsPatcher AnimalsPatcher { get; private set; }
+        internal BuildingsPatcher BuildingsPatcher { get; private set; }
+        internal VehiclesPatcher VehiclesPatcher { get; private set; }
+        internal MiscPatcher MiscPatcher { get; private set; }
+
         internal static HashSet<ulong> IncompatibleMods = new HashSet<ulong>()
         {
+            421050717, // [ARIS] Remove Cows
+            421052798, // [ARIS] Remove Pigs
+            421041154, // [ARIS] Remove Seagulls
             421527612, // SilenceObnoxiousSirens
         };
 
@@ -70,6 +81,12 @@ namespace AmbientSoundsTuner
             SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(this), "AmbientSoundsTuner.xml");
             Log = new Logger(this);
             Instance = this;
+
+            this.AmbientsPatcher = new AmbientsPatcher();
+            this.AnimalsPatcher = new AnimalsPatcher();
+            this.BuildingsPatcher = new BuildingsPatcher();
+            this.VehiclesPatcher = new VehiclesPatcher();
+            this.MiscPatcher = new MiscPatcher();
         }
 
         private void Load()
@@ -85,10 +102,13 @@ namespace AmbientSoundsTuner
             }
 
             AdvancedOptions.CreateAdvancedOptions();
+            CustomPlayClickSound.Detour();
+            this.PatchUISounds();
         }
 
         private void Unload()
         {
+            CustomPlayClickSound.UnDetour();
             AdvancedOptions.DestroyAdvancedOptions();
         }
 
@@ -120,8 +140,7 @@ namespace AmbientSoundsTuner
         {
             base.OnLevelLoaded(mode);
             this.Load();
-            PatchAmbientSounds();
-            PatchEffectSounds();
+            PatchSounds();
         }
 
         /// <summary>
@@ -132,30 +151,21 @@ namespace AmbientSoundsTuner
             base.OnLevelUnloading();
             Settings.SaveConfig(Mod.SettingsFilename);
 
+            this.Unload();
+
             // Set isLoaded and isActivated to false again so the mod will load again at the main menu
             this.isLoaded = false;
             this.isActivated = false;
         }
 
 
-        internal static void PatchAmbientSounds()
+        private int PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, float> newVolumes)
         {
-            int ambientSoundsCount = AmbientsPatcher.OriginalVolumes.Count;
-            int backedUpAmbientSoundsCount = AmbientsPatcher.BackupAmbientVolumes();
-            if (backedUpAmbientSoundsCount < ambientSoundsCount)
-            {
-                Mod.Log.Warning("{0}/{1} ambient sound volumes have been backed up", backedUpAmbientSoundsCount, ambientSoundsCount);
-            }
-            int patchedAmbientSoundsCount = AmbientsPatcher.PatchAmbientVolumes();
-            if (patchedAmbientSoundsCount < ambientSoundsCount)
-            {
-                Mod.Log.Warning("{0}/{1} ambient sound volumes have been patched", patchedAmbientSoundsCount, ambientSoundsCount);
-            }
-
-            Mod.Log.Info("Ambient sound volumes have been patched");
+            patcher.BackupVolumes();
+            return patcher.PatchVolumes(newVolumes);
         }
 
-        internal static void PatchEffectSounds()
+        internal void PatchSounds()
         {
             // Patch the sirens for compatibility first!
             var patchResult = SirensPatcher.PatchPoliceSiren();
@@ -172,19 +182,43 @@ namespace AmbientSoundsTuner
                     break;
             }
 
-            int effectSoundsCount = EffectsPatcher.OriginalVolumes.Count;
-            int backedUpEffectSoundsCount = EffectsPatcher.BackupEffectVolumes();
-            if (backedUpEffectSoundsCount < effectSoundsCount)
-            {
-                Mod.Log.Warning("{0}/{1} effect sound volumes have been backed up", backedUpEffectSoundsCount, effectSoundsCount);
-            }
-            int patchedEffectSoundsCount = EffectsPatcher.PatchEffectVolumes();
-            if (patchedEffectSoundsCount < effectSoundsCount)
-            {
-                Mod.Log.Warning("{0}/{1} effect sound volumes have been patched", patchedEffectSoundsCount, effectSoundsCount);
-            }
+            int total = 0;
+            int patched = 0;
 
-            Mod.Log.Info("Effect sound volumes have been patched");
+            total += this.AmbientsPatcher.DefaultVolumes.Count;
+            patched += this.PatchSounds(this.AmbientsPatcher, Settings.AmbientVolumes);
+
+            total += this.AnimalsPatcher.DefaultVolumes.Count;
+            patched += this.PatchSounds(this.AnimalsPatcher, Settings.AnimalVolumes);
+
+            total += this.BuildingsPatcher.DefaultVolumes.Count;
+            patched += this.PatchSounds(this.BuildingsPatcher, Settings.BuildingVolumes);
+
+            total += this.VehiclesPatcher.DefaultVolumes.Count;
+            patched += this.PatchSounds(this.VehiclesPatcher, Settings.VehicleVolumes);
+
+            total += this.MiscPatcher.DefaultVolumes.Count;
+            patched += this.PatchSounds(this.MiscPatcher, Settings.MiscVolumes);
+
+            if (total == patched)
+            {
+                Mod.Log.Info("All {0} sound volumes have been patched", patched);
+            }
+            else
+            {
+                Mod.Log.Warning("{0}/{1} sound volumes have been patched", patched, total);
+            }
+        }
+
+        internal void PatchUISounds()
+        {
+            float clickVolume = 1;
+            float disabledClickVolume = 1;
+            Mod.Settings.MiscVolumes.TryGetValue(MiscPatcher.ID_CLICK_SOUND, out clickVolume);
+            Mod.Settings.MiscVolumes.TryGetValue(MiscPatcher.ID_DISABLED_CLICK_SOUND, out disabledClickVolume);
+
+            this.MiscPatcher.PatchVolume(MiscPatcher.ID_CLICK_SOUND, clickVolume);
+            this.MiscPatcher.PatchVolume(MiscPatcher.ID_DISABLED_CLICK_SOUND, disabledClickVolume);
         }
     }
 }
