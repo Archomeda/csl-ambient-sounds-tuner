@@ -35,7 +35,7 @@ namespace AmbientSoundsTuner.SoundPatchers
                     soundEffect = SoundsCollection.Pig;
                     break;
                 case ID_SEAGULL:
-                    soundEffect = SoundsCollection.SeagullScream;
+                    soundEffect = SoundsCollection.Seagull;
                     break;
             }
 

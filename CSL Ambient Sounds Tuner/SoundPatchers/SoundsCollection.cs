@@ -16,34 +16,34 @@ namespace AmbientSoundsTuner.SoundPatchers
         private const string ID_SEAGULL_SCREAM = "Seagull Scream";
 
         private const string ID_ADVANCED_WIND_TURBINE_INFO = "Advanced Wind Turbine";
-        private const string ID_CEMETERY = "Cemetery";
+        private const string ID_AIRPORT_BUILDING = "Building Airport";
+        private const string ID_BUS_DEPOT_BUILDING = "Building Bus Depot";
+        private const string ID_CEMETERY_INFO = "Cemetery";
         private const string ID_COAL_POWER_PLANT_INFO = "Coal Power Plant";
-        private const string ID_CREMATORY = "Crematory";
-        private const string ID_ELEMENTARY_SCHOOL = "Elementary School";
-        private const string ID_ELEMENTARY_SCHOOL_EU = "Elementary_School_EU";
+        private const string ID_COMMERCIAL_BUILDING = "Building Commercial";
+        private const string ID_CREMATORY_INFO = "Crematory";
+        private const string ID_ELEMENTARY_SCHOOL_INFO = "Elementary School";
+        private const string ID_ELEMENTARY_SCHOOL_EU_INFO = "Elementary_School_EU";
+        private const string ID_FIRE_STATION_BUILDING = "Building Fire Station";
         private const string ID_FUSION_POWER_PLANT_INFO = "Fusion Power Plant";
-        private const string ID_HIGH_SCHOOL = "High School";
-        private const string ID_HIGH_SCHOOL_EU = "highschool_EU";
+        private const string ID_HARBOR_BUILDING = "Building Harbor";
+        private const string ID_HIGH_SCHOOL_INFO = "High School";
+        private const string ID_HIGH_SCHOOL_EU_INFO = "highschool_EU";
+        private const string ID_HOSPITAL_BUILDING = "Building Hospital";
         private const string ID_HYDRO_POWER_PLANT_INFO = "Dam Power House";
         private const string ID_INCINERATION_PLANT_INFO = "Combustion Plant";
+        private const string ID_INDUSTRIAL_BUILDING = "Building Industrial";
+        private const string ID_METRO_STATION_BUILDING = "Building Metro Station";
         private const string ID_NUCLEAR_POWER_PLANT_INFO = "Nuclear Power Plant";
+        private const string ID_POLICE_STATION_BUILDING = "Building Police Station";
+        private const string ID_POWER_PLANT_SMALL_BUILDING = "Building Power Plant Small";
         private const string ID_SOLAR_POWER_PLANT_INFO = "Solar Power Plant";
-        private const string ID_UNIVERSITY = "University";
-        private const string ID_UNIVERSITY_EU = "University_EU";
+        private const string ID_TRAIN_STATION_BUILDING = "Building Train Station";
+        private const string ID_UNIVERSITY_INFO = "University";
+        private const string ID_UNIVERSITY_EU_INFO = "University_EU";
         private const string ID_WATER_DRAIN_PIPE_INFO = "Water Outlet";
         private const string ID_WATER_PUMPING_STATION_INFO = "Water Intake";
         private const string ID_WIND_TURBINE_INFO = "Wind Turbine";
-        private const string ID_BUILDING_AIRPORT = "Building Airport";
-        private const string ID_BUILDING_BUS_DEPOT = "Building Bus Depot";
-        private const string ID_BUILDING_COMMERCIAL = "Building Commercial";
-        private const string ID_BUILDING_FIRE_STATION = "Building Fire Station";
-        private const string ID_BUILDING_HARBOR = "Building Harbor";
-        private const string ID_BUILDING_HOSPITAL = "Building Hospital";
-        private const string ID_BUILDING_INDUSTRIAL = "Building Industrial";
-        private const string ID_BUILDING_METRO_STATION = "Building Metro Station";
-        private const string ID_BUILDING_POLICE_STATION = "Building Police Station";
-        private const string ID_BUILDING_POWER_PLANT_SMALL = "Building Power Plant Small";
-        private const string ID_BUILDING_TRAIN_STATION = "Building Train Station";
 
 
         private const string ID_BUILDING_BULLDOZE = "Building Bulldoze Sound";
@@ -110,9 +110,9 @@ namespace AmbientSoundsTuner.SoundPatchers
         }
 
         /// <summary>
-        /// Gets the seagull scream sound effect; or null if it doesn't exist.
+        /// Gets the seagull sound effect; or null if it doesn't exist.
         /// </summary>
-        public static SoundEffect SeagullScream
+        public static SoundEffect Seagull
         {
             get
             {
@@ -148,9 +148,9 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_subServiceSounds != null)
+                if (BuildingManager.instance.m_properties != null)
                 {
-                    return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_AIRPORT);
+                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, ID_AIRPORT_BUILDING);
                 }
                 return null;
             }
@@ -163,9 +163,9 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_subServiceSounds != null)
+                if (BuildingManager.instance.m_properties != null)
                 {
-                    return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_BUS_DEPOT);
+                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, ID_BUS_DEPOT_BUILDING);
                 }
                 return null;
             }
@@ -178,7 +178,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                return GetAudioInfoFromBuildingInfo(ID_CEMETERY);
+                return GetAudioInfoFromBuildingInfo(ID_CEMETERY_INFO);
             }
         }
 
@@ -200,9 +200,9 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_subServiceSounds != null)
+                if (BuildingManager.instance.m_properties != null)
                 {
-                    return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_COMMERCIAL);
+                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, ID_COMMERCIAL_BUILDING);
                 }
                 return null;
             }
@@ -215,7 +215,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                return GetAudioInfoFromBuildingInfo(ID_CREMATORY);
+                return GetAudioInfoFromBuildingInfo(ID_CREMATORY_INFO);
             }
         }
 
@@ -226,7 +226,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                return GetAudioInfoFromBuildingInfo(ID_ELEMENTARY_SCHOOL) ?? GetAudioInfoFromBuildingInfo(ID_ELEMENTARY_SCHOOL_EU);
+                return GetAudioInfoFromBuildingInfo(ID_ELEMENTARY_SCHOOL_INFO) ?? GetAudioInfoFromBuildingInfo(ID_ELEMENTARY_SCHOOL_EU_INFO);
             }
         }
 
@@ -237,9 +237,9 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_serviceSounds != null)
+                if (BuildingManager.instance.m_properties != null)
                 {
-                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_FIRE_STATION);
+                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, ID_FIRE_STATION_BUILDING);
                 }
                 return null;
             }
@@ -263,9 +263,9 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_subServiceSounds != null)
+                if (BuildingManager.instance.m_properties != null)
                 {
-                    return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_HARBOR);
+                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, ID_HARBOR_BUILDING);
                 }
                 return null;
             }
@@ -278,7 +278,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                return GetAudioInfoFromBuildingInfo(ID_HIGH_SCHOOL) ?? GetAudioInfoFromBuildingInfo(ID_HIGH_SCHOOL_EU);
+                return GetAudioInfoFromBuildingInfo(ID_HIGH_SCHOOL_INFO) ?? GetAudioInfoFromBuildingInfo(ID_HIGH_SCHOOL_EU_INFO);
             }
         }
 
@@ -289,9 +289,9 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_serviceSounds != null)
+                if (BuildingManager.instance.m_properties != null)
                 {
-                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_HOSPITAL);
+                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, ID_HOSPITAL_BUILDING);
                 }
                 return null;
             }
@@ -326,9 +326,9 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_subServiceSounds != null)
+                if (BuildingManager.instance.m_properties != null)
                 {
-                    return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_INDUSTRIAL);
+                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, ID_INDUSTRIAL_BUILDING);
                 }
                 return null;
             }
@@ -341,9 +341,9 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_subServiceSounds != null)
+                if (BuildingManager.instance.m_properties != null)
                 {
-                    return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_METRO_STATION);
+                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, ID_METRO_STATION_BUILDING);
                 }
                 return null;
             }
@@ -367,9 +367,9 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_serviceSounds != null)
+                if (BuildingManager.instance.m_properties != null)
                 {
-                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_POLICE_STATION);
+                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, ID_POLICE_STATION_BUILDING);
                 }
                 return null;
             }
@@ -382,9 +382,9 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_serviceSounds != null)
+                if (BuildingManager.instance.m_properties != null)
                 {
-                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_POWER_PLANT_SMALL);
+                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, ID_POWER_PLANT_SMALL_BUILDING);
                 }
                 return null;
             }
@@ -408,9 +408,9 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_subServiceSounds != null)
+                if (BuildingManager.instance.m_properties != null)
                 {
-                    return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_TRAIN_STATION);
+                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, ID_TRAIN_STATION_BUILDING);
                 }
                 return null;
             }
@@ -423,7 +423,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             get
             {
-                return GetAudioInfoFromBuildingInfo(ID_UNIVERSITY) ?? GetAudioInfoFromBuildingInfo(ID_UNIVERSITY_EU);
+                return GetAudioInfoFromBuildingInfo(ID_UNIVERSITY_INFO) ?? GetAudioInfoFromBuildingInfo(ID_UNIVERSITY_EU_INFO);
             }
         }
 
@@ -650,6 +650,15 @@ namespace AmbientSoundsTuner.SoundPatchers
             if (info != null)
             {
                 return info.m_customLoopSound;
+            }
+            return null;
+        }
+
+        private static AudioInfo GetAudioInfoFromArray(AudioInfo[] list, string id)
+        {
+            if (list != null)
+            {
+                return list.FirstOrDefault(a => a != null && a.name == id);
             }
             return null;
         }
