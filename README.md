@@ -3,13 +3,21 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/pt4toy5d9o5mb1bo/branch/master?svg=true)](https://ci.appveyor.com/project/Archomeda/csl-ambient-sounds-tuner/branch/master)
 
-Sick of hearing those wind sounds when zoomed out, but you still want to hear
-other ambient sounds? This mod will allow you to tune each different ambient
-sound type individually.
+Sick of hearing those wind sounds when zoomed out, or those seagulls screaming
+at you, but you still want to hear other ambient sounds? This mod will allow you
+to tune each different ambient sound type individually.
 
 After installing this mod, go to the audio settings. You should see a new button
-appear that will open a new window where you can change the volume of both the
-ambient sounds and the effect sounds.
+appear that will open a new window where you can change the volume of various
+sounds in the game. The volumes of the following sounds can be changed:
+- Various ambient sounds, like Agricultural, City, Industrial, Sea, and more
+- Animal sounds, like cows, pigs and seagulls
+- Various sounds from buildings, like Commercial, Industrial, various power
+  plants, various stations, buildings that are on fire, and more
+- Various vehicle sounds, like small and large cars, metros, trains, various
+  sirens, and more
+- Various miscellaneous sounds, like bulldozer sounds, UI clicking sounds, and
+  more
 
 **Note:** Although it's not needed anymore, if the button does not show up after
 enabling, try restarting the game.
@@ -33,8 +41,10 @@ time being until an update of this mod is released.
 ### Mods
 This mod should be compatible with all mods, as long as they don't change the
 following stuff:
-- The values of `AudioManager.instance.m_properties.m_ambients`.
-- The values of `m_audioInfo` within an `EffectInfo` that is a `SoundEffect`.
+- The values of `AudioManager.instance.m_properties.m_ambients`
+- The values of `m_audioInfo` within an `EffectInfo` that is a `SoundEffect`
+- Detouring of `UIComponent.PlayClickSound()` and
+  `UIComponent.PlayDisabledClickSound()`
 
 The following mods are known to be **incompatible**:
 - *[ARIS] Remove Cows* <br>
