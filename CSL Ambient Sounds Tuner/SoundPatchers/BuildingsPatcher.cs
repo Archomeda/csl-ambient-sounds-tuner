@@ -14,11 +14,15 @@ namespace AmbientSoundsTuner.SoundPatchers
         public const string ID_ADVANCED_WIND_TURBINE = "Advanced Wind Turbine";
         public const string ID_AIRPORT = "Airport";
         public const string ID_BUS_DEPOT = "Bus Depot";
+        public const string ID_CEMETERY = "Cemetery";
         public const string ID_COAL_OIL_POWER_PLANT = "Coal/Oil Power Plant";
         public const string ID_COMMERCIAL = "Commercial";
+        public const string ID_CREMATORY = "Crematory";
+        public const string ID_ELEMENTARY_SCHOOL = "Elementary School";
         public const string ID_FIRE_STATION = "Fire Station";
         public const string ID_FUSION_POWER_PLANT = "Fusion Power Plant";
         public const string ID_HARBOR = "Harbor";
+        public const string ID_HIGH_SCHOOL = "High School";
         public const string ID_HOSPITAL = "Hospital";
         public const string ID_HYDRO_POWER_PLANT = "Hydro Power Plant";
         public const string ID_INCINERATION_PLANT = "Incineration Plant";
@@ -29,6 +33,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         public const string ID_POWER_PLANT_SMALL = "Small Power Plant";
         public const string ID_SOLAR_POWER_PLANT = "Solar Power Plant";
         public const string ID_TRAIN_STATION = "Train Station";
+        public const string ID_UNIVERSITY = "University";
         public const string ID_WATER_DRAIN_PIPE = "Water Drain/Treatment Plant";
         public const string ID_WATER_PUMPING_STATION = "Water Pumping Station";
         public const string ID_WIND_TURBINE = "Wind Turbine";
@@ -42,11 +47,15 @@ namespace AmbientSoundsTuner.SoundPatchers
             this.DefaultVolumes.Add(ID_ADVANCED_WIND_TURBINE, 1);
             this.DefaultVolumes.Add(ID_AIRPORT, 1);
             this.DefaultVolumes.Add(ID_BUS_DEPOT, 1);
+            this.DefaultVolumes.Add(ID_CEMETERY, 1);
             this.DefaultVolumes.Add(ID_COAL_OIL_POWER_PLANT, 1);
             this.DefaultVolumes.Add(ID_COMMERCIAL, 1);
+            this.DefaultVolumes.Add(ID_CREMATORY, 1);
+            this.DefaultVolumes.Add(ID_ELEMENTARY_SCHOOL, 1);
             this.DefaultVolumes.Add(ID_FIRE_STATION, 1);
             this.DefaultVolumes.Add(ID_FUSION_POWER_PLANT, 4);
             this.DefaultVolumes.Add(ID_HARBOR, 1);
+            this.DefaultVolumes.Add(ID_HIGH_SCHOOL, 1);
             this.DefaultVolumes.Add(ID_HOSPITAL, 1);
             this.DefaultVolumes.Add(ID_HYDRO_POWER_PLANT, 1);
             this.DefaultVolumes.Add(ID_INCINERATION_PLANT, 1);
@@ -57,6 +66,7 @@ namespace AmbientSoundsTuner.SoundPatchers
             this.DefaultVolumes.Add(ID_POWER_PLANT_SMALL, 1);
             this.DefaultVolumes.Add(ID_SOLAR_POWER_PLANT, 1);
             this.DefaultVolumes.Add(ID_TRAIN_STATION, 1);
+            this.DefaultVolumes.Add(ID_UNIVERSITY, 1);
             this.DefaultVolumes.Add(ID_WATER_DRAIN_PIPE, 1);
             this.DefaultVolumes.Add(ID_WATER_PUMPING_STATION, 1);
             this.DefaultVolumes.Add(ID_WIND_TURBINE, 1);
@@ -79,11 +89,20 @@ namespace AmbientSoundsTuner.SoundPatchers
                 case ID_BUS_DEPOT:
                     audioInfo = SoundsCollection.BusDepot;
                     break;
+                case ID_CEMETERY:
+                    audioInfo = SoundsCollection.Cemetery;
+                    break;
                 case ID_COAL_OIL_POWER_PLANT:
                     audioInfo = SoundsCollection.CoalOilPowerPlant;
                     break;
                 case ID_COMMERCIAL:
                     audioInfo = SoundsCollection.Commercial;
+                    break;
+                case ID_CREMATORY:
+                    audioInfo = SoundsCollection.Crematory;
+                    break;
+                case ID_ELEMENTARY_SCHOOL:
+                    audioInfo = SoundsCollection.ElementarySchool;
                     break;
                 case ID_FIRE_STATION:
                     audioInfo = SoundsCollection.FireStation;
@@ -93,6 +112,9 @@ namespace AmbientSoundsTuner.SoundPatchers
                     break;
                 case ID_HARBOR:
                     audioInfo = SoundsCollection.Harbor;
+                    break;
+                case ID_HIGH_SCHOOL:
+                    audioInfo = SoundsCollection.HighSchool;
                     break;
                 case ID_HOSPITAL:
                     audioInfo = SoundsCollection.Hospital;
@@ -123,6 +145,9 @@ namespace AmbientSoundsTuner.SoundPatchers
                     break;
                 case ID_TRAIN_STATION:
                     audioInfo = SoundsCollection.TrainStation;
+                    break;
+                case ID_UNIVERSITY:
+                    audioInfo = SoundsCollection.University;
                     break;
                 case ID_WATER_DRAIN_PIPE:
                     audioInfo = SoundsCollection.WaterDrainPipe;

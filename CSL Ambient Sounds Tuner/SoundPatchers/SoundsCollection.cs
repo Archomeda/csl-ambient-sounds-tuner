@@ -16,12 +16,20 @@ namespace AmbientSoundsTuner.SoundPatchers
         private const string ID_SEAGULL_SCREAM = "Seagull Scream";
 
         private const string ID_ADVANCED_WIND_TURBINE_INFO = "Advanced Wind Turbine";
+        private const string ID_CEMETERY = "Cemetery";
         private const string ID_COAL_POWER_PLANT_INFO = "Coal Power Plant";
+        private const string ID_CREMATORY = "Crematory";
+        private const string ID_ELEMENTARY_SCHOOL = "Elementary School";
+        private const string ID_ELEMENTARY_SCHOOL_EU = "Elementary_School_EU";
         private const string ID_FUSION_POWER_PLANT_INFO = "Fusion Power Plant";
+        private const string ID_HIGH_SCHOOL = "High School";
+        private const string ID_HIGH_SCHOOL_EU = "highschool_EU";
         private const string ID_HYDRO_POWER_PLANT_INFO = "Dam Power House";
         private const string ID_INCINERATION_PLANT_INFO = "Combustion Plant";
         private const string ID_NUCLEAR_POWER_PLANT_INFO = "Nuclear Power Plant";
         private const string ID_SOLAR_POWER_PLANT_INFO = "Solar Power Plant";
+        private const string ID_UNIVERSITY = "University";
+        private const string ID_UNIVERSITY_EU = "University_EU";
         private const string ID_WATER_DRAIN_PIPE_INFO = "Water Outlet";
         private const string ID_WATER_PUMPING_STATION_INFO = "Water Intake";
         private const string ID_WIND_TURBINE_INFO = "Wind Turbine";
@@ -36,6 +44,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         private const string ID_BUILDING_POLICE_STATION = "Building Police Station";
         private const string ID_BUILDING_POWER_PLANT_SMALL = "Building Power Plant Small";
         private const string ID_BUILDING_TRAIN_STATION = "Building Train Station";
+
 
         private const string ID_BUILDING_BULLDOZE = "Building Bulldoze Sound";
         private const string ID_BUILDING_LEVELUP = "Levelup Sound";
@@ -163,6 +172,28 @@ namespace AmbientSoundsTuner.SoundPatchers
         }
 
         /// <summary>
+        /// Gets the cemetery audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo Cemetery
+        {
+            get
+            {
+                return GetAudioInfoFromBuildingInfo(ID_CEMETERY);
+            }
+        }
+
+        /// <summary>
+        /// Gets the coal/oil power plant audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo CoalOilPowerPlant
+        {
+            get
+            {
+                return GetAudioInfoFromBuildingInfo(ID_COAL_POWER_PLANT_INFO);
+            }
+        }
+
+        /// <summary>
         /// Gets the commercial audio info; or null if it doesn't exist.
         /// </summary>
         public static AudioInfo Commercial
@@ -178,13 +209,24 @@ namespace AmbientSoundsTuner.SoundPatchers
         }
 
         /// <summary>
-        /// Gets the coal/oil power plant audio info; or null if it doesn't exist.
+        /// Gets the crematory audio info; or null if it doesn't exist.
         /// </summary>
-        public static AudioInfo CoalOilPowerPlant
+        public static AudioInfo Crematory
         {
             get
             {
-                return GetAudioInfoFromBuildingInfo(ID_COAL_POWER_PLANT_INFO);
+                return GetAudioInfoFromBuildingInfo(ID_CREMATORY);
+            }
+        }
+
+        /// <summary>
+        /// Gets the elementary school audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo ElementarySchool
+        {
+            get
+            {
+                return GetAudioInfoFromBuildingInfo(ID_ELEMENTARY_SCHOOL) ?? GetAudioInfoFromBuildingInfo(ID_ELEMENTARY_SCHOOL_EU);
             }
         }
 
@@ -226,6 +268,17 @@ namespace AmbientSoundsTuner.SoundPatchers
                     return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_HARBOR);
                 }
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the high school audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo HighSchool
+        {
+            get
+            {
+                return GetAudioInfoFromBuildingInfo(ID_HIGH_SCHOOL) ?? GetAudioInfoFromBuildingInfo(ID_HIGH_SCHOOL_EU);
             }
         }
 
@@ -360,6 +413,17 @@ namespace AmbientSoundsTuner.SoundPatchers
                     return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_TRAIN_STATION);
                 }
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the university audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo University
+        {
+            get
+            {
+                return GetAudioInfoFromBuildingInfo(ID_UNIVERSITY) ?? GetAudioInfoFromBuildingInfo(ID_UNIVERSITY_EU);
             }
         }
 

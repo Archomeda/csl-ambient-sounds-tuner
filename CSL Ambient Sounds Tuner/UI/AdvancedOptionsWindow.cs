@@ -68,11 +68,15 @@ namespace AmbientSoundsTuner.UI
         public float buildingVolumeAdvancedWindTurbine;
         public float buildingVolumeAirport;
         public float buildingVolumeBusDepot;
+        public float buildingVolumeCemetary;
         public float buildingVolumeCoalOilPowerPlant;
         public float buildingVolumeCommercial;
+        public float buildingVolumeCrematory;
+        public float buildingVolumeElementarySchool;
         public float buildingVolumeFireStation;
         public float buildingVolumeFusionPowerPlant;
         public float buildingVolumeHarbor;
+        public float buildingVolumeHighSchool;
         public float buildingVolumeHospital;
         public float buildingVolumeHydroPowerPlant;
         public float buildingVolumeIncinerationPlant;
@@ -83,6 +87,7 @@ namespace AmbientSoundsTuner.UI
         public float buildingVolumePowerPlantSmall;
         public float buildingVolumeSolarPowerPlant;
         public float buildingVolumeTrainStation;
+        public float buildingVolumeUniversity;
         public float buildingVolumeWaterDrainPipe;
         public float buildingVolumeWaterPumpingStation;
         public float buildingVolumeWindTurbine;
@@ -207,11 +212,15 @@ namespace AmbientSoundsTuner.UI
             this.AddBuildingSlider(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, new { buildingVolumeAdvancedWindTurbine });
             this.AddBuildingSlider(BuildingsPatcher.ID_AIRPORT, new { buildingVolumeAirport });
             this.AddBuildingSlider(BuildingsPatcher.ID_BUS_DEPOT, new { buildingVolumeBusDepot });
+            this.AddBuildingSlider(BuildingsPatcher.ID_CEMETERY, new { buildingVolumeCemetary });
             this.AddBuildingSlider(BuildingsPatcher.ID_COAL_OIL_POWER_PLANT, new { buildingVolumeCoalOilPowerPlant });
             this.AddBuildingSlider(BuildingsPatcher.ID_COMMERCIAL, new { buildingVolumeCommercial });
+            this.AddBuildingSlider(BuildingsPatcher.ID_CREMATORY, new { buildingVolumeCrematory });
+            this.AddBuildingSlider(BuildingsPatcher.ID_ELEMENTARY_SCHOOL, new { buildingVolumeElementarySchool });
             this.AddBuildingSlider(BuildingsPatcher.ID_FIRE_STATION, new { buildingVolumeFireStation });
             this.AddBuildingSlider(BuildingsPatcher.ID_FUSION_POWER_PLANT, new { buildingVolumeFusionPowerPlant }, 0, 4);
             this.AddBuildingSlider(BuildingsPatcher.ID_HARBOR, new { buildingVolumeHarbor });
+            this.AddBuildingSlider(BuildingsPatcher.ID_HIGH_SCHOOL, new { buildingVolumeHighSchool });
             this.AddBuildingSlider(BuildingsPatcher.ID_HOSPITAL, new { buildingVolumeHospital });
             this.AddBuildingSlider(BuildingsPatcher.ID_HYDRO_POWER_PLANT, new { buildingVolumeHydroPowerPlant });
             this.AddBuildingSlider(BuildingsPatcher.ID_INCINERATION_PLANT, new { buildingVolumeIncinerationPlant });
@@ -222,6 +231,7 @@ namespace AmbientSoundsTuner.UI
             this.AddBuildingSlider(BuildingsPatcher.ID_POWER_PLANT_SMALL, new { buildingVolumePowerPlantSmall });
             this.AddBuildingSlider(BuildingsPatcher.ID_SOLAR_POWER_PLANT, new { buildingVolumeSolarPowerPlant });
             this.AddBuildingSlider(BuildingsPatcher.ID_TRAIN_STATION, new { buildingVolumeTrainStation });
+            this.AddBuildingSlider(BuildingsPatcher.ID_UNIVERSITY, new { buildingVolumeUniversity });
             this.AddBuildingSlider(BuildingsPatcher.ID_WATER_DRAIN_PIPE, new { buildingVolumeWaterDrainPipe });
             this.AddBuildingSlider(BuildingsPatcher.ID_WATER_PUMPING_STATION, new { buildingVolumeWaterPumpingStation });
             this.AddBuildingSlider(BuildingsPatcher.ID_WIND_TURBINE, new { buildingVolumeWindTurbine });
