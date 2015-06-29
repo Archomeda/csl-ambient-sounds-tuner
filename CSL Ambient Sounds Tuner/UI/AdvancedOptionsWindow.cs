@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using AmbientSoundsTuner.Defs;
 using AmbientSoundsTuner.SoundPatchers;
@@ -33,7 +34,7 @@ namespace AmbientSoundsTuner.UI
         protected List<GameObject> AmbientSettingObjects = new List<GameObject>();
         protected List<GameObject> AnimalSettingObjects = new List<GameObject>();
         protected List<GameObject> BuildingSettingObjects = new List<GameObject>();
-        protected List<GameObject> VehiclesSettingObjects = new List<GameObject>();
+        protected List<GameObject> VehicleSettingObjects = new List<GameObject>();
         protected List<GameObject> MiscSettingObjects = new List<GameObject>();
 
         protected UITabstrip Tabstrip;
@@ -63,7 +64,7 @@ namespace AmbientSoundsTuner.UI
         public float ambientVolumeWorld;
         public float animalVolumeCow;
         public float animalVolumePig;
-        public float animalVolumeSeagullScream;
+        public float animalVolumeSeagull;
         public float buildingVolumeAdvancedWindTurbine;
         public float buildingVolumeCoalOilPowerPlant;
         public float buildingVolumeFireStation;
@@ -181,111 +182,58 @@ namespace AmbientSoundsTuner.UI
             this.MiscPanel.autoLayoutPadding = new RectOffset(15, 15, 5, 5);
             this.MiscPanel.wrapLayout = true;
 
-            // Settings
-            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Agricultural, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Agricultural], out this.ambientVolumeAgricultural);
-            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.City, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.City], out this.ambientVolumeCity);
-            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Forest, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Forest], out this.ambientVolumeForest);
-            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Industrial, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Industrial], out this.ambientVolumeIndustrial);
-            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Plaza, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Plaza], out this.ambientVolumePlaza);
-            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Sea, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Sea], out this.ambientVolumeSea);
-            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Stream, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Stream], out this.ambientVolumeStream);
-            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.Suburban, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.Suburban], out this.ambientVolumeSuburban);
-            Mod.Settings.AmbientVolumes.TryGetValueOrDefault(AudioManager.AmbientType.World, Mod.Instance.AmbientsPatcher.DefaultVolumes[AudioManager.AmbientType.World], out this.ambientVolumeWorld);
-
-            Mod.Settings.AnimalVolumes.TryGetValueOrDefault(AnimalsPatcher.ID_COW, Mod.Instance.AnimalsPatcher.DefaultVolumes[AnimalsPatcher.ID_COW], out this.animalVolumeCow);
-            Mod.Settings.AnimalVolumes.TryGetValueOrDefault(AnimalsPatcher.ID_PIG, Mod.Instance.AnimalsPatcher.DefaultVolumes[AnimalsPatcher.ID_PIG], out this.animalVolumePig);
-            Mod.Settings.AnimalVolumes.TryGetValueOrDefault(AnimalsPatcher.ID_SEAGULL, Mod.Instance.AnimalsPatcher.DefaultVolumes[AnimalsPatcher.ID_SEAGULL], out this.animalVolumeSeagullScream);
-
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_ADVANCED_WIND_TURBINE], out this.buildingVolumeAdvancedWindTurbine);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_COAL_OIL_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_COAL_OIL_POWER_PLANT], out this.buildingVolumeCoalOilPowerPlant);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_FIRE_STATION, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_FIRE_STATION], out this.buildingVolumeFireStation);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_FUSION_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_FUSION_POWER_PLANT], out this.buildingVolumeFusionPowerPlant);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_HOSPITAL, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_HOSPITAL], out this.buildingVolumeHospital);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_HYDRO_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_HYDRO_POWER_PLANT], out this.buildingVolumeHydroPowerPlant);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_INCINERATION_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_INCINERATION_PLANT], out this.buildingVolumeIncinerationPlant);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_NUCLEAR_POWER_PLANT], out this.buildingVolumeNuclearPowerPlant);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_POLICE_STATION, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_POLICE_STATION], out this.buildingVolumePoliceStation);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_POWER_PLANT_SMALL, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_POWER_PLANT_SMALL], out this.buildingVolumePowerPlantSmall);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_SOLAR_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_SOLAR_POWER_PLANT], out this.buildingVolumeSolarPowerPlant);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_WATER_DRAIN_PIPE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_WATER_DRAIN_PIPE], out this.buildingVolumeWaterDrainPipe);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_WATER_PUMPING_STATION, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_WATER_PUMPING_STATION], out this.buildingVolumeWaterPumpingStation);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_WIND_TURBINE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_WIND_TURBINE], out this.buildingVolumeWindTurbine);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_FIRE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_FIRE], out this.buildingVolumeOnFire);
-            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_LEVELUP, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_LEVELUP], out this.buildingVolumeOnLevelUp);
-
-            Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_AIRCRAFT_MOVEMENT], out this.vehicleVolumeAircraftMovement);
-            Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_AMBULANCE_SIREN, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_AMBULANCE_SIREN], out this.vehicleVolumeAmbulanceSiren);
-            Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_FIRE_TRUCK_SIREN, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_FIRE_TRUCK_SIREN], out this.vehicleVolumeFireTruckSiren);
-            Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_LARGE_CAR_MOVEMENT, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_LARGE_CAR_MOVEMENT], out this.vehicleVolumeLargeCarMovement);
-            Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_METRO_MOVEMENT, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_METRO_MOVEMENT], out this.vehicleVolumeMetroMovement);
-            Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_POLICE_CAR_SIREN, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_POLICE_CAR_SIREN], out this.vehicleVolumePoliceCarSiren);
-            Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_SMALL_CAR_MOVEMENT, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_SMALL_CAR_MOVEMENT], out this.vehicleVolumeSmallCarMovement);
-            Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_TRAIN_MOVEMENT, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_TRAIN_MOVEMENT], out this.vehicleVolumeTrainMovement);
-            Mod.Settings.VehicleVolumes.TryGetValueOrDefault(VehiclesPatcher.ID_TRANSPORT_ARRIVE, Mod.Instance.VehiclesPatcher.DefaultVolumes[VehiclesPatcher.ID_TRANSPORT_ARRIVE], out this.vehicleVolumeTransportArrive);
-
-            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_BUILDING_BULLDOZE, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_BUILDING_BULLDOZE], out this.miscVolumeBuildingBulldoze);
-            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_BUILDING_PLACEMENT, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_BUILDING_PLACEMENT], out this.miscVolumeBuildingPlacement);
-            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_PROP_BULLDOZE, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_PROP_BULLDOZE], out this.miscVolumePropBulldoze);
-            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_PROP_PLACEMENT, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_PROP_PLACEMENT], out this.miscVolumePropPlacement);
-            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_ROAD_BULLDOZE, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_ROAD_BULLDOZE], out this.miscVolumeRoadBulldoze);
-            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_ROAD_DRAW, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_ROAD_DRAW], out this.miscVolumeRoadDraw);
-            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_ROAD_PLACEMENT, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_ROAD_PLACEMENT], out this.miscVolumeRoadPlacement);
-            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_CLICK_SOUND, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_CLICK_SOUND], out this.miscVolumeClick);
-            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_DISABLED_CLICK_SOUND, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_DISABLED_CLICK_SOUND], out this.miscVolumeDisabledClick);
-            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_ZONE_FILL, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_ZONE_FILL], out this.miscVolumeZoneFill);
-
             // Sliders
-            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Agricultural, "ambientVolumeAgricultural"));
-            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.City, "ambientVolumeCity"));
-            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Forest, "ambientVolumeForest"));
-            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Industrial, "ambientVolumeIndustrial"));
-            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Plaza, "ambientVolumePlaza"));
-            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Sea, "ambientVolumeSea"));
-            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Stream, "ambientVolumeStream"));
-            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Suburban, "ambientVolumeSuburban"));
-            this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.World, "ambientVolumeWorld"));
+            this.AddAmbientSlider(AudioManager.AmbientType.Agricultural, new { ambientVolumeAgricultural });
+            this.AddAmbientSlider(AudioManager.AmbientType.City, new { ambientVolumeCity });
+            this.AddAmbientSlider(AudioManager.AmbientType.Forest, new { ambientVolumeForest });
+            this.AddAmbientSlider(AudioManager.AmbientType.Industrial, new { ambientVolumeIndustrial });
+            this.AddAmbientSlider(AudioManager.AmbientType.Plaza, new { ambientVolumePlaza });
+            this.AddAmbientSlider(AudioManager.AmbientType.Sea, new { ambientVolumeSea });
+            this.AddAmbientSlider(AudioManager.AmbientType.Stream, new { ambientVolumeStream });
+            this.AddAmbientSlider(AudioManager.AmbientType.Suburban, new { ambientVolumeSuburban });
+            this.AddAmbientSlider(AudioManager.AmbientType.World, new { ambientVolumeWorld });
 
-            this.AnimalSettingObjects.Add(this.CreateAnimalVolumeSetting(AnimalsPatcher.ID_COW, "animalVolumeCow"));
-            this.AnimalSettingObjects.Add(this.CreateAnimalVolumeSetting(AnimalsPatcher.ID_PIG, "animalVolumePig"));
-            this.AnimalSettingObjects.Add(this.CreateAnimalVolumeSetting(AnimalsPatcher.ID_SEAGULL, "animalVolumeSeagullScream"));
+            this.AddAnimalSlider(AnimalsPatcher.ID_COW, new { animalVolumeCow });
+            this.AddAnimalSlider(AnimalsPatcher.ID_PIG, new { animalVolumePig });
+            this.AddAnimalSlider(AnimalsPatcher.ID_SEAGULL, new { animalVolumeSeagull });
 
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, "buildingVolumeAdvancedWindTurbine"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_COAL_OIL_POWER_PLANT, "buildingVolumeCoalOilPowerPlant"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_FIRE_STATION, "buildingVolumeFireStation"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_FUSION_POWER_PLANT, "buildingVolumeFusionPowerPlant", 0, 4));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_HOSPITAL, "buildingVolumeHospital"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_HYDRO_POWER_PLANT, "buildingVolumeHydroPowerPlant"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_INCINERATION_PLANT, "buildingVolumeIncinerationPlant"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, "buildingVolumeNuclearPowerPlant"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_POLICE_STATION, "buildingVolumePoliceStation"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_POWER_PLANT_SMALL, "buildingVolumePowerPlantSmall"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_SOLAR_POWER_PLANT, "buildingVolumeSolarPowerPlant"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_WATER_DRAIN_PIPE, "buildingVolumeWaterDrainPipe"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_WATER_PUMPING_STATION, "buildingVolumeWaterPumpingStation"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_WIND_TURBINE, "buildingVolumeWindTurbine"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_FIRE, "buildingVolumeOnFire"));
-            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_LEVELUP, "buildingVolumeOnLevelUp", 0, 0.25f));
+            this.AddBuildingSlider(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, new { buildingVolumeAdvancedWindTurbine });
+            this.AddBuildingSlider(BuildingsPatcher.ID_COAL_OIL_POWER_PLANT, new { buildingVolumeCoalOilPowerPlant });
+            this.AddBuildingSlider(BuildingsPatcher.ID_FIRE_STATION, new { buildingVolumeFireStation });
+            this.AddBuildingSlider(BuildingsPatcher.ID_FUSION_POWER_PLANT, new { buildingVolumeFusionPowerPlant }, 0, 4);
+            this.AddBuildingSlider(BuildingsPatcher.ID_HOSPITAL, new { buildingVolumeHospital });
+            this.AddBuildingSlider(BuildingsPatcher.ID_HYDRO_POWER_PLANT, new { buildingVolumeHydroPowerPlant });
+            this.AddBuildingSlider(BuildingsPatcher.ID_INCINERATION_PLANT, new { buildingVolumeIncinerationPlant });
+            this.AddBuildingSlider(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, new { buildingVolumeNuclearPowerPlant });
+            this.AddBuildingSlider(BuildingsPatcher.ID_POLICE_STATION, new { buildingVolumePoliceStation });
+            this.AddBuildingSlider(BuildingsPatcher.ID_POWER_PLANT_SMALL, new { buildingVolumePowerPlantSmall });
+            this.AddBuildingSlider(BuildingsPatcher.ID_SOLAR_POWER_PLANT, new { buildingVolumeSolarPowerPlant });
+            this.AddBuildingSlider(BuildingsPatcher.ID_WATER_DRAIN_PIPE, new { buildingVolumeWaterDrainPipe });
+            this.AddBuildingSlider(BuildingsPatcher.ID_WATER_PUMPING_STATION, new { buildingVolumeWaterPumpingStation });
+            this.AddBuildingSlider(BuildingsPatcher.ID_WIND_TURBINE, new { buildingVolumeWindTurbine });
+            this.AddBuildingSlider(BuildingsPatcher.ID_FIRE, new { buildingVolumeOnFire });
+            this.AddBuildingSlider(BuildingsPatcher.ID_LEVELUP, new { buildingVolumeOnLevelUp }, 0, 0.25f);
 
-            this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, "vehicleVolumeAircraftMovement"));
-            this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_AMBULANCE_SIREN, "vehicleVolumeAmbulanceSiren"));
-            this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_FIRE_TRUCK_SIREN, "vehicleVolumeFireTruckSiren", 0, 3));
-            this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_LARGE_CAR_MOVEMENT, "vehicleVolumeLargeCarMovement", 0, 1.5f));
-            this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_METRO_MOVEMENT, "vehicleVolumeMetroMovement"));
-            this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_POLICE_CAR_SIREN, "vehicleVolumePoliceCarSiren"));
-            this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_SMALL_CAR_MOVEMENT, "vehicleVolumeSmallCarMovement", 0, 1.5f));
-            this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_TRAIN_MOVEMENT, "vehicleVolumeTrainMovement"));
-            this.VehiclesSettingObjects.Add(this.CreateVehicleVolumeSetting(VehiclesPatcher.ID_TRANSPORT_ARRIVE, "vehicleVolumeTransportArrive"));
+            this.AddVehicleSlider(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, new { vehicleVolumeAircraftMovement });
+            this.AddVehicleSlider(VehiclesPatcher.ID_AMBULANCE_SIREN, new { vehicleVolumeAmbulanceSiren });
+            this.AddVehicleSlider(VehiclesPatcher.ID_FIRE_TRUCK_SIREN, new { vehicleVolumeFireTruckSiren });
+            this.AddVehicleSlider(VehiclesPatcher.ID_LARGE_CAR_MOVEMENT, new { vehicleVolumeLargeCarMovement });
+            this.AddVehicleSlider(VehiclesPatcher.ID_METRO_MOVEMENT, new { vehicleVolumeMetroMovement });
+            this.AddVehicleSlider(VehiclesPatcher.ID_POLICE_CAR_SIREN, new { vehicleVolumePoliceCarSiren });
+            this.AddVehicleSlider(VehiclesPatcher.ID_SMALL_CAR_MOVEMENT, new { vehicleVolumeSmallCarMovement });
+            this.AddVehicleSlider(VehiclesPatcher.ID_TRAIN_MOVEMENT, new { vehicleVolumeTrainMovement });
+            this.AddVehicleSlider(VehiclesPatcher.ID_TRANSPORT_ARRIVE, new { vehicleVolumeTransportArrive });
 
-            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_BUILDING_BULLDOZE, "miscVolumeBuildingBulldoze"));
-            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_BUILDING_PLACEMENT, "miscVolumeBuildingPlacement"));
-            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_PROP_BULLDOZE, "miscVolumePropBulldoze"));
-            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_PROP_PLACEMENT, "miscVolumePropPlacement"));
-            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_ROAD_BULLDOZE, "miscVolumeRoadBulldoze"));
-            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_ROAD_DRAW, "miscVolumeRoadDraw"));
-            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_ROAD_PLACEMENT, "miscVolumeRoadPlacement"));
-            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_CLICK_SOUND, "miscVolumeClick"));
-            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_DISABLED_CLICK_SOUND, "miscVolumeDisabledClick"));
-            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_ZONE_FILL, "miscVolumeZoneFill"));
+            this.AddMiscSlider(MiscPatcher.ID_BUILDING_BULLDOZE, new { miscVolumeBuildingBulldoze });
+            this.AddMiscSlider(MiscPatcher.ID_BUILDING_PLACEMENT, new { miscVolumeBuildingPlacement });
+            this.AddMiscSlider(MiscPatcher.ID_PROP_BULLDOZE, new { miscVolumePropBulldoze });
+            this.AddMiscSlider(MiscPatcher.ID_PROP_PLACEMENT, new { miscVolumePropPlacement });
+            this.AddMiscSlider(MiscPatcher.ID_ROAD_BULLDOZE, new { miscVolumeRoadBulldoze });
+            this.AddMiscSlider(MiscPatcher.ID_ROAD_DRAW, new { miscVolumeRoadDraw });
+            this.AddMiscSlider(MiscPatcher.ID_ROAD_PLACEMENT, new { miscVolumeRoadPlacement });
+            this.AddMiscSlider(MiscPatcher.ID_CLICK_SOUND, new { miscVolumeClick });
+            this.AddMiscSlider(MiscPatcher.ID_DISABLED_CLICK_SOUND, new { miscVolumeDisabledClick });
+            this.AddMiscSlider(MiscPatcher.ID_ZONE_FILL, new { miscVolumeZoneFill });
 
             // Some extra event listeners
             this.eventVisibilityChanged += AdvancedOptionsWindow_eventVisibilityChanged;
@@ -333,6 +281,44 @@ namespace AmbientSoundsTuner.UI
         {
             Mod.Settings.SaveConfig(Mod.SettingsFilename);
             base.Close();
+        }
+
+
+        #region Slider Helpers
+
+        protected void AddAmbientSlider<F>(AudioManager.AmbientType id, F volumeField, float minValue = 0, float maxValue = 1) where F : class
+        {
+            this.AddSlider(Mod.Settings.AmbientVolumes, this.AmbientSettingObjects, this.CreateAmbientVolumeSetting, Mod.Instance.AmbientsPatcher, id, volumeField, minValue, maxValue);
+        }
+
+        protected void AddAnimalSlider<F>(string id, F volumeField, float minValue = 0, float maxValue = 1) where F : class
+        {
+            this.AddSlider(Mod.Settings.AnimalVolumes, this.AnimalSettingObjects, this.CreateAnimalVolumeSetting, Mod.Instance.AnimalsPatcher, id, volumeField, minValue, maxValue);
+        }
+
+        protected void AddBuildingSlider<F>(string id, F volumeField, float minValue = 0, float maxValue = 1) where F : class
+        {
+            this.AddSlider(Mod.Settings.BuildingVolumes, this.BuildingSettingObjects, this.CreateBuildingVolumeSetting, Mod.Instance.BuildingsPatcher, id, volumeField, minValue, maxValue);
+        }
+
+        protected void AddVehicleSlider<F>(string id, F volumeField, float minValue = 0, float maxValue = 1) where F : class
+        {
+            this.AddSlider(Mod.Settings.VehicleVolumes, this.VehicleSettingObjects, this.CreateVehicleVolumeSetting, Mod.Instance.VehiclesPatcher, id, volumeField, minValue, maxValue);
+        }
+
+        protected void AddMiscSlider<F>(string id, F volumeField, float minValue = 0, float maxValue = 1) where F : class
+        {
+            this.AddSlider(Mod.Settings.MiscVolumes, this.MiscSettingObjects, this.CreateMiscVolumeSetting, Mod.Instance.MiscPatcher, id, volumeField, minValue, maxValue);
+        }
+
+        protected void AddSlider<T, F>(IDictionary<T, float> volumeDictionary, IList<GameObject> settingObjectsList, Func<T, string, float, float, GameObject> volumeSettingCreator, SoundsInstancePatcher<T> patcher, T id, F volumeField, float minValue = 0, float maxValue = 1) where F : class
+        {
+            float volume;
+            volumeDictionary.TryGetValueOrDefault(id, patcher.DefaultVolumes[id], out volume);
+            string volumeFieldName = typeof(F).GetProperties()[0].Name;
+            FieldInfo volumeFieldInfo = this.GetType().GetField(volumeFieldName);
+            volumeFieldInfo.SetValue(this, volume);
+            settingObjectsList.Add(volumeSettingCreator(id, volumeFieldName, minValue, maxValue));
         }
 
         protected GameObject CreateAmbientVolumeSetting(AudioManager.AmbientType type, string memberName, float minValue = 0, float maxValue = 1)
@@ -405,6 +391,8 @@ namespace AmbientSoundsTuner.UI
 
             return setting;
         }
+
+        #endregion
 
 
         private class SortSlidersByTextComparer : Comparer<UIComponent>
