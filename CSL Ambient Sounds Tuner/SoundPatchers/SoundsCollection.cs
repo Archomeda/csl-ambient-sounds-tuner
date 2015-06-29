@@ -25,10 +25,17 @@ namespace AmbientSoundsTuner.SoundPatchers
         private const string ID_WATER_DRAIN_PIPE_INFO = "Water Outlet";
         private const string ID_WATER_PUMPING_STATION_INFO = "Water Intake";
         private const string ID_WIND_TURBINE_INFO = "Wind Turbine";
+        private const string ID_BUILDING_AIRPORT = "Building Airport";
+        private const string ID_BUILDING_BUS_DEPOT = "Building Bus Depot";
+        private const string ID_BUILDING_COMMERCIAL = "Building Commercial";
         private const string ID_BUILDING_FIRE_STATION = "Building Fire Station";
+        private const string ID_BUILDING_HARBOR = "Building Harbor";
         private const string ID_BUILDING_HOSPITAL = "Building Hospital";
+        private const string ID_BUILDING_INDUSTRIAL = "Building Industrial";
+        private const string ID_BUILDING_METRO_STATION = "Building Metro Station";
         private const string ID_BUILDING_POLICE_STATION = "Building Police Station";
         private const string ID_BUILDING_POWER_PLANT_SMALL = "Building Power Plant Small";
+        private const string ID_BUILDING_TRAIN_STATION = "Building Train Station";
 
         private const string ID_BUILDING_BULLDOZE = "Building Bulldoze Sound";
         private const string ID_BUILDING_LEVELUP = "Levelup Sound";
@@ -126,6 +133,51 @@ namespace AmbientSoundsTuner.SoundPatchers
         }
 
         /// <summary>
+        /// Gets the airport audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo Airport
+        {
+            get
+            {
+                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_subServiceSounds != null)
+                {
+                    return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_AIRPORT);
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the bus depot audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo BusDepot
+        {
+            get
+            {
+                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_subServiceSounds != null)
+                {
+                    return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_BUS_DEPOT);
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the commercial audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo Commercial
+        {
+            get
+            {
+                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_subServiceSounds != null)
+                {
+                    return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_COMMERCIAL);
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Gets the coal/oil power plant audio info; or null if it doesn't exist.
         /// </summary>
         public static AudioInfo CoalOilPowerPlant
@@ -163,6 +215,21 @@ namespace AmbientSoundsTuner.SoundPatchers
         }
 
         /// <summary>
+        /// Gets the harbor audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo Harbor
+        {
+            get
+            {
+                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_subServiceSounds != null)
+                {
+                    return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_HARBOR);
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Gets the hospital audio info; or null if it doesn't exist.
         /// </summary>
         public static AudioInfo Hospital
@@ -196,6 +263,36 @@ namespace AmbientSoundsTuner.SoundPatchers
             get
             {
                 return GetAudioInfoFromBuildingInfo(ID_INCINERATION_PLANT_INFO);
+            }
+        }
+
+        /// <summary>
+        /// Gets the industrial audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo Industrial
+        {
+            get
+            {
+                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_subServiceSounds != null)
+                {
+                    return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_INDUSTRIAL);
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the metro station audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo MetroStation
+        {
+            get
+            {
+                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_subServiceSounds != null)
+                {
+                    return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_METRO_STATION);
+                }
+                return null;
             }
         }
 
@@ -248,6 +345,21 @@ namespace AmbientSoundsTuner.SoundPatchers
             get
             {
                 return GetAudioInfoFromBuildingInfo(ID_SOLAR_POWER_PLANT_INFO);
+            }
+        }
+
+        /// <summary>
+        /// Gets the train station audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo TrainStation
+        {
+            get
+            {
+                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_subServiceSounds != null)
+                {
+                    return BuildingManager.instance.m_properties.m_subServiceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_TRAIN_STATION);
+                }
+                return null;
             }
         }
 

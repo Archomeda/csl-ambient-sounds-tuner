@@ -66,16 +66,23 @@ namespace AmbientSoundsTuner.UI
         public float animalVolumePig;
         public float animalVolumeSeagull;
         public float buildingVolumeAdvancedWindTurbine;
+        public float buildingVolumeAirport;
+        public float buildingVolumeBusDepot;
         public float buildingVolumeCoalOilPowerPlant;
+        public float buildingVolumeCommercial;
         public float buildingVolumeFireStation;
         public float buildingVolumeFusionPowerPlant;
+        public float buildingVolumeHarbor;
         public float buildingVolumeHospital;
         public float buildingVolumeHydroPowerPlant;
         public float buildingVolumeIncinerationPlant;
+        public float buildingVolumeIndustrial;
+        public float buildingVolumeMetroStation;
         public float buildingVolumeNuclearPowerPlant;
         public float buildingVolumePoliceStation;
         public float buildingVolumePowerPlantSmall;
         public float buildingVolumeSolarPowerPlant;
+        public float buildingVolumeTrainStation;
         public float buildingVolumeWaterDrainPipe;
         public float buildingVolumeWaterPumpingStation;
         public float buildingVolumeWindTurbine;
@@ -104,7 +111,7 @@ namespace AmbientSoundsTuner.UI
         public override void Start()
         {
             this.width = 750;
-            this.height = 430;
+            this.height = 630;
             this.Title = "SOUNDS TUNER";
             base.Start();
 
@@ -114,7 +121,7 @@ namespace AmbientSoundsTuner.UI
             this.Tabstrip.anchor = UIAnchorStyle.Top | UIAnchorStyle.Left | UIAnchorStyle.Right;
 
             this.TabContainer = this.ContentPanel.AddUIComponent<UITabContainer>();
-            this.TabContainer.size = new Vector2(700, 330);
+            this.TabContainer.size = new Vector2(700, 530);
             this.TabContainer.relativePosition = new Vector3(20, 20 + this.Tabstrip.height);
             this.TabContainer.anchor = UIAnchorStyle.All;
             this.Tabstrip.tabPages = this.TabContainer;
@@ -198,16 +205,23 @@ namespace AmbientSoundsTuner.UI
             this.AddAnimalSlider(AnimalsPatcher.ID_SEAGULL, new { animalVolumeSeagull });
 
             this.AddBuildingSlider(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, new { buildingVolumeAdvancedWindTurbine });
+            this.AddBuildingSlider(BuildingsPatcher.ID_AIRPORT, new { buildingVolumeAirport });
+            this.AddBuildingSlider(BuildingsPatcher.ID_BUS_DEPOT, new { buildingVolumeBusDepot });
             this.AddBuildingSlider(BuildingsPatcher.ID_COAL_OIL_POWER_PLANT, new { buildingVolumeCoalOilPowerPlant });
+            this.AddBuildingSlider(BuildingsPatcher.ID_COMMERCIAL, new { buildingVolumeCommercial });
             this.AddBuildingSlider(BuildingsPatcher.ID_FIRE_STATION, new { buildingVolumeFireStation });
             this.AddBuildingSlider(BuildingsPatcher.ID_FUSION_POWER_PLANT, new { buildingVolumeFusionPowerPlant }, 0, 4);
+            this.AddBuildingSlider(BuildingsPatcher.ID_HARBOR, new { buildingVolumeHarbor });
             this.AddBuildingSlider(BuildingsPatcher.ID_HOSPITAL, new { buildingVolumeHospital });
             this.AddBuildingSlider(BuildingsPatcher.ID_HYDRO_POWER_PLANT, new { buildingVolumeHydroPowerPlant });
             this.AddBuildingSlider(BuildingsPatcher.ID_INCINERATION_PLANT, new { buildingVolumeIncinerationPlant });
+            this.AddBuildingSlider(BuildingsPatcher.ID_INDUSTRIAL, new { buildingVolumeIndustrial }, 0, 0.5f);
+            this.AddBuildingSlider(BuildingsPatcher.ID_METRO_STATION, new { buildingVolumeMetroStation });
             this.AddBuildingSlider(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, new { buildingVolumeNuclearPowerPlant });
             this.AddBuildingSlider(BuildingsPatcher.ID_POLICE_STATION, new { buildingVolumePoliceStation });
             this.AddBuildingSlider(BuildingsPatcher.ID_POWER_PLANT_SMALL, new { buildingVolumePowerPlantSmall });
             this.AddBuildingSlider(BuildingsPatcher.ID_SOLAR_POWER_PLANT, new { buildingVolumeSolarPowerPlant });
+            this.AddBuildingSlider(BuildingsPatcher.ID_TRAIN_STATION, new { buildingVolumeTrainStation });
             this.AddBuildingSlider(BuildingsPatcher.ID_WATER_DRAIN_PIPE, new { buildingVolumeWaterDrainPipe });
             this.AddBuildingSlider(BuildingsPatcher.ID_WATER_PUMPING_STATION, new { buildingVolumeWaterPumpingStation });
             this.AddBuildingSlider(BuildingsPatcher.ID_WIND_TURBINE, new { buildingVolumeWindTurbine });
