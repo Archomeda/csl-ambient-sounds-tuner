@@ -145,7 +145,7 @@ namespace AmbientSoundsTuner.SoundPatchers
             {
                 if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_serviceSounds != null)
                 {
-                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a.name == ID_BUILDING_FIRE_STATION);
+                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_FIRE_STATION);
                 }
                 return null;
             }
@@ -171,7 +171,7 @@ namespace AmbientSoundsTuner.SoundPatchers
             {
                 if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_serviceSounds != null)
                 {
-                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a.name == ID_BUILDING_HOSPITAL);
+                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_HOSPITAL);
                 }
                 return null;
             }
@@ -219,7 +219,7 @@ namespace AmbientSoundsTuner.SoundPatchers
             {
                 if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_serviceSounds != null)
                 {
-                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a.name == ID_BUILDING_POLICE_STATION);
+                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_POLICE_STATION);
                 }
                 return null;
             }
@@ -234,7 +234,7 @@ namespace AmbientSoundsTuner.SoundPatchers
             {
                 if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_serviceSounds != null)
                 {
-                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a.name == ID_BUILDING_POWER_PLANT_SMALL);
+                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a != null && a.name == ID_BUILDING_POWER_PLANT_SMALL);
                 }
                 return null;
             }
