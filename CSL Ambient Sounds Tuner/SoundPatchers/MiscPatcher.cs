@@ -20,6 +20,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         public const string ID_ROAD_DRAW = "Road Drawer";
         public const string ID_CLICK_SOUND = "UI Clicks";
         public const string ID_DISABLED_CLICK_SOUND = "UI Clicks (Disabled)";
+        public const string ID_ZONE_FILL = "Zone Filler";
 
         public MiscPatcher()
             : base()
@@ -33,6 +34,7 @@ namespace AmbientSoundsTuner.SoundPatchers
             this.DefaultVolumes.Add(ID_ROAD_DRAW, 1);
             this.DefaultVolumes.Add(ID_CLICK_SOUND, 1);
             this.DefaultVolumes.Add(ID_DISABLED_CLICK_SOUND, 1);
+            this.DefaultVolumes.Add(ID_ZONE_FILL, 1);
         }
 
         protected override AudioInfo GetAudioInfoById(string id)
@@ -57,6 +59,9 @@ namespace AmbientSoundsTuner.SoundPatchers
                     break;
                 case ID_ROAD_PLACEMENT:
                     soundEffect = SoundsCollection.RoadPlacement;
+                    break;
+                case ID_ZONE_FILL:
+                    soundEffect = SoundsCollection.ZoneFill;
                     break;
             }
 

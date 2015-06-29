@@ -94,6 +94,7 @@ namespace AmbientSoundsTuner.UI
         public float miscVolumeRoadPlacement;
         public float miscVolumeClick;
         public float miscVolumeDisabledClick;
+        public float miscVolumeZoneFill;
 
         public override void Start()
         {
@@ -223,6 +224,7 @@ namespace AmbientSoundsTuner.UI
             Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_ROAD_PLACEMENT, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_ROAD_PLACEMENT], out this.miscVolumeRoadPlacement);
             Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_CLICK_SOUND, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_CLICK_SOUND], out this.miscVolumeClick);
             Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_DISABLED_CLICK_SOUND, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_DISABLED_CLICK_SOUND], out this.miscVolumeDisabledClick);
+            Mod.Settings.MiscVolumes.TryGetValueOrDefault(MiscPatcher.ID_ZONE_FILL, Mod.Instance.MiscPatcher.DefaultVolumes[MiscPatcher.ID_ZONE_FILL], out this.miscVolumeZoneFill);
 
             // Sliders
             this.AmbientSettingObjects.Add(this.CreateAmbientVolumeSetting(AudioManager.AmbientType.Agricultural, "ambientVolumeAgricultural"));
@@ -271,6 +273,7 @@ namespace AmbientSoundsTuner.UI
             this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_ROAD_PLACEMENT, "miscVolumeRoadPlacement"));
             this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_CLICK_SOUND, "miscVolumeClick"));
             this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_DISABLED_CLICK_SOUND, "miscVolumeDisabledClick"));
+            this.MiscSettingObjects.Add(this.CreateMiscVolumeSetting(MiscPatcher.ID_ZONE_FILL, "miscVolumeZoneFill"));
 
             // Some extra event listeners
             this.eventVisibilityChanged += AdvancedOptionsWindow_eventVisibilityChanged;

@@ -388,6 +388,21 @@ namespace AmbientSoundsTuner.SoundPatchers
             }
         }
 
+        /// <summary>
+        /// Gets the zone fill sound effect; or null if it doesn't exist.
+        /// </summary>
+        public static SoundEffect ZoneFill
+        {
+            get
+            {
+                if (ZoneManager.instance.m_properties != null)
+                {
+                    return ZoneManager.instance.m_properties.m_fillEffect as SoundEffect;
+                }
+                return null;
+            }
+        }
+
 
         private static AudioInfo GetAudioInfoFromBuildingInfo(string id)
         {
