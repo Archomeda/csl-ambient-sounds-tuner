@@ -66,10 +66,14 @@ namespace AmbientSoundsTuner.UI
         public float animalVolumeSeagullScream;
         public float buildingVolumeAdvancedWindTurbine;
         public float buildingVolumeCoalOilPowerPlant;
+        public float buildingVolumeFireStation;
         public float buildingVolumeFusionPowerPlant;
+        public float buildingVolumeHospital;
         public float buildingVolumeHydroPowerPlant;
         public float buildingVolumeIncinerationPlant;
         public float buildingVolumeNuclearPowerPlant;
+        public float buildingVolumePoliceStation;
+        public float buildingVolumePowerPlantSmall;
         public float buildingVolumeSolarPowerPlant;
         public float buildingVolumeWaterDrainPipe;
         public float buildingVolumeWaterPumpingStation;
@@ -194,10 +198,14 @@ namespace AmbientSoundsTuner.UI
 
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_ADVANCED_WIND_TURBINE], out this.buildingVolumeAdvancedWindTurbine);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_COAL_OIL_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_COAL_OIL_POWER_PLANT], out this.buildingVolumeCoalOilPowerPlant);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_FIRE_STATION, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_FIRE_STATION], out this.buildingVolumeFireStation);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_FUSION_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_FUSION_POWER_PLANT], out this.buildingVolumeFusionPowerPlant);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_HOSPITAL, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_HOSPITAL], out this.buildingVolumeHospital);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_HYDRO_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_HYDRO_POWER_PLANT], out this.buildingVolumeHydroPowerPlant);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_INCINERATION_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_INCINERATION_PLANT], out this.buildingVolumeIncinerationPlant);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_NUCLEAR_POWER_PLANT], out this.buildingVolumeNuclearPowerPlant);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_POLICE_STATION, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_POLICE_STATION], out this.buildingVolumePoliceStation);
+            Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_POWER_PLANT_SMALL, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_POWER_PLANT_SMALL], out this.buildingVolumePowerPlantSmall);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_SOLAR_POWER_PLANT, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_SOLAR_POWER_PLANT], out this.buildingVolumeSolarPowerPlant);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_WATER_DRAIN_PIPE, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_WATER_DRAIN_PIPE], out this.buildingVolumeWaterDrainPipe);
             Mod.Settings.BuildingVolumes.TryGetValueOrDefault(BuildingsPatcher.ID_WATER_PUMPING_STATION, Mod.Instance.BuildingsPatcher.DefaultVolumes[BuildingsPatcher.ID_WATER_PUMPING_STATION], out this.buildingVolumeWaterPumpingStation);
@@ -243,10 +251,14 @@ namespace AmbientSoundsTuner.UI
 
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, "buildingVolumeAdvancedWindTurbine"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_COAL_OIL_POWER_PLANT, "buildingVolumeCoalOilPowerPlant"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_FIRE_STATION, "buildingVolumeFireStation"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_FUSION_POWER_PLANT, "buildingVolumeFusionPowerPlant", 0, 4));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_HOSPITAL, "buildingVolumeHospital"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_HYDRO_POWER_PLANT, "buildingVolumeHydroPowerPlant"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_INCINERATION_PLANT, "buildingVolumeIncinerationPlant"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, "buildingVolumeNuclearPowerPlant"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_POLICE_STATION, "buildingVolumePoliceStation"));
+            this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_POWER_PLANT_SMALL, "buildingVolumePowerPlantSmall"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_SOLAR_POWER_PLANT, "buildingVolumeSolarPowerPlant"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_WATER_DRAIN_PIPE, "buildingVolumeWaterDrainPipe"));
             this.BuildingSettingObjects.Add(this.CreateBuildingVolumeSetting(BuildingsPatcher.ID_WATER_PUMPING_STATION, "buildingVolumeWaterPumpingStation"));

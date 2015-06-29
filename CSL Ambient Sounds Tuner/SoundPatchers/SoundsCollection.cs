@@ -25,6 +25,10 @@ namespace AmbientSoundsTuner.SoundPatchers
         private const string ID_WATER_DRAIN_PIPE_INFO = "Water Outlet";
         private const string ID_WATER_PUMPING_STATION_INFO = "Water Intake";
         private const string ID_WIND_TURBINE_INFO = "Wind Turbine";
+        private const string ID_BUILDING_FIRE_STATION = "Building Fire Station";
+        private const string ID_BUILDING_HOSPITAL = "Building Hospital";
+        private const string ID_BUILDING_POLICE_STATION = "Building Police Station";
+        private const string ID_BUILDING_POWER_PLANT_SMALL = "Building Power Plant Small";
 
         private const string ID_BUILDING_BULLDOZE = "Building Bulldoze Sound";
         private const string ID_BUILDING_LEVELUP = "Levelup Sound";
@@ -133,6 +137,21 @@ namespace AmbientSoundsTuner.SoundPatchers
         }
 
         /// <summary>
+        /// Gets the fire station audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo FireStation
+        {
+            get
+            {
+                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_serviceSounds != null)
+                {
+                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a.name == ID_BUILDING_FIRE_STATION);
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Gets the fusion power plant audio info; or null if it doesn't exist.
         /// </summary>
         public static AudioInfo FusionPowerPlant
@@ -140,6 +159,21 @@ namespace AmbientSoundsTuner.SoundPatchers
             get
             {
                 return GetAudioInfoFromBuildingInfo(ID_FUSION_POWER_PLANT_INFO);
+            }
+        }
+
+        /// <summary>
+        /// Gets the hospital audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo Hospital
+        {
+            get
+            {
+                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_serviceSounds != null)
+                {
+                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a.name == ID_BUILDING_HOSPITAL);
+                }
+                return null;
             }
         }
 
@@ -173,6 +207,36 @@ namespace AmbientSoundsTuner.SoundPatchers
             get
             {
                 return GetAudioInfoFromBuildingInfo(ID_NUCLEAR_POWER_PLANT_INFO);
+            }
+        }
+
+        /// <summary>
+        /// Gets the police station audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo PoliceStation
+        {
+            get
+            {
+                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_serviceSounds != null)
+                {
+                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a.name == ID_BUILDING_POLICE_STATION);
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the small power plant audio info; or null if it doesn't exist.
+        /// </summary>
+        public static AudioInfo PowerPlantSmall
+        {
+            get
+            {
+                if (BuildingManager.instance.m_properties != null && BuildingManager.instance.m_properties.m_serviceSounds != null)
+                {
+                    return BuildingManager.instance.m_properties.m_serviceSounds.FirstOrDefault(a => a.name == ID_BUILDING_POWER_PLANT_SMALL);
+                }
+                return null;
             }
         }
 
