@@ -20,16 +20,60 @@ namespace AmbientSoundsTuner.UI
     {
         protected readonly Dictionary<string, string> SliderNames = new Dictionary<string, string>()
         {
-            { VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, "Aircrafts" },
-            { VehiclesPatcher.ID_SMALL_CAR_MOVEMENT, "Cars (Small)" },
-            { VehiclesPatcher.ID_LARGE_CAR_MOVEMENT, "Cars (Large)" },
-            { VehiclesPatcher.ID_AMBULANCE_SIREN, "Sirens (Ambulances)" },
-            { VehiclesPatcher.ID_FIRE_TRUCK_SIREN, "Sirens (Fire Trucks)" },
-            { VehiclesPatcher.ID_POLICE_CAR_SIREN, "Sirens (Police Cars)" },
-            { VehiclesPatcher.ID_METRO_MOVEMENT, "Metros" },
-            { VehiclesPatcher.ID_TRAIN_MOVEMENT, "Trains" },
-            { VehiclesPatcher.ID_TRANSPORT_ARRIVE, "Transportation Arrivals" },
-        };
+            { SoundsCollection.AnimalSounds.ID_COW, "Cows" },
+            { SoundsCollection.AnimalSounds.ID_PIG, "Pigs" },
+            { SoundsCollection.AnimalSounds.ID_SEAGULL, "Seagulls" },
+
+            { SoundsCollection.BuildingSounds.ID_ADVANCED_WIND_TURBINE, "Advanced Wind Turbine" },
+            { SoundsCollection.BuildingSounds.ID_AIRPORT, "Airport" },
+            { SoundsCollection.BuildingSounds.ID_BUS_DEPOT, "Bus Depot" },
+            { SoundsCollection.BuildingSounds.ID_CEMETERY, "Cemetery" },
+            { SoundsCollection.BuildingSounds.ID_COAL_POWER_PLANT, "Coal/Oil Power Plant" },
+            { SoundsCollection.BuildingSounds.ID_COMMERCIAL, "Commercial" },
+            { SoundsCollection.BuildingSounds.ID_CREMATORY, "Crematory" },
+            { SoundsCollection.BuildingSounds.ID_ELEMENTARY_SCHOOL, "Elementary School" },
+            { SoundsCollection.BuildingSounds.ID_FIRE_STATION, "Fire Station" },
+            { SoundsCollection.BuildingSounds.ID_FUSION_POWER_PLANT, "Fusion Power Plant" },
+            { SoundsCollection.BuildingSounds.ID_HARBOR, "Harbor" },
+            { SoundsCollection.BuildingSounds.ID_HIGH_SCHOOL, "High School" },
+            { SoundsCollection.BuildingSounds.ID_HOSPITAL, "Hospital" },
+            { SoundsCollection.BuildingSounds.ID_HYDRO_POWER_PLANT, "Hydro Power Plant" },
+            { SoundsCollection.BuildingSounds.ID_INCINERATION_PLANT, "Incineration Plant" },
+            { SoundsCollection.BuildingSounds.ID_INDUSTRIAL, "Industrial" },
+            { SoundsCollection.BuildingSounds.ID_METRO_STATION, "Metro Station" },
+            { SoundsCollection.BuildingSounds.ID_NUCLEAR_POWER_PLANT, "Nuclear Power Plant" },
+            { SoundsCollection.BuildingSounds.ID_POLICE_STATION, "Police Station" },
+            { SoundsCollection.BuildingSounds.ID_POWER_PLANT_SMALL, "Small Power Plant" },
+            { SoundsCollection.BuildingSounds.ID_SOLAR_POWER_PLANT, "Solar Power Plant" },
+            { SoundsCollection.BuildingSounds.ID_TRAIN_STATION, "Train Station" },
+            { SoundsCollection.BuildingSounds.ID_UNIVERSITY, "University" },
+            { SoundsCollection.BuildingSounds.ID_WATER_DRAIN_PIPE, "Water Drain/Treatment Plant" },
+            { SoundsCollection.BuildingSounds.ID_WATER_PUMPING_STATION, "Water Pumping Station" },
+            { SoundsCollection.BuildingSounds.ID_WIND_TURBINE, "Wind Turbine" },
+            { SoundsCollection.BuildingSounds.ID_ON_FIRE, "On Fire" },
+            { SoundsCollection.BuildingSounds.ID_ON_UPGRADE, "On Upgrade" },
+
+            { SoundsCollection.VehicleSounds.ID_AIRCRAFT_MOVEMENT, "Aircrafts" },
+            { SoundsCollection.VehicleSounds.ID_SMALL_CAR_MOVEMENT, "Cars (Small)" },
+            { SoundsCollection.VehicleSounds.ID_LARGE_CAR_MOVEMENT, "Cars (Large)" },
+            { SoundsCollection.VehicleSounds.ID_AMBULANCE_SIREN, "Sirens (Ambulances)" },
+            { SoundsCollection.VehicleSounds.ID_FIRE_TRUCK_SIREN, "Sirens (Fire Trucks)" },
+            { SoundsCollection.VehicleSounds.ID_POLICE_CAR_SIREN, "Sirens (Police Cars)" },
+            { SoundsCollection.VehicleSounds.ID_METRO_MOVEMENT, "Metros" },
+            { SoundsCollection.VehicleSounds.ID_TRAIN_MOVEMENT, "Trains" },
+            { SoundsCollection.VehicleSounds.ID_TRANSPORT_ARRIVE, "Transportation Arrivals" },
+
+            { SoundsCollection.MiscSounds.ID_BUILDING_BULLDOZE, "Bulldozer (Buildings)" },
+            { SoundsCollection.MiscSounds.ID_PROP_BULLDOZE, "Bulldozer (Props)" },
+            { SoundsCollection.MiscSounds.ID_ROAD_BULLDOZE, "Bulldozer (Roads)" },
+            { SoundsCollection.MiscSounds.ID_BUILDING_PLACEMENT, "Placement (Buildings)" },
+            { SoundsCollection.MiscSounds.ID_PROP_PLACEMENT, "Placement (Props)" },
+            { SoundsCollection.MiscSounds.ID_ROAD_PLACEMENT, "Placement (Roads)" },
+            { SoundsCollection.MiscSounds.ID_ROAD_DRAW, "Road Drawer" },
+            { MiscPatcher.ID_CLICK_SOUND, "UI Clicks" },
+            { MiscPatcher.ID_DISABLED_CLICK_SOUND, "UI Clicks (Disabled)" },
+            { SoundsCollection.MiscSounds.ID_ZONE_FILL, "Zone Filler" },
+     };
 
         protected List<GameObject> AmbientSettingObjects = new List<GameObject>();
         protected List<GameObject> AnimalSettingObjects = new List<GameObject>();
@@ -205,59 +249,59 @@ namespace AmbientSoundsTuner.UI
             this.AddAmbientSlider(AudioManager.AmbientType.Suburban, new { ambientVolumeSuburban });
             this.AddAmbientSlider(AudioManager.AmbientType.World, new { ambientVolumeWorld });
 
-            this.AddAnimalSlider(AnimalsPatcher.ID_COW, new { animalVolumeCow });
-            this.AddAnimalSlider(AnimalsPatcher.ID_PIG, new { animalVolumePig });
-            this.AddAnimalSlider(AnimalsPatcher.ID_SEAGULL, new { animalVolumeSeagull });
+            this.AddAnimalSlider(SoundsCollection.AnimalSounds.ID_COW, new { animalVolumeCow });
+            this.AddAnimalSlider(SoundsCollection.AnimalSounds.ID_PIG, new { animalVolumePig });
+            this.AddAnimalSlider(SoundsCollection.AnimalSounds.ID_SEAGULL, new { animalVolumeSeagull });
 
-            this.AddBuildingSlider(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, new { buildingVolumeAdvancedWindTurbine });
-            this.AddBuildingSlider(BuildingsPatcher.ID_AIRPORT, new { buildingVolumeAirport });
-            this.AddBuildingSlider(BuildingsPatcher.ID_BUS_DEPOT, new { buildingVolumeBusDepot });
-            this.AddBuildingSlider(BuildingsPatcher.ID_CEMETERY, new { buildingVolumeCemetary });
-            this.AddBuildingSlider(BuildingsPatcher.ID_COAL_OIL_POWER_PLANT, new { buildingVolumeCoalOilPowerPlant });
-            this.AddBuildingSlider(BuildingsPatcher.ID_COMMERCIAL, new { buildingVolumeCommercial });
-            this.AddBuildingSlider(BuildingsPatcher.ID_CREMATORY, new { buildingVolumeCrematory });
-            this.AddBuildingSlider(BuildingsPatcher.ID_ELEMENTARY_SCHOOL, new { buildingVolumeElementarySchool });
-            this.AddBuildingSlider(BuildingsPatcher.ID_FIRE_STATION, new { buildingVolumeFireStation });
-            this.AddBuildingSlider(BuildingsPatcher.ID_FUSION_POWER_PLANT, new { buildingVolumeFusionPowerPlant }, 0, 4);
-            this.AddBuildingSlider(BuildingsPatcher.ID_HARBOR, new { buildingVolumeHarbor });
-            this.AddBuildingSlider(BuildingsPatcher.ID_HIGH_SCHOOL, new { buildingVolumeHighSchool });
-            this.AddBuildingSlider(BuildingsPatcher.ID_HOSPITAL, new { buildingVolumeHospital });
-            this.AddBuildingSlider(BuildingsPatcher.ID_HYDRO_POWER_PLANT, new { buildingVolumeHydroPowerPlant });
-            this.AddBuildingSlider(BuildingsPatcher.ID_INCINERATION_PLANT, new { buildingVolumeIncinerationPlant });
-            this.AddBuildingSlider(BuildingsPatcher.ID_INDUSTRIAL, new { buildingVolumeIndustrial }, 0, 0.5f);
-            this.AddBuildingSlider(BuildingsPatcher.ID_METRO_STATION, new { buildingVolumeMetroStation });
-            this.AddBuildingSlider(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, new { buildingVolumeNuclearPowerPlant });
-            this.AddBuildingSlider(BuildingsPatcher.ID_POLICE_STATION, new { buildingVolumePoliceStation });
-            this.AddBuildingSlider(BuildingsPatcher.ID_POWER_PLANT_SMALL, new { buildingVolumePowerPlantSmall });
-            this.AddBuildingSlider(BuildingsPatcher.ID_SOLAR_POWER_PLANT, new { buildingVolumeSolarPowerPlant });
-            this.AddBuildingSlider(BuildingsPatcher.ID_TRAIN_STATION, new { buildingVolumeTrainStation });
-            this.AddBuildingSlider(BuildingsPatcher.ID_UNIVERSITY, new { buildingVolumeUniversity });
-            this.AddBuildingSlider(BuildingsPatcher.ID_WATER_DRAIN_PIPE, new { buildingVolumeWaterDrainPipe });
-            this.AddBuildingSlider(BuildingsPatcher.ID_WATER_PUMPING_STATION, new { buildingVolumeWaterPumpingStation });
-            this.AddBuildingSlider(BuildingsPatcher.ID_WIND_TURBINE, new { buildingVolumeWindTurbine });
-            this.AddBuildingSlider(BuildingsPatcher.ID_FIRE, new { buildingVolumeOnFire });
-            this.AddBuildingSlider(BuildingsPatcher.ID_LEVELUP, new { buildingVolumeOnLevelUp }, 0, 0.25f);
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_ADVANCED_WIND_TURBINE, new { buildingVolumeAdvancedWindTurbine });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_AIRPORT, new { buildingVolumeAirport });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_BUS_DEPOT, new { buildingVolumeBusDepot });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_CEMETERY, new { buildingVolumeCemetary });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_COAL_POWER_PLANT, new { buildingVolumeCoalOilPowerPlant });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_COMMERCIAL, new { buildingVolumeCommercial });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_CREMATORY, new { buildingVolumeCrematory });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_ELEMENTARY_SCHOOL, new { buildingVolumeElementarySchool });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_FIRE_STATION, new { buildingVolumeFireStation });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_FUSION_POWER_PLANT, new { buildingVolumeFusionPowerPlant }, 0, 4);
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_HARBOR, new { buildingVolumeHarbor });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_HIGH_SCHOOL, new { buildingVolumeHighSchool });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_HOSPITAL, new { buildingVolumeHospital });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_HYDRO_POWER_PLANT, new { buildingVolumeHydroPowerPlant });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_INCINERATION_PLANT, new { buildingVolumeIncinerationPlant });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_INDUSTRIAL, new { buildingVolumeIndustrial }, 0, 0.5f);
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_METRO_STATION, new { buildingVolumeMetroStation });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_NUCLEAR_POWER_PLANT, new { buildingVolumeNuclearPowerPlant });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_POLICE_STATION, new { buildingVolumePoliceStation });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_POWER_PLANT_SMALL, new { buildingVolumePowerPlantSmall });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_SOLAR_POWER_PLANT, new { buildingVolumeSolarPowerPlant });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_TRAIN_STATION, new { buildingVolumeTrainStation });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_UNIVERSITY, new { buildingVolumeUniversity });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_WATER_DRAIN_PIPE, new { buildingVolumeWaterDrainPipe });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_WATER_PUMPING_STATION, new { buildingVolumeWaterPumpingStation });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_WIND_TURBINE, new { buildingVolumeWindTurbine });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_ON_FIRE, new { buildingVolumeOnFire });
+            this.AddBuildingSlider(SoundsCollection.BuildingSounds.ID_ON_UPGRADE, new { buildingVolumeOnLevelUp }, 0, 0.25f);
 
-            this.AddVehicleSlider(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, new { vehicleVolumeAircraftMovement });
-            this.AddVehicleSlider(VehiclesPatcher.ID_AMBULANCE_SIREN, new { vehicleVolumeAmbulanceSiren });
-            this.AddVehicleSlider(VehiclesPatcher.ID_FIRE_TRUCK_SIREN, new { vehicleVolumeFireTruckSiren });
-            this.AddVehicleSlider(VehiclesPatcher.ID_LARGE_CAR_MOVEMENT, new { vehicleVolumeLargeCarMovement });
-            this.AddVehicleSlider(VehiclesPatcher.ID_METRO_MOVEMENT, new { vehicleVolumeMetroMovement });
-            this.AddVehicleSlider(VehiclesPatcher.ID_POLICE_CAR_SIREN, new { vehicleVolumePoliceCarSiren });
-            this.AddVehicleSlider(VehiclesPatcher.ID_SMALL_CAR_MOVEMENT, new { vehicleVolumeSmallCarMovement });
-            this.AddVehicleSlider(VehiclesPatcher.ID_TRAIN_MOVEMENT, new { vehicleVolumeTrainMovement });
-            this.AddVehicleSlider(VehiclesPatcher.ID_TRANSPORT_ARRIVE, new { vehicleVolumeTransportArrive });
+            this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_AIRCRAFT_MOVEMENT, new { vehicleVolumeAircraftMovement });
+            this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_AMBULANCE_SIREN, new { vehicleVolumeAmbulanceSiren });
+            this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_FIRE_TRUCK_SIREN, new { vehicleVolumeFireTruckSiren });
+            this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_LARGE_CAR_MOVEMENT, new { vehicleVolumeLargeCarMovement });
+            this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_METRO_MOVEMENT, new { vehicleVolumeMetroMovement });
+            this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_POLICE_CAR_SIREN, new { vehicleVolumePoliceCarSiren });
+            this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_SMALL_CAR_MOVEMENT, new { vehicleVolumeSmallCarMovement });
+            this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_TRAIN_MOVEMENT, new { vehicleVolumeTrainMovement });
+            this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_TRANSPORT_ARRIVE, new { vehicleVolumeTransportArrive });
 
-            this.AddMiscSlider(MiscPatcher.ID_BUILDING_BULLDOZE, new { miscVolumeBuildingBulldoze });
-            this.AddMiscSlider(MiscPatcher.ID_BUILDING_PLACEMENT, new { miscVolumeBuildingPlacement });
-            this.AddMiscSlider(MiscPatcher.ID_PROP_BULLDOZE, new { miscVolumePropBulldoze });
-            this.AddMiscSlider(MiscPatcher.ID_PROP_PLACEMENT, new { miscVolumePropPlacement });
-            this.AddMiscSlider(MiscPatcher.ID_ROAD_BULLDOZE, new { miscVolumeRoadBulldoze });
-            this.AddMiscSlider(MiscPatcher.ID_ROAD_DRAW, new { miscVolumeRoadDraw });
-            this.AddMiscSlider(MiscPatcher.ID_ROAD_PLACEMENT, new { miscVolumeRoadPlacement });
+            this.AddMiscSlider(SoundsCollection.MiscSounds.ID_BUILDING_BULLDOZE, new { miscVolumeBuildingBulldoze });
+            this.AddMiscSlider(SoundsCollection.MiscSounds.ID_BUILDING_PLACEMENT, new { miscVolumeBuildingPlacement });
+            this.AddMiscSlider(SoundsCollection.MiscSounds.ID_PROP_BULLDOZE, new { miscVolumePropBulldoze });
+            this.AddMiscSlider(SoundsCollection.MiscSounds.ID_PROP_PLACEMENT, new { miscVolumePropPlacement });
+            this.AddMiscSlider(SoundsCollection.MiscSounds.ID_ROAD_BULLDOZE, new { miscVolumeRoadBulldoze });
+            this.AddMiscSlider(SoundsCollection.MiscSounds.ID_ROAD_DRAW, new { miscVolumeRoadDraw });
+            this.AddMiscSlider(SoundsCollection.MiscSounds.ID_ROAD_PLACEMENT, new { miscVolumeRoadPlacement });
             this.AddMiscSlider(MiscPatcher.ID_CLICK_SOUND, new { miscVolumeClick });
             this.AddMiscSlider(MiscPatcher.ID_DISABLED_CLICK_SOUND, new { miscVolumeDisabledClick });
-            this.AddMiscSlider(MiscPatcher.ID_ZONE_FILL, new { miscVolumeZoneFill });
+            this.AddMiscSlider(SoundsCollection.MiscSounds.ID_ZONE_FILL, new { miscVolumeZoneFill });
 
             // Some extra event listeners
             this.eventVisibilityChanged += AdvancedOptionsWindow_eventVisibilityChanged;

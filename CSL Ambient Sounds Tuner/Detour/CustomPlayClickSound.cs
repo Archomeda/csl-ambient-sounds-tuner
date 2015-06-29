@@ -73,12 +73,12 @@ namespace AmbientSoundsTuner.Detour
             {
                 if (@this.clickSound != null)
                 {
-                    UIView.playSoundDelegate(@this.clickSound, SoundsCollection.MenuClickSoundVolume);
+                    UIView.playSoundDelegate(@this.clickSound, SoundsCollection.Misc.UIClickSoundVolume);
                     return;
                 }
                 if (@this.GetUIView().defaultClickSound != null)
                 {
-                    UIView.playSoundDelegate(@this.GetUIView().defaultClickSound, SoundsCollection.MenuClickSoundVolume);
+                    UIView.playSoundDelegate(@this.GetUIView().defaultClickSound, SoundsCollection.Misc.UIClickSoundVolume);
                 }
             }
         }
@@ -89,12 +89,12 @@ namespace AmbientSoundsTuner.Detour
             {
                 if (@this.disabledClickSound != null)
                 {
-                    UIView.playSoundDelegate(@this.disabledClickSound, SoundsCollection.MenuDisabledClickSoundVolume);
+                    UIView.playSoundDelegate(@this.disabledClickSound, SoundsCollection.Misc.UIDisabledClickSoundVolume);
                     return;
                 }
                 if (@this.GetUIView().defaultDisabledClickSound != null)
                 {
-                    UIView.playSoundDelegate(@this.GetUIView().defaultDisabledClickSound, SoundsCollection.MenuDisabledClickSoundVolume);
+                    UIView.playSoundDelegate(@this.GetUIView().defaultDisabledClickSound, SoundsCollection.Misc.UIDisabledClickSoundVolume);
                 }
             }
         }

@@ -10,703 +10,466 @@ namespace AmbientSoundsTuner.SoundPatchers
     /// </summary>
     public static class SoundsCollection
     {
-        private const string ID_COW_INFO = "Cow";
-        private const string ID_PIG_INFO = "Pig";
-        private const string ID_SEAGULL_INFO = "Seagull";
-        private const string ID_SEAGULL_SCREAM = "Seagull Scream";
-
-        private const string ID_ADVANCED_WIND_TURBINE_INFO = "Advanced Wind Turbine";
-        private const string ID_AIRPORT_BUILDING = "Building Airport";
-        private const string ID_BUS_DEPOT_BUILDING = "Building Bus Depot";
-        private const string ID_CEMETERY_INFO = "Cemetery";
-        private const string ID_COAL_POWER_PLANT_INFO = "Coal Power Plant";
-        private const string ID_COMMERCIAL_BUILDING = "Building Commercial";
-        private const string ID_CREMATORY_INFO = "Crematory";
-        private const string ID_ELEMENTARY_SCHOOL_INFO = "Elementary School";
-        private const string ID_ELEMENTARY_SCHOOL_EU_INFO = "Elementary_School_EU";
-        private const string ID_FIRE_STATION_BUILDING = "Building Fire Station";
-        private const string ID_FUSION_POWER_PLANT_INFO = "Fusion Power Plant";
-        private const string ID_HARBOR_BUILDING = "Building Harbor";
-        private const string ID_HIGH_SCHOOL_INFO = "High School";
-        private const string ID_HIGH_SCHOOL_EU_INFO = "highschool_EU";
-        private const string ID_HOSPITAL_BUILDING = "Building Hospital";
-        private const string ID_HYDRO_POWER_PLANT_INFO = "Dam Power House";
-        private const string ID_INCINERATION_PLANT_INFO = "Combustion Plant";
-        private const string ID_INDUSTRIAL_BUILDING = "Building Industrial";
-        private const string ID_METRO_STATION_BUILDING = "Building Metro Station";
-        private const string ID_NUCLEAR_POWER_PLANT_INFO = "Nuclear Power Plant";
-        private const string ID_POLICE_STATION_BUILDING = "Building Police Station";
-        private const string ID_POWER_PLANT_SMALL_BUILDING = "Building Power Plant Small";
-        private const string ID_SOLAR_POWER_PLANT_INFO = "Solar Power Plant";
-        private const string ID_TRAIN_STATION_BUILDING = "Building Train Station";
-        private const string ID_UNIVERSITY_INFO = "University";
-        private const string ID_UNIVERSITY_EU_INFO = "University_EU";
-        private const string ID_WATER_DRAIN_PIPE_INFO = "Water Outlet";
-        private const string ID_WATER_PUMPING_STATION_INFO = "Water Intake";
-        private const string ID_WIND_TURBINE_INFO = "Wind Turbine";
-
-
-        private const string ID_BUILDING_BULLDOZE = "Building Bulldoze Sound";
-        private const string ID_BUILDING_LEVELUP = "Levelup Sound";
-        private const string ID_BUILDING_PLACEMENT = "Building Placement Sound";
-        private const string ID_PROP_BULLDOZE = "Prop Bulldoze Sound";
-        private const string ID_PROP_PLACEMENT = "Prop Placement Sound";
-        private const string ID_ROAD_BULLDOZE = "Road Bulldoze Sound";
-        private const string ID_ROAD_PLACEMENT = "Road Placement Sound";
+        private static AmbientSounds ambients = new AmbientSounds();
+        private static AnimalSounds animals = new AnimalSounds();
+        private static BuildingSounds buildings = new BuildingSounds();
+        private static VehicleSounds vehicles = new VehicleSounds();
+        private static MiscSounds misc = new MiscSounds();
 
         /// <summary>
-        /// Gets the ambient sounds; or null if they don't exist.
+        /// Gets the ambient sounds.
         /// </summary>
-        public static AudioInfo[] Ambients
+        public static AmbientSounds Ambients
         {
             get
             {
-                return AudioManager.instance.m_properties.m_ambients;
-            }
-        }
-
-        private static EffectSounds effects = new EffectSounds();
-        /// <summary>
-        /// Gets the effect sounds.
-        /// </summary>
-        public static EffectSounds Effects
-        {
-            get
-            {
-                return effects;
+                return ambients;
             }
         }
 
         /// <summary>
-        /// Gets the cow sound effect; or null if it doesn't exist.
+        /// Gets the animal sounds.
         /// </summary>
-        public static SoundEffect Cow
+        public static AnimalSounds Animals
         {
             get
             {
-                CitizenInfo cowInfo = PrefabCollection<CitizenInfo>.FindLoaded(ID_COW_INFO);
-                if (cowInfo != null)
-                {
-                    return ((LivestockAI)cowInfo.m_citizenAI).m_randomEffect as SoundEffect;
-                }
-                return null;
+                return animals;
             }
         }
 
         /// <summary>
-        /// Gets the pig sound effect; or null if it doesn't exist.
+        /// Gets the building sounds.
         /// </summary>
-        public static SoundEffect Pig
+        public static BuildingSounds Buildings
         {
             get
             {
-                CitizenInfo pigInfo = PrefabCollection<CitizenInfo>.FindLoaded(ID_COW_INFO);
-                if (pigInfo != null)
-                {
-                    return ((LivestockAI)pigInfo.m_citizenAI).m_randomEffect as SoundEffect;
-                }
-                return null;
+                return buildings;
             }
         }
 
         /// <summary>
-        /// Gets the seagull sound effect; or null if it doesn't exist.
+        /// Gets the vehicle sounds.
         /// </summary>
-        public static SoundEffect Seagull
+        public static VehicleSounds Vehicles
         {
             get
             {
-                CitizenInfo seagullInfo = PrefabCollection<CitizenInfo>.FindLoaded(ID_SEAGULL_INFO);
-                if (seagullInfo != null)
-                {
-                    MultiEffect effect = ((BirdAI)seagullInfo.m_citizenAI).m_randomEffect as MultiEffect;
-                    if (effect != null)
-                    {
-                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_SEAGULL_SCREAM).m_effect as SoundEffect;
-                    }
-                }
-                return null;
-            }
-        }
-
-
-        /// <summary>
-        /// Gets the hydro power plant audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo AdvancedWindTurbine
-        {
-            get
-            {
-                return GetAudioInfoFromBuildingInfo(ID_ADVANCED_WIND_TURBINE_INFO);
+                return vehicles;
             }
         }
 
         /// <summary>
-        /// Gets the airport audio info; or null if it doesn't exist.
+        /// Gets the miscellaneous sounds.
         /// </summary>
-        public static AudioInfo Airport
+        public static MiscSounds Misc
         {
             get
             {
-                if (BuildingManager.instance.m_properties != null)
-                {
-                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, ID_AIRPORT_BUILDING);
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the bus depot audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo BusDepot
-        {
-            get
-            {
-                if (BuildingManager.instance.m_properties != null)
-                {
-                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, ID_BUS_DEPOT_BUILDING);
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the cemetery audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo Cemetery
-        {
-            get
-            {
-                return GetAudioInfoFromBuildingInfo(ID_CEMETERY_INFO);
-            }
-        }
-
-        /// <summary>
-        /// Gets the coal/oil power plant audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo CoalOilPowerPlant
-        {
-            get
-            {
-                return GetAudioInfoFromBuildingInfo(ID_COAL_POWER_PLANT_INFO);
-            }
-        }
-
-        /// <summary>
-        /// Gets the commercial audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo Commercial
-        {
-            get
-            {
-                if (BuildingManager.instance.m_properties != null)
-                {
-                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, ID_COMMERCIAL_BUILDING);
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the crematory audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo Crematory
-        {
-            get
-            {
-                return GetAudioInfoFromBuildingInfo(ID_CREMATORY_INFO);
-            }
-        }
-
-        /// <summary>
-        /// Gets the elementary school audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo ElementarySchool
-        {
-            get
-            {
-                return GetAudioInfoFromBuildingInfo(ID_ELEMENTARY_SCHOOL_INFO) ?? GetAudioInfoFromBuildingInfo(ID_ELEMENTARY_SCHOOL_EU_INFO);
-            }
-        }
-
-        /// <summary>
-        /// Gets the fire station audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo FireStation
-        {
-            get
-            {
-                if (BuildingManager.instance.m_properties != null)
-                {
-                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, ID_FIRE_STATION_BUILDING);
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the fusion power plant audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo FusionPowerPlant
-        {
-            get
-            {
-                return GetAudioInfoFromBuildingInfo(ID_FUSION_POWER_PLANT_INFO);
-            }
-        }
-
-        /// <summary>
-        /// Gets the harbor audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo Harbor
-        {
-            get
-            {
-                if (BuildingManager.instance.m_properties != null)
-                {
-                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, ID_HARBOR_BUILDING);
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the high school audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo HighSchool
-        {
-            get
-            {
-                return GetAudioInfoFromBuildingInfo(ID_HIGH_SCHOOL_INFO) ?? GetAudioInfoFromBuildingInfo(ID_HIGH_SCHOOL_EU_INFO);
-            }
-        }
-
-        /// <summary>
-        /// Gets the hospital audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo Hospital
-        {
-            get
-            {
-                if (BuildingManager.instance.m_properties != null)
-                {
-                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, ID_HOSPITAL_BUILDING);
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the hydro power plant audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo HydroPowerPlant
-        {
-            get
-            {
-                return GetAudioInfoFromBuildingInfo(ID_HYDRO_POWER_PLANT_INFO);
-            }
-        }
-
-        /// <summary>
-        /// Gets the incineration plant audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo IncinerationPlant
-        {
-            get
-            {
-                return GetAudioInfoFromBuildingInfo(ID_INCINERATION_PLANT_INFO);
-            }
-        }
-
-        /// <summary>
-        /// Gets the industrial audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo Industrial
-        {
-            get
-            {
-                if (BuildingManager.instance.m_properties != null)
-                {
-                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, ID_INDUSTRIAL_BUILDING);
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the metro station audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo MetroStation
-        {
-            get
-            {
-                if (BuildingManager.instance.m_properties != null)
-                {
-                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, ID_METRO_STATION_BUILDING);
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the nuclear power plant audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo NuclearPowerPlant
-        {
-            get
-            {
-                return GetAudioInfoFromBuildingInfo(ID_NUCLEAR_POWER_PLANT_INFO);
-            }
-        }
-
-        /// <summary>
-        /// Gets the police station audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo PoliceStation
-        {
-            get
-            {
-                if (BuildingManager.instance.m_properties != null)
-                {
-                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, ID_POLICE_STATION_BUILDING);
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the small power plant audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo PowerPlantSmall
-        {
-            get
-            {
-                if (BuildingManager.instance.m_properties != null)
-                {
-                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, ID_POWER_PLANT_SMALL_BUILDING);
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the solar power plant audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo SolarPowerPlant
-        {
-            get
-            {
-                return GetAudioInfoFromBuildingInfo(ID_SOLAR_POWER_PLANT_INFO);
-            }
-        }
-
-        /// <summary>
-        /// Gets the train station audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo TrainStation
-        {
-            get
-            {
-                if (BuildingManager.instance.m_properties != null)
-                {
-                    return GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, ID_TRAIN_STATION_BUILDING);
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the university audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo University
-        {
-            get
-            {
-                return GetAudioInfoFromBuildingInfo(ID_UNIVERSITY_INFO) ?? GetAudioInfoFromBuildingInfo(ID_UNIVERSITY_EU_INFO);
-            }
-        }
-
-        /// <summary>
-        /// Gets the water drain pipe and water treatment plant audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo WaterDrainPipe
-        {
-            get
-            {
-                return GetAudioInfoFromBuildingInfo(ID_WATER_DRAIN_PIPE_INFO);
-            }
-        }
-
-        /// <summary>
-        /// Gets the water pumping station audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo WaterPumpingStation
-        {
-            get
-            {
-                return GetAudioInfoFromBuildingInfo(ID_WATER_PUMPING_STATION_INFO);
-            }
-        }
-
-        /// <summary>
-        /// Gets the wind turbine audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo WindTurbine
-        {
-            get
-            {
-                return GetAudioInfoFromBuildingInfo(ID_WIND_TURBINE_INFO);
-            }
-        }
-
-
-        /// <summary>
-        /// Gets the building bulldoze sound effect; or null if it doesn't exist.
-        /// </summary>
-        public static SoundEffect BuildingBulldoze
-        {
-            get
-            {
-                if (BuildingManager.instance.m_properties != null)
-                {
-                    MultiEffect effect = BuildingManager.instance.m_properties.m_bulldozeEffect as MultiEffect;
-                    if (effect != null)
-                    {
-                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_BUILDING_BULLDOZE).m_effect as SoundEffect;
-                    }
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the building fire sound effect; or null if it doesn't exist.
-        /// </summary>
-        public static SoundEffect BuildingFire
-        {
-            get
-            {
-                if (BuildingManager.instance.m_properties != null)
-                {
-                    FireEffect effect = BuildingManager.instance.m_properties.m_fireEffect as FireEffect;
-                    if (effect != null)
-                    {
-                        return effect.m_soundEffect;
-                    }
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the building level up sound effect; or null if it doesn't exist.
-        /// </summary>
-        public static SoundEffect BuildingLevelUp
-        {
-            get
-            {
-                if (BuildingManager.instance.m_properties != null)
-                {
-                    MultiEffect effect = BuildingManager.instance.m_properties.m_levelupEffect as MultiEffect;
-                    if (effect != null)
-                    {
-                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_BUILDING_LEVELUP).m_effect as SoundEffect;
-                    }
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the building placement sound effect; or null if it doesn't exist.
-        /// </summary>
-        public static SoundEffect BuildingPlacement
-        {
-            get
-            {
-                if (BuildingManager.instance.m_properties != null)
-                {
-                    MultiEffect effect = BuildingManager.instance.m_properties.m_placementEffect as MultiEffect;
-                    if (effect != null)
-                    {
-                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_BUILDING_PLACEMENT).m_effect as SoundEffect;
-                    }
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the prop bulldoze sound effect; or null if it doesn't exist.
-        /// </summary>
-        public static SoundEffect PropBulldoze
-        {
-            get
-            {
-                if (PropManager.instance.m_properties != null)
-                {
-                    MultiEffect effect = PropManager.instance.m_properties.m_bulldozeEffect as MultiEffect;
-                    if (effect != null)
-                    {
-                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_PROP_BULLDOZE).m_effect as SoundEffect;
-                    }
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the prop placement sound effect; or null if it doesn't exist.
-        /// </summary>
-        public static SoundEffect PropPlacement
-        {
-            get
-            {
-                if (PropManager.instance.m_properties != null)
-                {
-                    MultiEffect effect = PropManager.instance.m_properties.m_placementEffect as MultiEffect;
-                    if (effect != null)
-                    {
-                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_PROP_PLACEMENT).m_effect as SoundEffect;
-                    }
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the road bulldoze sound effect; or null if it doesn't exist.
-        /// </summary>
-        public static SoundEffect RoadBulldoze
-        {
-            get
-            {
-                if (NetManager.instance.m_properties != null)
-                {
-                    MultiEffect effect = NetManager.instance.m_properties.m_bulldozeEffect as MultiEffect;
-                    if (effect != null)
-                    {
-                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_ROAD_BULLDOZE).m_effect as SoundEffect;
-                    }
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the road draw audio info; or null if it doesn't exist.
-        /// </summary>
-        public static AudioInfo RoadDraw
-        {
-            get
-            {
-                if (NetManager.instance.m_properties != null)
-                {
-                    return NetManager.instance.m_properties.m_drawSound;
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the road placement sound effect; or null if it doesn't exist.
-        /// </summary>
-        public static SoundEffect RoadPlacement
-        {
-            get
-            {
-                if (NetManager.instance.m_properties != null)
-                {
-                    MultiEffect effect = NetManager.instance.m_properties.m_placementEffect as MultiEffect;
-                    if (effect != null)
-                    {
-                        return effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_ROAD_PLACEMENT).m_effect as SoundEffect;
-                    }
-                }
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the zone fill sound effect; or null if it doesn't exist.
-        /// </summary>
-        public static SoundEffect ZoneFill
-        {
-            get
-            {
-                if (ZoneManager.instance.m_properties != null)
-                {
-                    return ZoneManager.instance.m_properties.m_fillEffect as SoundEffect;
-                }
-                return null;
+                return misc;
             }
         }
 
 
         private static AudioInfo GetAudioInfoFromBuildingInfo(string id)
         {
-            BuildingInfo info = PrefabCollection<BuildingInfo>.FindLoaded(id);
-            if (info != null)
+            BuildingInfo building = PrefabCollection<BuildingInfo>.FindLoaded(id);
+            if (building != null)
             {
-                return info.m_customLoopSound;
+                return building.m_customLoopSound;
             }
             return null;
         }
 
-        private static AudioInfo GetAudioInfoFromArray(AudioInfo[] list, string id)
+        private static AudioInfo GetFirstAudioInfoFromBuildingInfos(IEnumerable<string> ids)
         {
-            if (list != null)
+            foreach (string id in ids)
             {
-                return list.FirstOrDefault(a => a != null && a.name == id);
+                AudioInfo result = GetAudioInfoFromBuildingInfo(id);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+            return null;
+        }
+
+        private static AudioInfo GetAudioInfoFromArray(AudioInfo[] array, string id)
+        {
+            if (array != null)
+            {
+                return array.FirstOrDefault(a => a != null && a.name == id);
+            }
+            return null;
+        }
+
+        private static SoundEffect GetSubEffectFromMultiEffect(MultiEffect multiEffect, string id)
+        {
+            if (multiEffect != null && multiEffect.m_effects != null)
+            {
+                var subEffect = multiEffect.m_effects.FirstOrDefault(e => e.m_effect.name == id);
+                if (subEffect.m_effect != null)
+                {
+                    return subEffect.m_effect as SoundEffect;
+                }
             }
             return null;
         }
 
 
-        private static float menuClickSoundVolume = 1;
         /// <summary>
-        /// Gets or sets the click sound volume in menus.
+        /// A class that contains references to ambient sounds.
         /// </summary>
-        public static float MenuClickSoundVolume
-        {
-            get { return menuClickSoundVolume; }
-            set { menuClickSoundVolume = value; }
-        }
-
-
-        private static float menuDisabledClickSoundVolume = 1;
-        /// <summary>
-        /// Gets or sets the disabled click sound volume in menus.
-        /// </summary>
-        public static float MenuDisabledClickSoundVolume
-        {
-            get { return menuDisabledClickSoundVolume; }
-            set { menuDisabledClickSoundVolume = value; }
-        }
-
-        /// <summary>
-        /// A class that's basically a shortcut to generic effect sounds.
-        /// </summary>
-        public class EffectSounds
+        public class AmbientSounds
         {
             /// <summary>
-            /// Gets an effect sound.
+            /// Gets an ambient sound.
             /// </summary>
-            /// <param name="id">The effect sound id.</param>
-            /// <returns>The effect sound if it exists; null otherwise.</returns>
-            public SoundEffect this[string id]
+            /// <param name="id">The ambient sound id.</param>
+            /// <returns>The ambient sound if it exists; an empty container otherwise.</returns>
+            public SoundContainer this[AudioManager.AmbientType id]
             {
                 get
                 {
-                    EffectInfo effectInfo = EffectCollection.FindEffect(id);
-                    SoundEffect soundEffect = effectInfo as SoundEffect;
-                    if (soundEffect != null)
+                    if (AudioManager.instance.m_properties != null && AudioManager.instance.m_properties.m_ambients != null
+                        && AudioManager.instance.m_properties.m_ambients.Length > (int)id)
                     {
-                        return soundEffect;
+                        return new SoundContainer(AudioManager.instance.m_properties.m_ambients[(int)id]);
                     }
-                    return null;
+                    return new SoundContainer();
                 }
+            }
+        }
+
+        /// <summary>
+        /// A class that contains references to animal sounds.
+        /// </summary>
+        public class AnimalSounds
+        {
+            public const string ID_COW = "Cow";
+            public const string ID_PIG = "Pig";
+            public const string ID_SEAGULL = "Seagull";
+
+            private const string ID_SEAGULL_SCREAM = "Seagull Scream";
+
+            /// <summary>
+            /// Gets an animal sound.
+            /// </summary>
+            /// <param name="id">The animal sound id.</param>
+            /// <returns>The animal sound if it exists; an empty container otherwise.</returns>
+            public SoundContainer this[string id]
+            {
+                get
+                {
+                    CitizenInfo info = null;
+
+                    // Get whitelisted prefabs only
+                    switch (id)
+                    {
+                        case ID_COW:
+                        case ID_PIG:
+                        case ID_SEAGULL:
+                            info = PrefabCollection<CitizenInfo>.FindLoaded(id);
+                            break;
+                    }
+
+                    // Get sound from prefab
+                    if (info != null)
+                    {
+                        switch (id)
+                        {
+                            case ID_COW:
+                            case ID_PIG:
+                                return new SoundContainer(((LivestockAI)info.m_citizenAI).m_randomEffect as SoundEffect);
+
+                            case ID_SEAGULL:
+                                MultiEffect effect = ((BirdAI)info.m_citizenAI).m_randomEffect as MultiEffect;
+                                if (effect != null)
+                                {
+                                    return new SoundContainer(effect.m_effects.FirstOrDefault(e => e.m_effect.name == ID_SEAGULL_SCREAM).m_effect as SoundEffect);
+                                }
+                                break;
+                        }
+                    }
+
+                    return new SoundContainer();
+                }
+            }
+        }
+
+        /// <summary>
+        /// A class that contains references to building sounds.
+        /// </summary>
+        public class BuildingSounds
+        {
+            public const string ID_ADVANCED_WIND_TURBINE = "Advanced Wind Turbine";
+            public const string ID_AIRPORT = "Building Airport";
+            public const string ID_BUS_DEPOT = "Building Bus Depot";
+            public const string ID_CEMETERY = "Cemetery";
+            public const string ID_COAL_POWER_PLANT = "Coal Power Plant";
+            public const string ID_COMMERCIAL = "Building Commercial";
+            public const string ID_CREMATORY = "Crematory";
+            public const string ID_ELEMENTARY_SCHOOL = "Elementary School";
+            private const string ID_ELEMENTARY_SCHOOL_EU = "Elementary_School_EU";
+            public const string ID_FIRE_STATION = "Building Fire Station";
+            public const string ID_FUSION_POWER_PLANT = "Fusion Power Plant";
+            public const string ID_HARBOR = "Building Harbor";
+            public const string ID_HIGH_SCHOOL = "High School";
+            private const string ID_HIGH_SCHOOL_EU = "highschool_EU";
+            public const string ID_HOSPITAL = "Building Hospital";
+            public const string ID_HYDRO_POWER_PLANT = "Dam Power House";
+            public const string ID_INCINERATION_PLANT = "Combustion Plant";
+            public const string ID_INDUSTRIAL = "Building Industrial";
+            public const string ID_METRO_STATION = "Building Metro Station";
+            public const string ID_NUCLEAR_POWER_PLANT = "Nuclear Power Plant";
+            public const string ID_POLICE_STATION = "Building Police Station";
+            public const string ID_POWER_PLANT_SMALL = "Building Power Plant Small";
+            public const string ID_SOLAR_POWER_PLANT = "Solar Power Plant";
+            public const string ID_TRAIN_STATION = "Building Train Station";
+            public const string ID_UNIVERSITY = "University";
+            private const string ID_UNIVERSITY_EU = "University_EU";
+            public const string ID_WATER_DRAIN_PIPE = "Water Outlet";
+            public const string ID_WATER_PUMPING_STATION = "Water Intake";
+            public const string ID_WIND_TURBINE = "Wind Turbine";
+
+            public const string ID_ON_FIRE = "On Fire";
+            public const string ID_ON_UPGRADE = "On Upgrade";
+            private const string ID_ON_UPGRADE_SOUND = "Levelup Sound";
+
+            /// <summary>
+            /// Gets a building sound.
+            /// </summary>
+            /// <param name="id">The building sound id.</param>
+            /// <returns>The building sound if it exists; an empty container otherwise.</returns>
+            public SoundContainer this[string id]
+            {
+                get
+                {
+                    switch (id)
+                    {
+                        case ID_ADVANCED_WIND_TURBINE:
+                        case ID_CEMETERY:
+                        case ID_COAL_POWER_PLANT:
+                        case ID_CREMATORY:
+                        case ID_FUSION_POWER_PLANT:
+                        case ID_HYDRO_POWER_PLANT:
+                        case ID_INCINERATION_PLANT:
+                        case ID_NUCLEAR_POWER_PLANT:
+                        case ID_SOLAR_POWER_PLANT:
+                        case ID_WATER_DRAIN_PIPE:
+                        case ID_WATER_PUMPING_STATION:
+                        case ID_WIND_TURBINE:
+                            return new SoundContainer(GetAudioInfoFromBuildingInfo(id));
+
+                        case ID_ELEMENTARY_SCHOOL:
+                            return new SoundContainer(GetFirstAudioInfoFromBuildingInfos(new[] { ID_ELEMENTARY_SCHOOL, ID_ELEMENTARY_SCHOOL_EU }));
+
+                        case ID_HIGH_SCHOOL:
+                            return new SoundContainer(GetFirstAudioInfoFromBuildingInfos(new[] { ID_HIGH_SCHOOL, ID_HIGH_SCHOOL_EU }));
+
+                        case ID_UNIVERSITY:
+                            return new SoundContainer(GetFirstAudioInfoFromBuildingInfos(new[] { ID_UNIVERSITY, ID_UNIVERSITY_EU }));
+
+                        case ID_FIRE_STATION:
+                        case ID_HOSPITAL:
+                        case ID_POLICE_STATION:
+                        case ID_POWER_PLANT_SMALL:
+                            if (BuildingManager.instance.m_properties != null)
+                            {
+                                return new SoundContainer(GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, id));
+                            }
+                            break;
+
+                        case ID_AIRPORT:
+                        case ID_BUS_DEPOT:
+                        case ID_COMMERCIAL:
+                        case ID_HARBOR:
+                        case ID_INDUSTRIAL:
+                        case ID_METRO_STATION:
+                        case ID_TRAIN_STATION:
+                            if (BuildingManager.instance.m_properties != null)
+                            {
+                                return new SoundContainer(GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, id));
+                            }
+                            break;
+
+                        case ID_ON_FIRE:
+                            if (BuildingManager.instance.m_properties != null)
+                            {
+                                FireEffect effect = BuildingManager.instance.m_properties.m_fireEffect as FireEffect;
+                                if (effect != null)
+                                {
+                                    return new SoundContainer(effect.m_soundEffect);
+                                }
+                            }
+                            break;
+
+                        case ID_ON_UPGRADE:
+                            if (BuildingManager.instance.m_properties != null)
+                            {
+                                return new SoundContainer(GetSubEffectFromMultiEffect(BuildingManager.instance.m_properties.m_levelupEffect as MultiEffect, ID_ON_UPGRADE_SOUND));
+                            }
+                            break;
+                    }
+
+                    return new SoundContainer();
+                }
+            }
+        }
+
+        /// <summary>
+        /// A class that contains references to vehicle sounds.
+        /// </summary>
+        public class VehicleSounds
+        {
+            public const string ID_AIRCRAFT_MOVEMENT = "Aircraft Movement";
+            public const string ID_AMBULANCE_SIREN = "Ambulance Siren";
+            public const string ID_FIRE_TRUCK_SIREN = "Fire Truck Siren";
+            public const string ID_LARGE_CAR_MOVEMENT = "Large Car Movement";
+            public const string ID_METRO_MOVEMENT = "Metro Movement";
+            public const string ID_POLICE_CAR_SIREN = "Police Car Siren";
+            public const string ID_SMALL_CAR_MOVEMENT = "Small Car Movement";
+            public const string ID_TRAIN_MOVEMENT = "Train Movement";
+            public const string ID_TRANSPORT_ARRIVE = "Transport Arrive";
+
+            /// <summary>
+            /// Gets a vehicle sound.
+            /// </summary>
+            /// <param name="id">The vehicle sound id.</param>
+            /// <returns>The vehicle sound if it exists; an empty container otherwise.</returns>
+            public SoundContainer this[string id]
+            {
+                get
+                {
+                    switch (id)
+                    {
+                        case ID_AIRCRAFT_MOVEMENT:
+                        case ID_AMBULANCE_SIREN:
+                        case ID_FIRE_TRUCK_SIREN:
+                        case ID_LARGE_CAR_MOVEMENT:
+                        case ID_METRO_MOVEMENT:
+                        case ID_POLICE_CAR_SIREN:
+                        case ID_SMALL_CAR_MOVEMENT:
+                        case ID_TRAIN_MOVEMENT:
+                        case ID_TRANSPORT_ARRIVE:
+                            EffectInfo effectInfo = EffectCollection.FindEffect(id);
+                            SoundEffect soundEffect = effectInfo as SoundEffect;
+                            if (soundEffect != null)
+                            {
+                                return new SoundContainer(soundEffect);
+                            }
+                            break;
+                    }
+                    return new SoundContainer();
+                }
+            }
+        }
+
+        /// <summary>
+        /// A class that contains references to miscellaneous sounds.
+        /// </summary>
+        public class MiscSounds
+        {
+            public const string ID_BUILDING_BULLDOZE = "Building Bulldoze Sound";
+            public const string ID_BUILDING_PLACEMENT = "Building Placement Sound";
+            public const string ID_PROP_BULLDOZE = "Prop Bulldoze Sound";
+            public const string ID_PROP_PLACEMENT = "Prop Placement Sound";
+            public const string ID_ROAD_BULLDOZE = "Road Bulldoze Sound";
+            public const string ID_ROAD_DRAW = "Road Draw Sound";
+            public const string ID_ROAD_PLACEMENT = "Road Placement Sound";
+            public const string ID_ZONE_FILL = "Zone Fill Sound";
+
+            /// <summary>
+            /// Gets a miscellaneous sound.
+            /// </summary>
+            /// <param name="id">The miscellaneous sound id.</param>
+            /// <returns>The miscellaneous sound if it exists; an empty container otherwise.</returns>
+            public SoundContainer this[string id]
+            {
+                get
+                {
+                    switch (id)
+                    {
+                        case ID_BUILDING_BULLDOZE:
+                            if (BuildingManager.instance.m_properties != null)
+                            {
+                                return new SoundContainer(GetSubEffectFromMultiEffect(BuildingManager.instance.m_properties.m_bulldozeEffect as MultiEffect, id));
+                            }
+                            break;
+
+                        case ID_BUILDING_PLACEMENT:
+                            if (BuildingManager.instance.m_properties != null)
+                            {
+                                return new SoundContainer(GetSubEffectFromMultiEffect(BuildingManager.instance.m_properties.m_placementEffect as MultiEffect, id));
+                            }
+                            break;
+
+                        case ID_PROP_BULLDOZE:
+                            if (PropManager.instance.m_properties != null)
+                            {
+                                return new SoundContainer(GetSubEffectFromMultiEffect(PropManager.instance.m_properties.m_bulldozeEffect as MultiEffect, id));
+                            }
+                            break;
+
+                        case ID_PROP_PLACEMENT:
+                            if (PropManager.instance.m_properties != null)
+                            {
+                                return new SoundContainer(GetSubEffectFromMultiEffect(PropManager.instance.m_properties.m_placementEffect as MultiEffect, id));
+                            }
+                            break;
+
+                        case ID_ROAD_BULLDOZE:
+                            if (NetManager.instance.m_properties != null)
+                            {
+                                return new SoundContainer(GetSubEffectFromMultiEffect(NetManager.instance.m_properties.m_bulldozeEffect as MultiEffect, id));
+                            }
+                            break;
+
+                        case ID_ROAD_DRAW:
+                            if (NetManager.instance.m_properties != null)
+                            {
+                                return new SoundContainer(NetManager.instance.m_properties.m_drawSound);
+                            }
+                            break;
+
+                        case ID_ROAD_PLACEMENT:
+                            if (NetManager.instance.m_properties != null)
+                            {
+                                return new SoundContainer(GetSubEffectFromMultiEffect(NetManager.instance.m_properties.m_placementEffect as MultiEffect, id));
+                            }
+                            break;
+
+                        case ID_ZONE_FILL:
+                            if (ZoneManager.instance.m_properties != null)
+                            {
+                                return new SoundContainer(ZoneManager.instance.m_properties.m_fillEffect as SoundEffect);
+                            }
+                            break;
+                    }
+
+                    return new SoundContainer();
+                }
+            }
+
+            private float uiClickSoundVolume = 1;
+            /// <summary>
+            /// Gets or sets the click sound volume in UI.
+            /// </summary>
+            public float UIClickSoundVolume
+            {
+                get { return this.uiClickSoundVolume; }
+                set { this.uiClickSoundVolume = value; }
+            }
+
+            private float uiDisabledClickSoundVolume = 1;
+            /// <summary>
+            /// Gets or sets the disabled click sound volume in UI.
+            /// </summary>
+            public float UIDisabledClickSoundVolume
+            {
+                get { return this.uiDisabledClickSoundVolume; }
+                set { this.uiDisabledClickSoundVolume = value; }
             }
         }
     }

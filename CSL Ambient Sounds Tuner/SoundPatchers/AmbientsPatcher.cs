@@ -29,9 +29,10 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
             {
-                if (SoundsCollection.Ambients.Length > (int)id)
+                SoundContainer sound = SoundsCollection.Ambients[id];
+                if (sound.HasSound)
                 {
-                    float? volume = SoundsPatcher.GetVolume(SoundsCollection.Ambients[(int)id]);
+                    float? volume = SoundsPatcher.GetVolume(sound);
                     if (volume.HasValue)
                     {
                         this.DefaultVolumes[id] = volume.Value;
@@ -46,9 +47,10 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
             {
-                if (SoundsCollection.Ambients.Length > (int)id)
+                SoundContainer sound = SoundsCollection.Ambients[id];
+                if (sound.HasSound)
                 {
-                    return SoundsPatcher.SetVolume(SoundsCollection.Ambients[(int)id], newVolume);
+                    return SoundsPatcher.SetVolume(sound, newVolume);
                 }
             }
             return false;

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CommonShared.Extensions;
 
 namespace AmbientSoundsTuner.SoundPatchers
 {
@@ -11,45 +10,24 @@ namespace AmbientSoundsTuner.SoundPatchers
     /// </summary>
     public class AnimalsPatcher : MiscellaneousSoundsInstancePatcher<string>
     {
-        public const string ID_COW = "Cows";
-        public const string ID_PIG = "Pigs";
-        public const string ID_SEAGULL = "Seagulls";
-
         public AnimalsPatcher()
             : base()
         {
-            this.DefaultVolumes.Add(ID_COW, 1);
-            this.DefaultVolumes.Add(ID_PIG, 1);
-            this.DefaultVolumes.Add(ID_SEAGULL, 1);
+            this.DefaultVolumes.Add(SoundsCollection.AnimalSounds.ID_COW, 1);
+            this.DefaultVolumes.Add(SoundsCollection.AnimalSounds.ID_PIG, 1);
+            this.DefaultVolumes.Add(SoundsCollection.AnimalSounds.ID_SEAGULL, 1);
         }
 
         protected override AudioInfo GetAudioInfoById(string id)
         {
-            SoundEffect soundEffect = null;
-            switch (id)
+            SoundContainer sound = SoundsCollection.Animals[id];
+
+            if (sound.HasSound)
             {
-                case ID_COW:
-                    soundEffect = SoundsCollection.Cow;
-                    break;
-                case ID_PIG:
-                    soundEffect = SoundsCollection.Pig;
-                    break;
-                case ID_SEAGULL:
-                    soundEffect = SoundsCollection.Seagull;
-                    break;
+                return sound.AudioInfo;
             }
 
-            AudioInfo audioInfo = null;
-            if (soundEffect != null)
-            {
-                audioInfo = soundEffect.m_audioInfo;
-            }
-            else
-            {
-                // For sounds that don't have a SoundEffect tied to it, but directly an AudioInfo
-            }
-
-            return audioInfo;
+            return null;
         }
     }
 }

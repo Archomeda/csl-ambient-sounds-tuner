@@ -11,6 +11,20 @@ namespace AmbientSoundsTuner.SoundPatchers
     public static class SoundsPatcher
     {
         /// <summary>
+        /// Gets the volume of a sound.
+        /// </summary>
+        /// <param name="sound">The sound.</param>
+        /// <returns>The volume of the sound if it has one; otherwise null.</returns>
+        public static float? GetVolume(SoundContainer sound)
+        {
+            if (sound.HasSound)
+            {
+                return GetVolume(sound.AudioInfo);
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Gets the volume of a sound effect.
         /// </summary>
         /// <param name="effect">The sound effect.</param>
@@ -21,7 +35,6 @@ namespace AmbientSoundsTuner.SoundPatchers
             {
                 return GetVolume(effect.m_audioInfo);
             }
-
             return null;
         }
 
@@ -40,6 +53,21 @@ namespace AmbientSoundsTuner.SoundPatchers
         }
 
         /// <summary>
+        /// Sets the volume of a sound.
+        /// </summary>
+        /// <param name="sound">The sound.</param>
+        /// <param name="volume">The new volume.</param>
+        /// <returns>True if successful; false otherwise.</returns>
+        public static bool SetVolume(SoundContainer sound, float volume)
+        {
+            if (sound.HasSound)
+            {
+                return SetVolume(sound.AudioInfo, volume);
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Sets the volume of a sound effect.
         /// </summary>
         /// <param name="effect">The sound effect.</param>
@@ -51,7 +79,6 @@ namespace AmbientSoundsTuner.SoundPatchers
             {
                 return SetVolume(effect.m_audioInfo, volume);
             }
-
             return false;
         }
 
