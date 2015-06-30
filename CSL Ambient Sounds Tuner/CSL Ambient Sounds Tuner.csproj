@@ -50,7 +50,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationMigrator.cs" />
     <Compile Include="Detour\CustomPlayClickSound.cs" />
+    <Compile Include="Migration\ConfigurationV0.cs" />
     <Compile Include="SoundPatchers\MiscPatcher.cs" />
     <Compile Include="SoundPatchers\SoundContainer.cs" />
     <Compile Include="SoundPatchers\VehiclesPatcher.cs" />

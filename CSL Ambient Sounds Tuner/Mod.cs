@@ -10,6 +10,7 @@ using AmbientSoundsTuner.UI;
 using AmbientSoundsTuner.Utils;
 using ColossalFramework.Plugins;
 using CommonShared;
+using CommonShared.Configuration;
 using CommonShared.Utils;
 using ICities;
 using UnityEngine;
@@ -93,7 +94,7 @@ namespace AmbientSoundsTuner
         {
             this.CheckIncompatibility();
 
-            Mod.Settings = Config.LoadConfig<Configuration>(Mod.SettingsFilename);
+            Mod.Settings = VersionedConfig.LoadConfig<Configuration>(Mod.SettingsFilename, new ConfigurationMigrator());
             Mod.Log.EnableDebugLogging = Mod.Settings.ExtraDebugLogging;
 
             if (Mod.Settings.ExtraDebugLogging)
