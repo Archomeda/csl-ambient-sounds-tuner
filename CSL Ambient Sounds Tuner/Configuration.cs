@@ -6,12 +6,13 @@ using System.Text;
 using System.Xml.Serialization;
 using AmbientSoundsTuner.Utils;
 using CommonShared;
+using CommonShared.Configuration;
 using CommonShared.Utils;
 
 namespace AmbientSoundsTuner
 {
     [XmlRoot("Configuration")]
-    public class Configuration : Config
+    public class Configuration : VersionedConfig
     {
         [XmlRoot("State")]
         public class StateConfig
@@ -21,6 +22,8 @@ namespace AmbientSoundsTuner
 
         public Configuration()
         {
+            this.Version = 1;
+
             this.State = new StateConfig();
             this.ExtraDebugLogging = false;
 

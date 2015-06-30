@@ -52,7 +52,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
+    <Compile Include="Configuration\Config.cs" />
+    <Compile Include="Configuration\ConfigMigratorBase.cs" />
+    <Compile Include="Configuration\IConfigMigrator.cs" />
+    <Compile Include="Configuration\VersionedConfig.cs" />
     <Compile Include="SerializableDictionary.cs" />
     <Compile Include="Utils\DetourUtils.cs" />
     <Compile Include="Events\AssetEditorEvents.cs" />
