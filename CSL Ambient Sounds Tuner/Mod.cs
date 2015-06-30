@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.Compatibility;
 using AmbientSoundsTuner.Detour;
+using AmbientSoundsTuner.Migration;
 using AmbientSoundsTuner.SoundPatchers;
 using AmbientSoundsTuner.UI;
 using AmbientSoundsTuner.Utils;

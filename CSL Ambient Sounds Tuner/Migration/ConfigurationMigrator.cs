@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 using AmbientSoundsTuner.Migration;
 using CommonShared.Configuration;
 
-namespace AmbientSoundsTuner
+namespace AmbientSoundsTuner.Migration
 {
     public class ConfigurationMigrator : ConfigMigratorBase<Configuration>
     {
@@ -29,6 +29,7 @@ namespace AmbientSoundsTuner
             ConfigurationV0 config = (ConfigurationV0)oldConfig;
             Configuration newConfig = new Configuration();
 
+            newConfig.ExtraDebugLogging = config.ExtraDebugLogging;
             foreach (var kvp in config.State.AmbientVolumes)
             {
                 newConfig.AmbientVolumes.Add(kvp.Key, kvp.Value);
