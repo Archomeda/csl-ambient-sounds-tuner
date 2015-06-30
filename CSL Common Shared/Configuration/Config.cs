@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace CommonShared
+namespace CommonShared.Configuration
 {
     /// <summary>
     /// An abstract class that provides basic implementation for loading and saving configuration files.

@@ -83,7 +83,7 @@ namespace CommonShared.UI
             UILabel title = this.TitleObject.AddComponent<UILabel>();
             title.text = this.title;
             title.textAlignment = UIHorizontalAlignment.Center;
-            title.position = new Vector3(this.width / 2 - title.width / 2, -TitleBarHeight / 2 + title.height / 2);
+            title.position = new Vector3(this.width / 2 - title.width / 2, -TitleBarHeight / 2 + title.height / 2).RoundToInt();
             title.anchor = UIAnchorStyle.Top | UIAnchorStyle.Left | UIAnchorStyle.Right;
             title.atlas = this.atlas;
         }
