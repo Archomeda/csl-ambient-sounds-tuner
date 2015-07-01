@@ -326,10 +326,12 @@ namespace AmbientSoundsTuner.SoundPatchers
             public const string ID_AIRCRAFT_MOVEMENT = "Aircraft Movement";
             public const string ID_AMBULANCE_SIREN = "Ambulance Siren";
             public const string ID_FIRE_TRUCK_SIREN = "Fire Truck Siren";
-            public const string ID_LARGE_CAR_MOVEMENT = "Large Car Movement";
+            private const string ID_LARGE_CAR_MOVEMENT = "Large Car Movement";
+            public const string ID_LARGE_CAR_SOUND = "Large Car Sound";
             public const string ID_METRO_MOVEMENT = "Metro Movement";
             public const string ID_POLICE_CAR_SIREN = "Police Car Siren";
-            public const string ID_SMALL_CAR_MOVEMENT = "Small Car Movement";
+            private const string ID_SMALL_CAR_MOVEMENT = "Small Car Movement";
+            public const string ID_SMALL_CAR_SOUND = "Small Car Sound";
             public const string ID_TRAIN_MOVEMENT = "Train Movement";
             public const string ID_TRANSPORT_ARRIVE = "Transport Arrive";
 
@@ -342,25 +344,39 @@ namespace AmbientSoundsTuner.SoundPatchers
             {
                 get
                 {
+                    SoundEffect soundEffect = null;
+                    MultiEffect multiEffect = null;
+
                     switch (id)
                     {
                         case ID_AIRCRAFT_MOVEMENT:
                         case ID_AMBULANCE_SIREN:
                         case ID_FIRE_TRUCK_SIREN:
-                        case ID_LARGE_CAR_MOVEMENT:
                         case ID_METRO_MOVEMENT:
                         case ID_POLICE_CAR_SIREN:
-                        case ID_SMALL_CAR_MOVEMENT:
                         case ID_TRAIN_MOVEMENT:
                         case ID_TRANSPORT_ARRIVE:
-                            EffectInfo effectInfo = EffectCollection.FindEffect(id);
-                            SoundEffect soundEffect = effectInfo as SoundEffect;
+                            soundEffect = EffectCollection.FindEffect(id) as SoundEffect;
                             if (soundEffect != null)
                             {
                                 return new SoundContainer(soundEffect);
                             }
                             break;
+
+                        case ID_SMALL_CAR_SOUND:
+                            multiEffect = EffectCollection.FindEffect(ID_SMALL_CAR_MOVEMENT) as MultiEffect;
+                            break;
+
+                        case ID_LARGE_CAR_SOUND:
+                            multiEffect = EffectCollection.FindEffect(ID_LARGE_CAR_MOVEMENT) as MultiEffect;
+                            break;
                     }
+
+                    if (multiEffect != null)
+                    {
+                        return new SoundContainer(multiEffect.m_effects.FirstOrDefault(e => e.m_effect != null && e.m_effect.name == id).m_effect as SoundEffect);
+                    }
+
                     return new SoundContainer();
                 }
             }

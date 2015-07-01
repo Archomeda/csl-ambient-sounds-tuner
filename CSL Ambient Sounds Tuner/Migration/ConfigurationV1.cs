@@ -9,10 +9,10 @@ using CommonShared;
 using CommonShared.Configuration;
 using CommonShared.Utils;
 
-namespace AmbientSoundsTuner
+namespace AmbientSoundsTuner.Migration
 {
     [XmlRoot("Configuration")]
-    public class Configuration : VersionedConfig
+    public class ConfigurationV1 : VersionedConfig
     {
         [XmlRoot("State")]
         public class StateConfig
@@ -20,9 +20,9 @@ namespace AmbientSoundsTuner
             public StateConfig() { }
         }
 
-        public Configuration()
+        public ConfigurationV1()
         {
-            this.Version = 2;
+            this.Version = 1;
 
             this.State = new StateConfig();
             this.ExtraDebugLogging = false;

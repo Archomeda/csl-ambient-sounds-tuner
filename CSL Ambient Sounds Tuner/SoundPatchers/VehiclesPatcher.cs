@@ -16,10 +16,10 @@ namespace AmbientSoundsTuner.SoundPatchers
             this.DefaultVolumes.Add(SoundsCollection.VehicleSounds.ID_AIRCRAFT_MOVEMENT, 0.5f);
             this.DefaultVolumes.Add(SoundsCollection.VehicleSounds.ID_AMBULANCE_SIREN, 1);
             this.DefaultVolumes.Add(SoundsCollection.VehicleSounds.ID_FIRE_TRUCK_SIREN, 3);
-            this.DefaultVolumes.Add(SoundsCollection.VehicleSounds.ID_LARGE_CAR_MOVEMENT, 1.5f);
+            this.DefaultVolumes.Add(SoundsCollection.VehicleSounds.ID_LARGE_CAR_SOUND, 1.5f);
             this.DefaultVolumes.Add(SoundsCollection.VehicleSounds.ID_METRO_MOVEMENT, 0.5f);
             this.DefaultVolumes.Add(SoundsCollection.VehicleSounds.ID_POLICE_CAR_SIREN, 1);
-            this.DefaultVolumes.Add(SoundsCollection.VehicleSounds.ID_SMALL_CAR_MOVEMENT, 1.5f);
+            this.DefaultVolumes.Add(SoundsCollection.VehicleSounds.ID_SMALL_CAR_SOUND, 1.5f);
             this.DefaultVolumes.Add(SoundsCollection.VehicleSounds.ID_TRAIN_MOVEMENT, 0.5f);
             this.DefaultVolumes.Add(SoundsCollection.VehicleSounds.ID_TRANSPORT_ARRIVE, 1);
         }
