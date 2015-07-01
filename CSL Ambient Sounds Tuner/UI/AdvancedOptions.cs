@@ -38,6 +38,9 @@ namespace AmbientSoundsTuner.UI
             advancedOptionsButton.autoSize = true;
             advancedOptionsButton.textPadding = new RectOffset(8, 8, 8, 8);
             advancedOptionsButton.textScale = 1.3f;
+            UIPanel lastPanel = audioOptionsPanel.GetComponentsInChildren<UIPanel>().OrderByDescending(p => p.relativePosition.y).First();
+            advancedOptionsButton.relativePosition = new Vector3(lastPanel.relativePosition.x + 14, lastPanel.relativePosition.y + lastPanel.size.y + 14);
+
             advancedOptionsButton.eventClick += advancedOptionsButton_eventClick;
 
             advancedOptions = new GameObject("AdvancedSoundsTuner");
@@ -65,7 +68,7 @@ namespace AmbientSoundsTuner.UI
             Mod.Log.Debug("Opening Sounds Tuner window");
 
             UIView.GetAView().AttachUIComponent(advancedOptions);
-            advancedOptionsWindow.transform.SetParent(GameObject.Find(GameObjectDefs.ID_LIBRARY_OPTIONSPANEL).GetComponent<OptionsPanel>().component.transform);
+            advancedOptionsWindow.transform.SetParent(GameObject.Find(GameObjectDefs.ID_LIBRARY_OPTIONSPANEL).GetComponent<UIPanel>().transform);
             advancedOptionsWindow.Show(true);
 
             Window.ShowWindow(advancedOptions.GetComponent<AdvancedOptionsWindow>());

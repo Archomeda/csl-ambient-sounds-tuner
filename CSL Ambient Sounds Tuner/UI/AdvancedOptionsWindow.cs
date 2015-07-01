@@ -176,8 +176,8 @@ namespace AmbientSoundsTuner.UI
             this.Tabstrip.tabPages = this.TabContainer;
 
             // Get template button from the options panel tabstrip
-            UITabstrip optionTabStrip = GameObject.Find(GameObjectDefs.ID_OPTIONTABSTRIP).GetComponent<UITabstrip>();
-            UIButton tabStripButtonTemplate = optionTabStrip.GetComponentInChildren<UIButton>();
+            UITabstrip keyMappingTabStrip = GameObject.Find(GameObjectDefs.ID_KEYMAPPING_TABSTRIP).GetComponent<UITabstrip>();
+            UIButton tabStripButtonTemplate = keyMappingTabStrip.GetComponentInChildren<UIButton>();
 
             this.AmbientsTabButton = this.Tabstrip.AddTab("AMBIENTS", tabStripButtonTemplate, true);
             this.AmbientsTabButton.playAudioEvents = true;
