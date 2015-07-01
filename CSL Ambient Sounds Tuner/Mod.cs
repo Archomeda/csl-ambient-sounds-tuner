@@ -184,31 +184,19 @@ namespace AmbientSoundsTuner
                     break;
             }
 
-            int total = 0;
-            int patched = 0;
-
-            total += this.AmbientsPatcher.DefaultVolumes.Count;
-            patched += this.PatchSounds(this.AmbientsPatcher, Settings.AmbientVolumes);
-
-            total += this.AnimalsPatcher.DefaultVolumes.Count;
-            patched += this.PatchSounds(this.AnimalsPatcher, Settings.AnimalVolumes);
-
-            total += this.BuildingsPatcher.DefaultVolumes.Count;
-            patched += this.PatchSounds(this.BuildingsPatcher, Settings.BuildingVolumes);
-
-            total += this.VehiclesPatcher.DefaultVolumes.Count;
-            patched += this.PatchSounds(this.VehiclesPatcher, Settings.VehicleVolumes);
-
-            total += this.MiscPatcher.DefaultVolumes.Count;
-            patched += this.PatchSounds(this.MiscPatcher, Settings.MiscVolumes);
-
-            if (total == patched)
+            // Try patching the sound volumes
+            try
             {
-                Mod.Log.Info("All {0} sound volumes have been patched", patched);
+                int patched = this.PatchSounds(this.AmbientsPatcher, Settings.AmbientVolumes);
+                patched += this.PatchSounds(this.AnimalsPatcher, Settings.AnimalVolumes);
+                patched += this.PatchSounds(this.BuildingsPatcher, Settings.BuildingVolumes);
+                patched += this.PatchSounds(this.VehiclesPatcher, Settings.VehicleVolumes);
+                patched += this.PatchSounds(this.MiscPatcher, Settings.MiscVolumes);
+                Mod.Log.Info("{0} sound volumes have been patched", patched);
             }
-            else
+            catch (Exception ex)
             {
-                Mod.Log.Warning("{0}/{1} sound volumes have been patched", patched, total);
+                Mod.Log.Warning("Could not patch sound volumes: {0}", ex);
             }
         }
 
