@@ -30,7 +30,7 @@ updated with newer releases. If you want to do it manually, you can clone this
 repo, compile the code yourself and place the DLL file in your mods folder.
 
 ## Compatibility
-This mod is based on version 1.1.0 of Cities Skylines, and it is not guaranteed
+This mod is based on version 1.1.1 of Cities Skylines, and it is not guaranteed
 that it will work on later versions. I'll try to keep it updated when newer
 versions are released however.
 
