@@ -10,6 +10,7 @@ using AmbientSoundsTuner.SoundPatchers;
 using AmbientSoundsTuner.UI;
 using AmbientSoundsTuner.Utils;
 using ColossalFramework.Plugins;
+using ColossalFramework.UI;
 using CommonShared;
 using CommonShared.Configuration;
 using CommonShared.Utils;
@@ -25,6 +26,7 @@ namespace AmbientSoundsTuner
         internal static Logger Log { get; private set; }
         internal static Mod Instance { get; private set; }
 
+        internal ModOptionsPanel OptionsPanel { get; private set; }
         internal AmbientsPatcher AmbientsPatcher { get; private set; }
         internal AnimalsPatcher AnimalsPatcher { get; private set; }
         internal BuildingsPatcher BuildingsPatcher { get; private set; }
@@ -41,6 +43,9 @@ namespace AmbientSoundsTuner
 
         private bool isLoaded = false;
         private bool isActivated = false;
+
+
+        #region IUserMod members
 
         public string Name
         {
@@ -77,6 +82,24 @@ namespace AmbientSoundsTuner
             get { return "Tune your ambient sounds volumes individually"; }
         }
 
+        public void OnSettingsUI(UIHelperBase helper)
+        {
+            UIHelper uiHelper = helper as UIHelper;
+            if (uiHelper != null)
+            {
+                this.OptionsPanel = new ModOptionsPanel(uiHelper);
+                this.OptionsPanel.PopulateUI();
+            }
+            else
+            {
+                Mod.Log.Warning("Could not populate the settings panel, helper is null or not a UIHelper");
+            }
+        }
+
+        #endregion
+
+
+        #region Loading / Unloading
 
         private void Init()
         {
@@ -133,6 +156,10 @@ namespace AmbientSoundsTuner
             }
         }
 
+        #endregion
+
+
+        #region LoadingExtensionBase members
 
         /// <summary>
         /// Our entry point. Here we load the mod.
@@ -159,6 +186,8 @@ namespace AmbientSoundsTuner
             this.isLoaded = false;
             this.isActivated = false;
         }
+
+        #endregion
 
 
         private int PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, float> newVolumes)
