@@ -54,7 +54,7 @@ namespace AmbientSoundsTuner.UI
             { SoundsCollection.BuildingSounds.ID_ON_UPGRADE, "On Upgrade" },
 
             { SoundsCollection.VehicleSounds.ID_AIRCRAFT_MOVEMENT, "Aircrafts" },
-            { SoundsCollection.VehicleSounds.ID_SMALL_CAR_SOUND, "Cars (Small)" },
+            { SoundsCollection.VehicleSounds.ID_SMALL_CAR_SOUND, "Cars (Small)/Scooters" },
             { SoundsCollection.VehicleSounds.ID_LARGE_CAR_SOUND, "Cars (Large)" },
             { SoundsCollection.VehicleSounds.ID_AMBULANCE_SIREN, "Sirens (Ambulances)" },
             { SoundsCollection.VehicleSounds.ID_FIRE_TRUCK_SIREN, "Sirens (Fire Trucks)" },
@@ -140,10 +140,10 @@ namespace AmbientSoundsTuner.UI
         public float vehicleVolumeAircraftMovement;
         public float vehicleVolumeAmbulanceSiren;
         public float vehicleVolumeFireTruckSiren;
-        public float vehicleVolumeLargeCarMovement;
+        public float vehicleVolumeLargeCarSound;
         public float vehicleVolumeMetroMovement;
         public float vehicleVolumePoliceCarSiren;
-        public float vehicleVolumeSmallCarMovement;
+        public float vehicleVolumeSmallCarSound;
         public float vehicleVolumeTrainMovement;
         public float vehicleVolumeTransportArrive;
         public float miscVolumeBuildingBulldoze;
@@ -285,10 +285,10 @@ namespace AmbientSoundsTuner.UI
             this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_AIRCRAFT_MOVEMENT, new { vehicleVolumeAircraftMovement });
             this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_AMBULANCE_SIREN, new { vehicleVolumeAmbulanceSiren });
             this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_FIRE_TRUCK_SIREN, new { vehicleVolumeFireTruckSiren }, 0, 3);
-            this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_LARGE_CAR_SOUND, new { vehicleVolumeLargeCarMovement }, 0, 1.5f);
+            this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_LARGE_CAR_SOUND, new { vehicleVolumeLargeCarSound }, 0, 1.5f);
             this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_METRO_MOVEMENT, new { vehicleVolumeMetroMovement });
             this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_POLICE_CAR_SIREN, new { vehicleVolumePoliceCarSiren });
-            this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_SMALL_CAR_SOUND, new { vehicleVolumeSmallCarMovement }, 0, 1.5f);
+            this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_SMALL_CAR_SOUND, new { vehicleVolumeSmallCarSound }, 0, 1.5f);
             this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_TRAIN_MOVEMENT, new { vehicleVolumeTrainMovement });
             this.AddVehicleSlider(SoundsCollection.VehicleSounds.ID_TRANSPORT_ARRIVE, new { vehicleVolumeTransportArrive });
 
