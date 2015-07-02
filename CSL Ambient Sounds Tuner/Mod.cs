@@ -41,7 +41,7 @@ namespace AmbientSoundsTuner
             421527612, // SilenceObnoxiousSirens
         };
 
-        private bool isLoaded = false;
+        private bool isLoadedInMainMenu = false;
 
 
         #region IUserMod members
@@ -63,23 +63,7 @@ namespace AmbientSoundsTuner
             {
                 // Here we ensure this gets only loaded on main menu, and not in-game
                 this.Init();
-
-                if (!this.isLoaded)
-                {
-                    Action<bool> pluginStateChangeCallback = null;
-                    pluginStateChangeCallback = new Action<bool>(isEnabled =>
-                    {
-                        if (!isEnabled)
-                        {
-                            this.Unload();
-                            PluginUtils.UnsubscribePluginStateChange(this, pluginStateChangeCallback);
-                        }
-                    });
-                    PluginUtils.SubscribePluginStateChange(this, pluginStateChangeCallback);
-
-                    this.Load();
-                    this.isLoaded = true;
-                }
+                this.Load(GameState.MainMenu);
             }
 
             // Do regular settings UI stuff
@@ -113,8 +97,27 @@ namespace AmbientSoundsTuner
             this.MiscPatcher = new MiscPatcher();
         }
 
-        private void Load()
+        private void Load(GameState state)
         {
+            // Pre-load in main menu
+            if (state == GameState.MainMenu)
+            {
+                if (this.isLoadedInMainMenu) { return; }
+
+                Action<bool> pluginStateChangeCallback = null;
+                pluginStateChangeCallback = new Action<bool>(isEnabled =>
+                {
+                    if (!isEnabled)
+                    {
+                        this.Unload();
+                        PluginUtils.UnsubscribePluginStateChange(this, pluginStateChangeCallback);
+                    }
+                });
+                PluginUtils.SubscribePluginStateChange(this, pluginStateChangeCallback);
+                this.isLoadedInMainMenu = true;
+            }
+
+            // Load regular
             this.CheckIncompatibility();
 
             Mod.Settings = VersionedConfig.LoadConfig<Configuration>(Mod.SettingsFilename, new ConfigurationMigrator());
@@ -125,15 +128,34 @@ namespace AmbientSoundsTuner
                 Mod.Log.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
             }
 
+            // Patch sounds based on game state
             CustomPlayClickSound.Detour();
-            this.PatchUISounds();
+
+            if (state == GameState.InGame)
+            {
+                this.PatchSounds();
+            }
+            else if (state == GameState.MainMenu)
+            {
+                this.PatchUISounds();
+                this.isLoadedInMainMenu = true;
+            }
+
+            Mod.Log.Info("Mod loaded");
         }
 
         private void Unload()
         {
+            Mod.Settings.SaveConfig(Mod.SettingsFilename);
             CustomPlayClickSound.UnDetour();
-        }
 
+            // Actually, to be consistent and nice, we should also revert the other sound patching here.
+            // But since that sounds are only patched in-game, and closing that game conveniently resets the other sounds, it's not really needed.
+            // If it's needed at some point in the future, we can add that logic here.
+
+            this.isLoadedInMainMenu = false;
+            Mod.Log.Info("Mod unloaded");
+        }
 
         private void CheckIncompatibility()
         {
@@ -166,8 +188,7 @@ namespace AmbientSoundsTuner
         {
             base.OnLevelLoaded(mode);
             this.Init();
-            this.Load();
-            PatchSounds();
+            this.Load(GameState.InGame);
         }
 
         /// <summary>
@@ -176,12 +197,7 @@ namespace AmbientSoundsTuner
         public override void OnLevelUnloading()
         {
             base.OnLevelUnloading();
-            Settings.SaveConfig(Mod.SettingsFilename);
-
             this.Unload();
-
-            // Set isLoaded and isActivated to false again so the mod will load again at the main menu
-            this.isLoaded = false;
         }
 
         #endregion
@@ -235,6 +251,13 @@ namespace AmbientSoundsTuner
 
             this.MiscPatcher.PatchVolume(MiscPatcher.ID_CLICK_SOUND, clickVolume);
             this.MiscPatcher.PatchVolume(MiscPatcher.ID_DISABLED_CLICK_SOUND, disabledClickVolume);
+        }
+
+
+        public enum GameState
+        {
+            MainMenu,
+            InGame
         }
     }
 }
