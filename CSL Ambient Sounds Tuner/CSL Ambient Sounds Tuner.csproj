@@ -71,7 +71,6 @@
     <Compile Include="SoundPatchers\SoundsPatcher.cs" />
     <Compile Include="UI\Extensions\UITabstripExtensions.cs" />
     <Compile Include="UI\ModOptionsPanel.cs" />
-    <Compile Include="Utils\OptionsPanelUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\csl-common-shared-library\CSL Common Shared\CSL Common Shared.csproj">
