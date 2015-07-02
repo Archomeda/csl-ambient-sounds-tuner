@@ -197,6 +197,7 @@ namespace AmbientSoundsTuner.UI
 
         protected override void OnClose()
         {
+            Mod.Log.Debug("Options panel closed, saving config");
             Mod.Settings.SaveConfig(Mod.SettingsFilename);
         }
 

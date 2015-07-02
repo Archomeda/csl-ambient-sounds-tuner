@@ -72,6 +72,7 @@ namespace AmbientSoundsTuner
             {
                 this.OptionsPanel = new ModOptionsPanel(uiHelper);
                 this.OptionsPanel.PerformLayout();
+                Mod.Log.Debug("Options panel created");
             }
             else
             {
@@ -95,6 +96,8 @@ namespace AmbientSoundsTuner
             this.BuildingsPatcher = new BuildingsPatcher();
             this.VehiclesPatcher = new VehiclesPatcher();
             this.MiscPatcher = new MiscPatcher();
+
+            Mod.Log.Debug("Mod initialized");
         }
 
         private void Load(GameState state)
@@ -141,7 +144,7 @@ namespace AmbientSoundsTuner
                 this.isLoadedInMainMenu = true;
             }
 
-            Mod.Log.Info("Mod loaded");
+            Mod.Log.Debug("Mod loaded");
         }
 
         private void Unload()
@@ -154,7 +157,7 @@ namespace AmbientSoundsTuner
             // If it's needed at some point in the future, we can add that logic here.
 
             this.isLoadedInMainMenu = false;
-            Mod.Log.Info("Mod unloaded");
+            Mod.Log.Debug("Mod unloaded");
         }
 
         private void CheckIncompatibility()
@@ -173,6 +176,8 @@ namespace AmbientSoundsTuner
                     Mod.Log.Warning("You've got some known incompatible mods enabled! It's possible that this mod doesn't work as expected.\nThe following incompatible mods are enabled: {0}.", text);
                 }
             }
+
+            Mod.Log.Debug("Incompatibility check completed");
         }
 
         #endregion
@@ -216,10 +221,10 @@ namespace AmbientSoundsTuner
             switch (patchResult)
             {
                 case SirensPatcher.PatchResult.Success:
-                    Mod.Log.Info("Police sirens have been patched");
+                    Mod.Log.Debug("Police sirens have been patched");
                     break;
                 case SirensPatcher.PatchResult.AlreadyPatched:
-                    Mod.Log.Info("Police sirens have been patched already");
+                    Mod.Log.Debug("Police sirens have been patched already");
                     break;
                 case SirensPatcher.PatchResult.NotFound:
                     Mod.Log.Warning("Could not patch the police sirens to be different from the ambulance sirens");
@@ -234,7 +239,7 @@ namespace AmbientSoundsTuner
                 patched += this.PatchSounds(this.BuildingsPatcher, Settings.BuildingVolumes);
                 patched += this.PatchSounds(this.VehiclesPatcher, Settings.VehicleVolumes);
                 patched += this.PatchSounds(this.MiscPatcher, Settings.MiscVolumes);
-                Mod.Log.Info("{0} sound volumes have been patched", patched);
+                Mod.Log.Debug("{0} sound volumes have been patched", patched);
             }
             catch (Exception ex)
             {
