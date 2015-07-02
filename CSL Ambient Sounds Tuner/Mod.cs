@@ -166,6 +166,7 @@ namespace AmbientSoundsTuner
         public override void OnLevelLoaded(LoadMode mode)
         {
             base.OnLevelLoaded(mode);
+            this.Init();
             this.Load();
             PatchSounds();
         }
