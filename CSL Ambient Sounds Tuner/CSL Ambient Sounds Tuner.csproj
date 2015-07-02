@@ -69,10 +69,8 @@
     <Compile Include="SoundPatchers\MiscellaneousSoundsInstancePatcher.cs" />
     <Compile Include="SoundPatchers\SoundsInstancePatcher.cs" />
     <Compile Include="SoundPatchers\SoundsPatcher.cs" />
-    <Compile Include="UI\AdvancedOptions.cs" />
     <Compile Include="UI\Extensions\UITabstripExtensions.cs" />
     <Compile Include="UI\ModOptionsPanel.cs" />
-    <Compile Include="UI\AdvancedOptionsWindow.cs" />
     <Compile Include="Utils\OptionsPanelUtils.cs" />
   </ItemGroup>
   <ItemGroup>

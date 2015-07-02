@@ -126,7 +126,6 @@ namespace AmbientSoundsTuner
                 Mod.Log.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
             }
 
-            AdvancedOptions.CreateAdvancedOptions();
             CustomPlayClickSound.Detour();
             this.PatchUISounds();
         }
@@ -134,7 +133,6 @@ namespace AmbientSoundsTuner
         private void Unload()
         {
             CustomPlayClickSound.UnDetour();
-            AdvancedOptions.DestroyAdvancedOptions();
         }
 
 
