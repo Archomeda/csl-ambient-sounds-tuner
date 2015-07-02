@@ -20,14 +20,15 @@ namespace AmbientSoundsTuner.UI.Extensions
     public static class UITabstripExtensions
     {
         /// <summary>
-        /// Custom extension method that will add a scrollable panel to a tab, instead of a normal panel.
+        /// Custom extension method that will add a custom panel to a tab, instead of a default panel.
         /// </summary>
         /// <param name="tabstrip">The tab strip.</param>
         /// <param name="text">The tab name.</param>
         /// <param name="buttonTemplate">The button template.</param>
+        /// <param name="panelTemplate">The panel template.</param>
         /// <param name="fillText">Should the button be updated with the tab name?</param>
         /// <returns>The added tab button.</returns>
-        public static UIButton AddScrollableTab(this UITabstrip tabstrip, string text, UIButton buttonTemplate, UIPanel panelTemplate, bool fillText)
+        public static UIButton AddCustomTab(this UITabstrip tabstrip, string text, UIButton buttonTemplate, UIPanel panelTemplate, bool fillText)
         {
             UIButton button = tabstrip.AddUIComponent<UIButton>();
             button.name = text;
