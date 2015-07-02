@@ -163,21 +163,28 @@ namespace AmbientSoundsTuner.UI
 
         protected override void PopulateUI()
         {
-            // Set root panel options
-            this.RootPanel.autoLayout = false;
+            UIHelper groupHelper = null;
+
+            // Create global options
+            groupHelper = this.RootHelper.AddGroup2("Mod settings");
+            groupHelper.AddCheckbox("Enable debug logging (don't use this during normal gameplay)", Mod.Settings.ExtraDebugLogging, v =>
+            {
+                Mod.Settings.ExtraDebugLogging = v;
+                Mod.Log.EnableDebugLogging = v;
+            });
 
             // Create tab strip
-            UITabstrip tabstrip = this.RootHelper.AddTabstrip();
-            tabstrip.relativePosition = new Vector3(0, 0);
-            tabstrip.size = new Vector2(this.RootPanelInnerArea.x, 40);
-            tabstrip.anchor = UIAnchorStyle.Top | UIAnchorStyle.Left | UIAnchorStyle.Right;
-
-            tabstrip.tabPages.relativePosition = new Vector3(0, tabstrip.height);
-            tabstrip.tabPages.size = new Vector2(this.RootPanelInnerArea.x, this.RootPanelInnerArea.y - tabstrip.height);
+            groupHelper = this.RootHelper.AddGroup2("Sound settings");
+            UIComponent groupParent = ((UIPanel)groupHelper.self).parent;
+            UITabstrip tabstrip = groupHelper.AddTabstrip();
+            tabstrip.tabPages.size = new Vector2(
+                groupParent.width - 20,
+                this.RootPanelInnerArea.y - (groupParent.absolutePosition.y - this.RootPanel.absolutePosition.y) - (groupParent.height - tabstrip.tabPages.height)
+            );
             tabstrip.tabPages.anchor = UIAnchorStyle.All;
 
             // Create tabs
-            int tabWidth = (int)(this.RootPanelInnerArea.x / 5);
+            int tabWidth = (int)(tabstrip.tabPages.width / 5);
             this.AddTab(tabstrip, tabWidth, "Ambients", this.AmbientsDef, Mod.Settings.AmbientVolumes, Mod.Instance.AmbientsPatcher);
             this.AddTab(tabstrip, tabWidth, "Animals", this.AnimalsDef, Mod.Settings.AnimalVolumes, Mod.Instance.AnimalsPatcher);
             this.AddTab(tabstrip, tabWidth, "Buildings", this.BuildingsDef, Mod.Settings.BuildingVolumes, Mod.Instance.BuildingsPatcher);
