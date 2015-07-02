@@ -88,7 +88,7 @@ namespace AmbientSoundsTuner
             if (uiHelper != null)
             {
                 this.OptionsPanel = new ModOptionsPanel(uiHelper);
-                this.OptionsPanel.PopulateUI();
+                this.OptionsPanel.PerformLayout();
             }
             else
             {

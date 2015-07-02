@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace AmbientSoundsTuner.UI.Extensions
 {
+    /// <summary>
+    /// A class that contains extensions for <see cref="UITabstrip"/> objects.
+    /// </summary>
     public static class UITabstripExtensions
     {
         /// <summary>

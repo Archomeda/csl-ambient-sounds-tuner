@@ -12,13 +12,17 @@ using ColossalFramework.DataBinding;
 using ColossalFramework.UI;
 using CommonShared.Extensions;
 using CommonShared.UI;
+using CommonShared.UI.Extensions;
 using CommonShared.Utils;
 using ICities;
 using UnityEngine;
 
 namespace AmbientSoundsTuner.UI
 {
-    public class ModOptionsPanel
+    /// <summary>
+    /// A mod options panel.
+    /// </summary>
+    public class ModOptionsPanel : ConfigPanelBase
     {
         #region Slider definitions
 
@@ -155,105 +159,51 @@ namespace AmbientSoundsTuner.UI
 
         #endregion
 
-        private UIHelper rootHelper;
-        private bool prevVisible = false;
+        public ModOptionsPanel(UIHelper helper) : base(helper) { }
 
-        public UIScrollablePanel RootPanel
+        protected override void PopulateUI()
         {
-            get
-            {
-                return this.rootHelper.self as UIScrollablePanel;
-            }
-        }
-
-        public ModOptionsPanel(UIHelper helper)
-        {
-            this.rootHelper = helper;
-        }
-
-        public void PopulateUI()
-        {
-            if (this.RootPanel == null)
-            {
-                Mod.Log.Warning("Could not populate options panel, panel is null or not a UIScrollablePanel");
-                return;
-            }
-
             // Set root panel options
             this.RootPanel.autoLayout = false;
-            Vector2 panelInnerSize = new Vector2(this.RootPanel.width - ((UIPanel)this.RootPanel.parent).padding.horizontal - 20, this.RootPanel.height - ((UIPanel)this.RootPanel.parent).padding.vertical - 20);
 
             // Create tab strip
-            UITabstrip tabstrip = this.RootPanel.AddUIComponent<UITabstrip>();
+            UITabstrip tabstrip = this.RootHelper.AddTabstrip();
             tabstrip.relativePosition = new Vector3(0, 0);
-            tabstrip.size = new Vector2(panelInnerSize.x, 40);
+            tabstrip.size = new Vector2(this.RootPanelInnerArea.x, 40);
             tabstrip.anchor = UIAnchorStyle.Top | UIAnchorStyle.Left | UIAnchorStyle.Right;
 
-            // Create tab container
-            UITabContainer tabContainer = this.RootPanel.AddUIComponent<UITabContainer>();
-            tabContainer.relativePosition = new Vector3(0, tabstrip.height);
-            tabContainer.size = new Vector2(panelInnerSize.x, panelInnerSize.y - tabstrip.height);
-            tabContainer.anchor = UIAnchorStyle.All;
-            tabstrip.tabPages = tabContainer;
+            tabstrip.tabPages.relativePosition = new Vector3(0, tabstrip.height);
+            tabstrip.tabPages.size = new Vector2(this.RootPanelInnerArea.x, this.RootPanelInnerArea.y - tabstrip.height);
+            tabstrip.tabPages.anchor = UIAnchorStyle.All;
 
             // Create tabs
-            UITabstrip keyMappingTabStrip = GameObject.Find(GameObjectDefs.ID_KEYMAPPING_TABSTRIP).GetComponent<UITabstrip>();
-            UIButton buttonTemplate = keyMappingTabStrip.GetComponentInChildren<UIButton>();
-            int tabWidth = (int)(panelInnerSize.x / 5);
-            this.AddTab(tabstrip, buttonTemplate, "Ambients", tabWidth, this.AmbientsDef, Mod.Settings.AmbientVolumes, Mod.Instance.AmbientsPatcher);
-            this.AddTab(tabstrip, buttonTemplate, "Animals", tabWidth, this.AnimalsDef, Mod.Settings.AnimalVolumes, Mod.Instance.AnimalsPatcher);
-            this.AddTab(tabstrip, buttonTemplate, "Buildings", tabWidth, this.BuildingsDef, Mod.Settings.BuildingVolumes, Mod.Instance.BuildingsPatcher);
-            this.AddTab(tabstrip, buttonTemplate, "Vehicles", tabWidth, this.VehiclesDef, Mod.Settings.VehicleVolumes, Mod.Instance.VehiclesPatcher);
-            this.AddTab(tabstrip, buttonTemplate, "Misc", tabWidth, this.MiscDef, Mod.Settings.MiscVolumes, Mod.Instance.MiscPatcher);
+            int tabWidth = (int)(this.RootPanelInnerArea.x / 5);
+            this.AddTab(tabstrip, tabWidth, "Ambients", this.AmbientsDef, Mod.Settings.AmbientVolumes, Mod.Instance.AmbientsPatcher);
+            this.AddTab(tabstrip, tabWidth, "Animals", this.AnimalsDef, Mod.Settings.AnimalVolumes, Mod.Instance.AnimalsPatcher);
+            this.AddTab(tabstrip, tabWidth, "Buildings", this.BuildingsDef, Mod.Settings.BuildingVolumes, Mod.Instance.BuildingsPatcher);
+            this.AddTab(tabstrip, tabWidth, "Vehicles", this.VehiclesDef, Mod.Settings.VehicleVolumes, Mod.Instance.VehiclesPatcher);
+            this.AddTab(tabstrip, tabWidth, "Misc", this.MiscDef, Mod.Settings.MiscVolumes, Mod.Instance.MiscPatcher);
 
             tabstrip.selectedIndex = -1;
             tabstrip.selectedIndex = 0;
-
-            // Hook onto visibility event so we can manually save our settings
-            this.RootPanel.eventVisibilityChanged += RootPanel_eventVisibilityChanged;
         }
 
-        void RootPanel_eventVisibilityChanged(UIComponent component, bool value)
+        protected override void OnClose()
         {
-            if (prevVisible && !value)
-            {
-                Mod.Settings.SaveConfig(Mod.SettingsFilename);
-            }
-            prevVisible = value;
+            Mod.Settings.SaveConfig(Mod.SettingsFilename);
         }
 
-        protected void AddTab<T>(UITabstrip tabstrip, UIButton buttonTemplate, string buttonName, float buttonWidth, IDictionary<string, SliderDef<T>[]> content, IDictionary<T, float> volumes, SoundsInstancePatcher<T> patcher)
+        protected void AddTab<T>(UITabstrip tabstrip, float buttonWidth, string title, IDictionary<string, SliderDef<T>[]> content, IDictionary<T, float> volumes, SoundsInstancePatcher<T> patcher)
         {
-            UIPanel panelTemplate = (UIPanel)UITemplateManager.Peek("OptionsScrollPanelTemplate");
-            UIButton tabButton = tabstrip.AddCustomTab(buttonName, buttonTemplate, panelTemplate, true);
-            tabButton.playAudioEvents = buttonTemplate.playAudioEvents;
-            tabButton.pressedTextColor = buttonTemplate.pressedTextColor;
-            tabButton.focusedTextColor = buttonTemplate.focusedTextColor;
-            tabButton.disabledTextColor = buttonTemplate.disabledTextColor;
-            tabButton.width = buttonWidth;
-
-            UIScrollablePanel tabPanel = ((UIPanel)tabstrip.tabContainer.components.Last()).GetComponentInChildren<UIScrollablePanel>();
-            tabPanel.autoLayout = true;
-            tabPanel.autoLayoutDirection = LayoutDirection.Vertical;
-            tabPanel.autoLayoutPadding = new RectOffset(0, 0, 2, 0);
-
-            UIHelper helper = new UIHelper(tabPanel);
+            UIHelper tabHelper = this.RootHelper.AddScrollingTab(tabstrip, buttonWidth, title);
             foreach (var group in content)
             {
-                UIHelper groupHelper = this.AddGroup(helper, group.Key);
+                UIHelper groupHelper = tabHelper.AddGroup2(group.Key);
                 foreach (var sliderDef in group.Value)
                 {
                     this.AddVolumeSlider(sliderDef, groupHelper, volumes, patcher);
                 }
             }
-        }
-
-        protected UIHelper AddGroup(UIHelper helper, string text)
-        {
-            UIHelper groupHelper = (UIHelper)helper.AddGroup(text);
-            ((UIComponent)groupHelper.self).parent.width = ((UIComponent)helper.self).width - 20;
-            ((UIComponent)groupHelper.self).width = ((UIComponent)groupHelper.self).parent.width;
-            return groupHelper;
         }
 
         protected void AddVolumeSlider<T>(SliderDef<T> slider, UIHelperBase helper, IDictionary<T, float> volumes, SoundsInstancePatcher<T> patcher)
@@ -276,6 +226,10 @@ namespace AmbientSoundsTuner.UI
             uiPanel.size = new Vector2(310 + uiSlider.width, 30);
         }
 
+        /// <summary>
+        /// A struct that represents the definition of a slider.
+        /// </summary>
+        /// <typeparam name="T">The type of the slider id.</typeparam>
         public struct SliderDef<T>
         {
             public T Id;
