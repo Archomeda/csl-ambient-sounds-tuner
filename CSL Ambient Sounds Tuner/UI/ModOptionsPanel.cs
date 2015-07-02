@@ -5,8 +5,6 @@ using System.Reflection;
 using System.Text;
 using AmbientSoundsTuner.Defs;
 using AmbientSoundsTuner.SoundPatchers;
-using AmbientSoundsTuner.UI.Extensions;
-using AmbientSoundsTuner.Utils;
 using ColossalFramework;
 using ColossalFramework.DataBinding;
 using ColossalFramework.UI;

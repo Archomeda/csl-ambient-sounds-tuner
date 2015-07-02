@@ -8,7 +8,6 @@ using AmbientSoundsTuner.Detour;
 using AmbientSoundsTuner.Migration;
 using AmbientSoundsTuner.SoundPatchers;
 using AmbientSoundsTuner.UI;
-using AmbientSoundsTuner.Utils;
 using ColossalFramework.Plugins;
 using ColossalFramework.UI;
 using CommonShared;
