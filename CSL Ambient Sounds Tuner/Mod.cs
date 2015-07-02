@@ -42,39 +42,13 @@ namespace AmbientSoundsTuner
         };
 
         private bool isLoaded = false;
-        private bool isActivated = false;
 
 
         #region IUserMod members
 
         public string Name
         {
-            get
-            {
-                // Here we load our stuff, hacky, but oh well...
-                this.Init();
-
-                if (!this.isLoaded)
-                {
-                    PluginUtils.SubscribePluginStateChange(this, isEnabled =>
-                    {
-                        if (isEnabled) this.Load();
-                        else this.Unload();
-                    });
-                }
-
-                if (!this.isActivated)
-                {
-                    var pluginInfo = PluginUtils.GetPluginInfo(this);
-                    if (pluginInfo.isEnabled)
-                    {
-                        this.isActivated = true;
-                        this.Load();
-                    }
-                }
-
-                return "Ambient Sounds Tuner";
-            }
+            get { return "Ambient Sounds Tuner"; }
         }
 
         public string Description
@@ -84,6 +58,31 @@ namespace AmbientSoundsTuner
 
         public void OnSettingsUI(UIHelperBase helper)
         {
+            // Since this method gets called on the main menu when this mod is enabled, we will also hook some of our loading here
+            if (SimulationManager.instance.m_metaData == null || SimulationManager.instance.m_metaData.m_updateMode == SimulationManager.UpdateMode.Undefined)
+            {
+                // Here we ensure this gets only loaded on main menu, and not in-game
+                this.Init();
+
+                if (!this.isLoaded)
+                {
+                    Action<bool> pluginStateChangeCallback = null;
+                    pluginStateChangeCallback = new Action<bool>(isEnabled =>
+                    {
+                        if (!isEnabled)
+                        {
+                            this.Unload();
+                            PluginUtils.UnsubscribePluginStateChange(this, pluginStateChangeCallback);
+                        }
+                    });
+                    PluginUtils.SubscribePluginStateChange(this, pluginStateChangeCallback);
+
+                    this.Load();
+                    this.isLoaded = true;
+                }
+            }
+
+            // Do regular settings UI stuff
             UIHelper uiHelper = helper as UIHelper;
             if (uiHelper != null)
             {
@@ -183,7 +182,6 @@ namespace AmbientSoundsTuner
 
             // Set isLoaded and isActivated to false again so the mod will load again at the main menu
             this.isLoaded = false;
-            this.isActivated = false;
         }
 
         #endregion
