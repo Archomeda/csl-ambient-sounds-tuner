@@ -3,6 +3,8 @@ Function RegexReplaceFile($file, $regex, $replace, $encoding = "ASCII") {
 }
 
 $version = $env:APPVEYOR_BUILD_VERSION
+$csl_version = (Select-Xml -Path appveyor\packages.config -XPath "/packages/package[@id='CitiesSkylinesAPI']").node.version
+$version = "$version-$csl_version"
 if ($env:APPVEYOR_REPO_TAG -eq "false") {
     $postfix = "dev"
     if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
