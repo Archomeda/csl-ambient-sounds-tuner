@@ -6,6 +6,7 @@ using System.Text;
 using AmbientSoundsTuner.Compatibility;
 using AmbientSoundsTuner.Detour;
 using AmbientSoundsTuner.Migration;
+using AmbientSoundsTuner.SoundPack;
 using AmbientSoundsTuner.SoundPatchers;
 using AmbientSoundsTuner.UI;
 using ColossalFramework.Plugins;
@@ -133,6 +134,9 @@ namespace AmbientSoundsTuner
             {
                 Mod.Log.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
             }
+
+            // Load sound packs
+            SoundPacksManager.instance.InitSoundPacks();
 
             // Patch sounds based on game state
             CustomPlayClickSound.Detour();

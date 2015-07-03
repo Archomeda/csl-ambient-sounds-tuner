@@ -54,6 +54,8 @@
     <Compile Include="Migration\ConfigurationV1.cs" />
     <Compile Include="Migration\ConfigurationMigrator.cs" />
     <Compile Include="Migration\ConfigurationV0.cs" />
+    <Compile Include="SoundPack\SoundPackFile.cs" />
+    <Compile Include="SoundPack\SoundPacksManager.cs" />
     <Compile Include="SoundPatchers\MiscPatcher.cs" />
     <Compile Include="SoundPatchers\SoundContainer.cs" />
     <Compile Include="SoundPatchers\VehiclesPatcher.cs" />
