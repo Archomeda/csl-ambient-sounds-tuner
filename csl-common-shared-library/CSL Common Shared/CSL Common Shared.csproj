@@ -56,7 +56,12 @@
     <Compile Include="Configuration\ConfigMigratorBase.cs" />
     <Compile Include="Configuration\IConfigMigrator.cs" />
     <Compile Include="Configuration\VersionedConfig.cs" />
+    <Compile Include="Defs\GameObjectDefs.cs" />
+    <Compile Include="Defs\UITemplateDefs.cs" />
     <Compile Include="SerializableDictionary.cs" />
+    <Compile Include="UI\ConfigPanelBase.cs" />
+    <Compile Include="UI\Extensions\UIHelperBaseExtensions.cs" />
+    <Compile Include="UI\Extensions\UITabstripExtensions.cs" />
     <Compile Include="Utils\DetourUtils.cs" />
     <Compile Include="Events\AssetEditorEvents.cs" />
     <Compile Include="Events\ToolbarEvents.cs" />

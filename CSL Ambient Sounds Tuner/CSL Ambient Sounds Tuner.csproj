@@ -69,9 +69,7 @@
     <Compile Include="SoundPatchers\MiscellaneousSoundsInstancePatcher.cs" />
     <Compile Include="SoundPatchers\SoundsInstancePatcher.cs" />
     <Compile Include="SoundPatchers\SoundsPatcher.cs" />
-    <Compile Include="UI\AdvancedOptions.cs" />
-    <Compile Include="UI\AdvancedOptionsWindow.cs" />
-    <Compile Include="Utils\OptionsPanelUtils.cs" />
+    <Compile Include="UI\ModOptionsPanel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\csl-common-shared-library\CSL Common Shared\CSL Common Shared.csproj">

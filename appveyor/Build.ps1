@@ -8,6 +8,10 @@ if ($LASTEXITCODE -gt 0) { exit $LASTEXITCODE }
 $referencePath = ($packages.packages.package | % {(Get-Location).ToString() + "\packages\$($_.id).$($_.version)\lib\$($_.targetFramework)\"}) -Join ";"
 
 
+# Do some prepatching
+.\appveyor\UpdateBuildVersion.ps1
+
+
 # Do the actual build
 msbuild /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /verbosity:minimal /p:ReferencePath="$referencePath"
 if ($LASTEXITCODE -gt 0) { exit $LASTEXITCODE }

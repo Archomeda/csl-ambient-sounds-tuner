@@ -8,8 +8,8 @@ using AmbientSoundsTuner.Detour;
 using AmbientSoundsTuner.Migration;
 using AmbientSoundsTuner.SoundPatchers;
 using AmbientSoundsTuner.UI;
-using AmbientSoundsTuner.Utils;
 using ColossalFramework.Plugins;
+using ColossalFramework.UI;
 using CommonShared;
 using CommonShared.Configuration;
 using CommonShared.Utils;
@@ -25,6 +25,7 @@ namespace AmbientSoundsTuner
         internal static Logger Log { get; private set; }
         internal static Mod Instance { get; private set; }
 
+        internal ModOptionsPanel OptionsPanel { get; private set; }
         internal AmbientsPatcher AmbientsPatcher { get; private set; }
         internal AnimalsPatcher AnimalsPatcher { get; private set; }
         internal BuildingsPatcher BuildingsPatcher { get; private set; }
@@ -39,37 +40,14 @@ namespace AmbientSoundsTuner
             421527612, // SilenceObnoxiousSirens
         };
 
-        private bool isLoaded = false;
-        private bool isActivated = false;
+        private bool isLoadedInMainMenu = false;
+
+
+        #region IUserMod members
 
         public string Name
         {
-            get
-            {
-                // Here we load our stuff, hacky, but oh well...
-                this.Init();
-
-                if (!this.isLoaded)
-                {
-                    PluginUtils.SubscribePluginStateChange(this, isEnabled =>
-                    {
-                        if (isEnabled) this.Load();
-                        else this.Unload();
-                    });
-                }
-
-                if (!this.isActivated)
-                {
-                    var pluginInfo = PluginUtils.GetPluginInfo(this);
-                    if (pluginInfo.isEnabled)
-                    {
-                        this.isActivated = true;
-                        this.Load();
-                    }
-                }
-
-                return "Ambient Sounds Tuner";
-            }
+            get { return "Ambient Sounds Tuner"; }
         }
 
         public string Description
@@ -77,6 +55,38 @@ namespace AmbientSoundsTuner
             get { return "Tune your ambient sounds volumes individually"; }
         }
 
+        public void OnSettingsUI(UIHelperBase helper)
+        {
+            // Since this method gets called on the main menu when this mod is enabled, we will also hook some of our loading here
+            if (SimulationManager.instance.m_metaData == null || SimulationManager.instance.m_metaData.m_updateMode == SimulationManager.UpdateMode.Undefined)
+            {
+                // Here we ensure this gets only loaded on main menu, and not in-game
+                this.Init();
+                this.Load(GameState.MainMenu);
+            }
+
+            // Do regular settings UI stuff
+            UIHelper uiHelper = helper as UIHelper;
+            if (uiHelper != null)
+            {
+                this.OptionsPanel = new ModOptionsPanel(uiHelper);
+                this.OptionsPanel.PerformLayout();
+                Mod.Log.Debug("Options panel created");
+            }
+            else
+            {
+                Mod.Log.Warning("Could not populate the settings panel, helper is null or not a UIHelper");
+            }
+        }
+
+        #endregion
+
+        public string BuildVersion
+        {
+            get { return "dev version"; }
+        }
+
+        #region Loading / Unloading
 
         private void Init()
         {
@@ -89,10 +99,31 @@ namespace AmbientSoundsTuner
             this.BuildingsPatcher = new BuildingsPatcher();
             this.VehiclesPatcher = new VehiclesPatcher();
             this.MiscPatcher = new MiscPatcher();
+
+            Mod.Log.Debug("Mod initialized");
         }
 
-        private void Load()
+        private void Load(GameState state)
         {
+            // Pre-load in main menu
+            if (state == GameState.MainMenu)
+            {
+                if (this.isLoadedInMainMenu) { return; }
+
+                Action<bool> pluginStateChangeCallback = null;
+                pluginStateChangeCallback = new Action<bool>(isEnabled =>
+                {
+                    if (!isEnabled)
+                    {
+                        this.Unload();
+                        PluginUtils.UnsubscribePluginStateChange(this, pluginStateChangeCallback);
+                    }
+                });
+                PluginUtils.SubscribePluginStateChange(this, pluginStateChangeCallback);
+                this.isLoadedInMainMenu = true;
+            }
+
+            // Load regular
             this.CheckIncompatibility();
 
             Mod.Settings = VersionedConfig.LoadConfig<Configuration>(Mod.SettingsFilename, new ConfigurationMigrator());
@@ -103,17 +134,34 @@ namespace AmbientSoundsTuner
                 Mod.Log.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
             }
 
-            AdvancedOptions.CreateAdvancedOptions();
+            // Patch sounds based on game state
             CustomPlayClickSound.Detour();
-            this.PatchUISounds();
+
+            if (state == GameState.InGame)
+            {
+                this.PatchSounds();
+            }
+            else if (state == GameState.MainMenu)
+            {
+                this.PatchUISounds();
+                this.isLoadedInMainMenu = true;
+            }
+
+            Mod.Log.Debug("Mod loaded");
         }
 
         private void Unload()
         {
+            Mod.Settings.SaveConfig(Mod.SettingsFilename);
             CustomPlayClickSound.UnDetour();
-            AdvancedOptions.DestroyAdvancedOptions();
-        }
 
+            // Actually, to be consistent and nice, we should also revert the other sound patching here.
+            // But since that sounds are only patched in-game, and closing that game conveniently resets the other sounds, it's not really needed.
+            // If it's needed at some point in the future, we can add that logic here.
+
+            this.isLoadedInMainMenu = false;
+            Mod.Log.Debug("Mod unloaded");
+        }
 
         private void CheckIncompatibility()
         {
@@ -131,8 +179,14 @@ namespace AmbientSoundsTuner
                     Mod.Log.Warning("You've got some known incompatible mods enabled! It's possible that this mod doesn't work as expected.\nThe following incompatible mods are enabled: {0}.", text);
                 }
             }
+
+            Mod.Log.Debug("Incompatibility check completed");
         }
 
+        #endregion
+
+
+        #region LoadingExtensionBase members
 
         /// <summary>
         /// Our entry point. Here we load the mod.
@@ -141,8 +195,8 @@ namespace AmbientSoundsTuner
         public override void OnLevelLoaded(LoadMode mode)
         {
             base.OnLevelLoaded(mode);
-            this.Load();
-            PatchSounds();
+            this.Init();
+            this.Load(GameState.InGame);
         }
 
         /// <summary>
@@ -151,14 +205,10 @@ namespace AmbientSoundsTuner
         public override void OnLevelUnloading()
         {
             base.OnLevelUnloading();
-            Settings.SaveConfig(Mod.SettingsFilename);
-
             this.Unload();
-
-            // Set isLoaded and isActivated to false again so the mod will load again at the main menu
-            this.isLoaded = false;
-            this.isActivated = false;
         }
+
+        #endregion
 
 
         private int PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, float> newVolumes)
@@ -174,10 +224,10 @@ namespace AmbientSoundsTuner
             switch (patchResult)
             {
                 case SirensPatcher.PatchResult.Success:
-                    Mod.Log.Info("Police sirens have been patched");
+                    Mod.Log.Debug("Police sirens have been patched");
                     break;
                 case SirensPatcher.PatchResult.AlreadyPatched:
-                    Mod.Log.Info("Police sirens have been patched already");
+                    Mod.Log.Debug("Police sirens have been patched already");
                     break;
                 case SirensPatcher.PatchResult.NotFound:
                     Mod.Log.Warning("Could not patch the police sirens to be different from the ambulance sirens");
@@ -192,7 +242,7 @@ namespace AmbientSoundsTuner
                 patched += this.PatchSounds(this.BuildingsPatcher, Settings.BuildingVolumes);
                 patched += this.PatchSounds(this.VehiclesPatcher, Settings.VehicleVolumes);
                 patched += this.PatchSounds(this.MiscPatcher, Settings.MiscVolumes);
-                Mod.Log.Info("{0} sound volumes have been patched", patched);
+                Mod.Log.Debug("{0} sound volumes have been patched", patched);
             }
             catch (Exception ex)
             {
@@ -209,6 +259,13 @@ namespace AmbientSoundsTuner
 
             this.MiscPatcher.PatchVolume(MiscPatcher.ID_CLICK_SOUND, clickVolume);
             this.MiscPatcher.PatchVolume(MiscPatcher.ID_DISABLED_CLICK_SOUND, disabledClickVolume);
+        }
+
+
+        public enum GameState
+        {
+            MainMenu,
+            InGame
         }
     }
 }

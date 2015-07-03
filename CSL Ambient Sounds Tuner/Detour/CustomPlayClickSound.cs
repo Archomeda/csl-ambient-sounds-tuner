@@ -26,7 +26,7 @@ namespace AmbientSoundsTuner.Detour
             try
             {
                 playClickSoundState = DetourUtils.RedirectCalls(playClickSoundOriginal, playClickSoundReplacement);
-                Mod.Log.Info("UIComponent.PlayClickSound() has been detoured");
+                Mod.Log.Debug("UIComponent.PlayClickSound() has been detoured");
             }
             catch (Exception ex)
             {
@@ -36,7 +36,7 @@ namespace AmbientSoundsTuner.Detour
             try
             {
                 playDisabledClickSoundState = DetourUtils.RedirectCalls(playDisabledClickSoundOriginal, playDisabledClickSoundReplacement);
-                Mod.Log.Info("UIComponent.PlayDisabledClickSound() has been detoured");
+                Mod.Log.Debug("UIComponent.PlayDisabledClickSound() has been detoured");
             }
             catch (Exception ex)
             {
@@ -49,7 +49,7 @@ namespace AmbientSoundsTuner.Detour
             try
             {
                 DetourUtils.RevertRedirect(playClickSoundOriginal, playClickSoundState);
-                Mod.Log.Info("UIComponent.PlayClickSound() detour has been reverted");
+                Mod.Log.Debug("UIComponent.PlayClickSound() detour has been reverted");
             }
             catch (Exception ex)
             {
@@ -59,7 +59,7 @@ namespace AmbientSoundsTuner.Detour
             try
             {
                 DetourUtils.RevertRedirect(playDisabledClickSoundOriginal, playDisabledClickSoundState);
-                Mod.Log.Info("UIComponent.PlayDisabledClickSound() detour has been reverted");
+                Mod.Log.Debug("UIComponent.PlayDisabledClickSound() detour has been reverted");
             }
             catch (Exception ex)
             {
