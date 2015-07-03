@@ -81,6 +81,10 @@ namespace AmbientSoundsTuner
 
         #endregion
 
+        public string BuildVersion
+        {
+            get { return "dev version"; }
+        }
 
         #region Loading / Unloading
 

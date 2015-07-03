@@ -191,6 +191,14 @@ namespace AmbientSoundsTuner.UI
 
             tabstrip.selectedIndex = -1;
             tabstrip.selectedIndex = 0;
+
+            // Add mod information
+            this.RootPanel.autoLayout = false;
+            UILabel versionLabel = this.RootPanel.AddUIComponent<UILabel>();
+            versionLabel.autoSize = true;
+            versionLabel.textScale = 0.8f;
+            versionLabel.text = Mod.Instance.BuildVersion;
+            versionLabel.relativePosition = new Vector3(this.RootPanel.width - versionLabel.size.x - 10, 0);
         }
 
         protected override void OnClose()
