@@ -50,7 +50,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Defs\UITemplateDefs.cs" />
     <Compile Include="Detour\CustomPlayClickSound.cs" />
+    <Compile Include="Migration\ConfigurationV2.cs" />
     <Compile Include="Migration\ConfigurationV1.cs" />
     <Compile Include="Migration\ConfigurationMigrator.cs" />
     <Compile Include="Migration\ConfigurationV0.cs" />

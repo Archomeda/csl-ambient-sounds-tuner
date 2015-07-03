@@ -215,10 +215,10 @@ namespace AmbientSoundsTuner
         #endregion
 
 
-        private int PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, float> newVolumes)
+        private int PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, Configuration.Sound> newVolumes)
         {
             patcher.BackupVolumes();
-            return patcher.PatchVolumes(newVolumes);
+            return patcher.PatchVolumes(newVolumes.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Volume));
         }
 
         internal void PatchSounds()
@@ -241,11 +241,11 @@ namespace AmbientSoundsTuner
             // Try patching the sound volumes
             try
             {
-                int patched = this.PatchSounds(this.AmbientsPatcher, Settings.AmbientVolumes);
-                patched += this.PatchSounds(this.AnimalsPatcher, Settings.AnimalVolumes);
-                patched += this.PatchSounds(this.BuildingsPatcher, Settings.BuildingVolumes);
-                patched += this.PatchSounds(this.VehiclesPatcher, Settings.VehicleVolumes);
-                patched += this.PatchSounds(this.MiscPatcher, Settings.MiscVolumes);
+                int patched = this.PatchSounds(this.AmbientsPatcher, Settings.AmbientSounds);
+                patched += this.PatchSounds(this.AnimalsPatcher, Settings.AnimalSounds);
+                patched += this.PatchSounds(this.BuildingsPatcher, Settings.BuildingSounds);
+                patched += this.PatchSounds(this.VehiclesPatcher, Settings.VehicleSounds);
+                patched += this.PatchSounds(this.MiscPatcher, Settings.MiscSounds);
                 Mod.Log.Debug("{0} sound volumes have been patched", patched);
             }
             catch (Exception ex)
@@ -256,13 +256,13 @@ namespace AmbientSoundsTuner
 
         internal void PatchUISounds()
         {
-            float clickVolume = 1;
-            float disabledClickVolume = 1;
-            Mod.Settings.MiscVolumes.TryGetValue(MiscPatcher.ID_CLICK_SOUND, out clickVolume);
-            Mod.Settings.MiscVolumes.TryGetValue(MiscPatcher.ID_DISABLED_CLICK_SOUND, out disabledClickVolume);
-
-            this.MiscPatcher.PatchVolume(MiscPatcher.ID_CLICK_SOUND, clickVolume);
-            this.MiscPatcher.PatchVolume(MiscPatcher.ID_DISABLED_CLICK_SOUND, disabledClickVolume);
+            foreach (var id in new[] { MiscPatcher.ID_CLICK_SOUND, MiscPatcher.ID_DISABLED_CLICK_SOUND })
+            {
+                if (Mod.Settings.MiscSounds.ContainsKey(id))
+                {
+                    this.MiscPatcher.PatchVolume(id, Mod.Settings.MiscSounds[id].Volume);
+                }
+            }
         }
 
 

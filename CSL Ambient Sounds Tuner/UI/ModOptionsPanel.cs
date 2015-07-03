@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using AmbientSoundsTuner.Defs;
+using AmbientSoundsTuner.SoundPack;
 using AmbientSoundsTuner.SoundPatchers;
 using ColossalFramework;
 using ColossalFramework.DataBinding;
@@ -155,6 +156,12 @@ namespace AmbientSoundsTuner.UI
             }
         };
 
+        protected readonly HashSet<string> SoundPackBlacklist = new HashSet<string>()
+        {
+            MiscPatcher.ID_CLICK_SOUND,
+            MiscPatcher.ID_DISABLED_CLICK_SOUND
+        };
+
         #endregion
 
         public ModOptionsPanel(UIHelper helper) : base(helper) { }
@@ -183,11 +190,11 @@ namespace AmbientSoundsTuner.UI
 
             // Create tabs
             int tabWidth = (int)(tabstrip.tabPages.width / 5);
-            this.AddTab(tabstrip, tabWidth, "Ambients", this.AmbientsDef, Mod.Settings.AmbientVolumes, Mod.Instance.AmbientsPatcher);
-            this.AddTab(tabstrip, tabWidth, "Animals", this.AnimalsDef, Mod.Settings.AnimalVolumes, Mod.Instance.AnimalsPatcher);
-            this.AddTab(tabstrip, tabWidth, "Buildings", this.BuildingsDef, Mod.Settings.BuildingVolumes, Mod.Instance.BuildingsPatcher);
-            this.AddTab(tabstrip, tabWidth, "Vehicles", this.VehiclesDef, Mod.Settings.VehicleVolumes, Mod.Instance.VehiclesPatcher);
-            this.AddTab(tabstrip, tabWidth, "Misc", this.MiscDef, Mod.Settings.MiscVolumes, Mod.Instance.MiscPatcher);
+            this.AddTab(tabstrip, tabWidth, "Ambients", this.AmbientsDef, Mod.Instance.AmbientsPatcher, Mod.Settings.AmbientSounds, SoundPacksManager.instance.SoundPacks.Keys.SelectMany(f => f.Ambients).ToArray());
+            this.AddTab(tabstrip, tabWidth, "Animals", this.AnimalsDef, Mod.Instance.AnimalsPatcher, Mod.Settings.AnimalSounds, SoundPacksManager.instance.SoundPacks.Keys.SelectMany(f => f.Animals).ToArray());
+            this.AddTab(tabstrip, tabWidth, "Buildings", this.BuildingsDef, Mod.Instance.BuildingsPatcher, Mod.Settings.BuildingSounds, SoundPacksManager.instance.SoundPacks.Keys.SelectMany(f => f.Buildings).ToArray());
+            this.AddTab(tabstrip, tabWidth, "Vehicles", this.VehiclesDef, Mod.Instance.VehiclesPatcher, Mod.Settings.VehicleSounds, SoundPacksManager.instance.SoundPacks.Keys.SelectMany(f => f.Vehicles).ToArray());
+            this.AddTab(tabstrip, tabWidth, "Misc", this.MiscDef, Mod.Instance.MiscPatcher, Mod.Settings.MiscSounds, SoundPacksManager.instance.SoundPacks.Keys.SelectMany(f => f.Miscs).ToArray());
 
             tabstrip.selectedIndex = -1;
             tabstrip.selectedIndex = 0;
@@ -207,7 +214,7 @@ namespace AmbientSoundsTuner.UI
             Mod.Settings.SaveConfig(Mod.SettingsFilename);
         }
 
-        protected void AddTab<T>(UITabstrip tabstrip, float buttonWidth, string title, IDictionary<string, SliderDef<T>[]> content, IDictionary<T, float> volumes, SoundsInstancePatcher<T> patcher)
+        protected void AddTab<T>(UITabstrip tabstrip, float buttonWidth, string title, IDictionary<string, SliderDef<T>[]> content, SoundsInstancePatcher<T> patcher, IDictionary<T, Configuration.Sound> configuration, SoundPackFile.Audio[] customAudioFiles)
         {
             UIHelper tabHelper = this.RootHelper.AddScrollingTab(tabstrip, buttonWidth, title);
             foreach (var group in content)
@@ -215,29 +222,58 @@ namespace AmbientSoundsTuner.UI
                 UIHelper groupHelper = tabHelper.AddGroup2(group.Key);
                 foreach (var sliderDef in group.Value)
                 {
-                    this.AddVolumeSlider(sliderDef, groupHelper, volumes, patcher);
+                    SoundPackFile.Audio[] customAudios = null;
+                    if (!this.SoundPackBlacklist.Contains(sliderDef.Id.ToString()))
+                        customAudios = customAudioFiles.Where(a => a.Type == sliderDef.Id.ToString()).ToArray();
+                    else
+                        customAudios = new SoundPackFile.Audio[0];
+
+                    this.AddSoundRow(sliderDef, groupHelper, patcher, configuration, customAudios);
                 }
             }
         }
 
-        protected void AddVolumeSlider<T>(SliderDef<T> slider, UIHelperBase helper, IDictionary<T, float> volumes, SoundsInstancePatcher<T> patcher)
+        protected void AddSoundRow<T>(SliderDef<T> slider, UIHelperBase helper, SoundsInstancePatcher<T> patcher, IDictionary<T, Configuration.Sound> configuration, SoundPackFile.Audio[] customAudioFiles)
         {
             OnValueChanged valueChangedCallback = v =>
             {
-                volumes[slider.Id] = v;
+                if (!configuration.ContainsKey(slider.Id))
+                    configuration.Add(slider.Id, new Configuration.Sound());
+
+                configuration[slider.Id].Volume = v;
                 patcher.PatchVolume(slider.Id, v);
             };
 
-            UISlider uiSlider = (UISlider)helper.AddSlider(slider.Text, slider.MinValue, slider.MaxValue, 0.01f, volumes[slider.Id], valueChangedCallback);
+            UISlider uiSlider = (UISlider)helper.AddSlider(slider.Text, slider.MinValue, slider.MaxValue, 0.01f, configuration[slider.Id].Volume, valueChangedCallback);
             UIPanel uiPanel = (UIPanel)uiSlider.parent;
             UILabel uiLabel = uiPanel.Find<UILabel>("Label");
+            UIDropDown uiDropDown = uiPanel.AttachUIComponent(GameObject.Instantiate((UITemplateManager.Peek(UITemplateDefs.ID_OPTIONS_DROPDOWN_TEMPLATE) as UIPanel).Find<UIDropDown>("Dropdown").gameObject)) as UIDropDown;
+            uiDropDown.items = new[] { "Default" }.Union(customAudioFiles.Select(a => a.Name)).ToArray();
+            uiDropDown.height = 28;
+            uiDropDown.textFieldPadding.top = 4;
+            if (configuration.ContainsKey(slider.Id) && !string.IsNullOrEmpty(configuration[slider.Id].Active))
+                uiDropDown.selectedValue = configuration[slider.Id].Active;
+            else
+                uiDropDown.selectedIndex = 0;
+            uiDropDown.eventSelectedIndexChanged += (c, i) =>
+            {
+                if (!configuration.ContainsKey(slider.Id))
+                    configuration.Add(slider.Id, new Configuration.Sound());
+
+                configuration[slider.Id].Active = i > 0 ? ((UIDropDown)c).items[i] : null;
+            };
+
             uiPanel.autoLayout = false;
             uiLabel.anchor = UIAnchorStyle.Left | UIAnchorStyle.CenterVertical;
-            uiLabel.width = 300;
-            uiSlider.relativePosition = new Vector3(0, 0);
-            uiSlider.anchor = UIAnchorStyle.Right | UIAnchorStyle.CenterVertical;
+            uiLabel.width = 250;
+            uiSlider.relativePosition = new Vector3(uiLabel.relativePosition.x + uiLabel.width + 10, 0);
+            uiSlider.anchor = UIAnchorStyle.CenterVertical;
             uiSlider.builtinKeyNavigation = false;
-            uiPanel.size = new Vector2(310 + uiSlider.width, 30);
+            uiDropDown.width = 180;
+            uiDropDown.relativePosition = new Vector3(uiSlider.relativePosition.x + uiSlider.width + 10, 0);
+            uiDropDown.anchor = UIAnchorStyle.CenterVertical;
+
+            uiPanel.size = new Vector2(uiDropDown.relativePosition.x + uiDropDown.width, 32);
         }
 
         /// <summary>
