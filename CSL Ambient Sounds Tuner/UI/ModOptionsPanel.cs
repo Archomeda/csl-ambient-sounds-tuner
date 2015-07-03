@@ -76,9 +76,9 @@ namespace AmbientSoundsTuner.UI
                     new SliderDef<string>(SoundsCollection.BuildingSounds.ID_ELEMENTARY_SCHOOL, "Elementary School"),
                     new SliderDef<string>(SoundsCollection.BuildingSounds.ID_FIRE_STATION, "Fire Station"),
                     new SliderDef<string>(SoundsCollection.BuildingSounds.ID_HIGH_SCHOOL, "High School"),
-                    new SliderDef<string>(SoundsCollection.BuildingSounds.ID_HOSPITAL, "Police Station"),
-                    new SliderDef<string>(SoundsCollection.BuildingSounds.ID_POLICE_STATION, "University"),
-                    new SliderDef<string>(SoundsCollection.BuildingSounds.ID_UNIVERSITY, "Hospital")
+                    new SliderDef<string>(SoundsCollection.BuildingSounds.ID_HOSPITAL, "Hospital"),
+                    new SliderDef<string>(SoundsCollection.BuildingSounds.ID_POLICE_STATION, "Police Station"),
+                    new SliderDef<string>(SoundsCollection.BuildingSounds.ID_UNIVERSITY, "University")
                 }
             },
             { "Public Transport", new[]
