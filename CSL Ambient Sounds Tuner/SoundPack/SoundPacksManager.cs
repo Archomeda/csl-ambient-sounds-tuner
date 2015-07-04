@@ -36,6 +36,28 @@ namespace AmbientSoundsTuner.SoundPack
                     {
                         SoundPackFile soundPackFile = SoundPackFile.LoadConfig<SoundPackFile>(path);
                         this.SoundPacks[soundPackFile] = mod.Key;
+
+                        // Patch the paths
+                        Action<SoundPackFile.AudioInfo> patchAudioInfoClipPath = null;
+                        patchAudioInfoClipPath = new Action<SoundPackFile.AudioInfo>(a =>
+                        {
+                            a.Clip = Path.Combine(mod.Key.modPath, a.Clip);
+                            if (a.Variations != null)
+                            {
+                                for (int i = 0; i < a.Variations.Length; i++)
+                                {
+                                    patchAudioInfoClipPath(a.Variations[i].AudioInfo);
+                                }
+                            }
+                        });
+                        foreach (var group in new[] { soundPackFile.Ambients, soundPackFile.Animals, soundPackFile.Buildings, soundPackFile.Vehicles, soundPackFile.Miscs })
+                        {
+                            for (int i = 0; i < group.Length; i++)
+                            {
+                                patchAudioInfoClipPath(group[i].AudioInfo);
+                            }
+                        }
+
                         Mod.Log.Debug("Loaded sound pack {0} from mod {1}", soundPackFile.Name, mod.Key.userModInstance != null ? ((IUserMod)mod.Key.userModInstance as IUserMod).Name : mod.Key.name);
                     }
                     catch (Exception ex)

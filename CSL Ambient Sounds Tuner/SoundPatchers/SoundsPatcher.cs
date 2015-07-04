@@ -199,7 +199,7 @@ namespace AmbientSoundsTuner.SoundPatchers
                         ai.m_clip = spf.AudioClip;
                     else
                     {
-                        WWW www = new WWW(spf.Clip);
+                        WWW www = new WWW(new Uri(spf.Clip).AbsoluteUri);
                         ai.m_clip = www.GetAudioClip(true, false);
                         ai.name = spfAudio.Name + (variation > 0 ? " " + variation : "");
                     }
