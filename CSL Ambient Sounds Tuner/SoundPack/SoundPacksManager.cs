@@ -36,10 +36,11 @@ namespace AmbientSoundsTuner.SoundPack
                     {
                         SoundPackFile soundPackFile = SoundPackFile.LoadConfig<SoundPackFile>(path);
                         this.SoundPacks[soundPackFile] = mod.Key;
+                        Mod.Log.Debug("Loaded sound pack {0} from mod {1}", soundPackFile.Name, mod.Key.userModInstance != null ? ((IUserMod)mod.Key.userModInstance as IUserMod).Name : mod.Key.name);
                     }
                     catch (Exception ex)
                     {
-                        Mod.Log.Warning("Could not initialize the sound pack '{0}': {1}", path, ex);
+                        Mod.Log.Warning("Could not initialize the sound pack from file '{0}' from mod {1}: {2}", path, mod.Key.userModInstance != null ? ((IUserMod)mod.Key.userModInstance as IUserMod).Name : mod.Key.name, ex);
                     }
                 }
             }
