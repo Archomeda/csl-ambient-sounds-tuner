@@ -247,43 +247,47 @@ namespace AmbientSoundsTuner.UI
             UISlider uiSlider = (UISlider)helper.AddSlider(slider.Text, slider.MinValue, slider.MaxValue, 0.01f, configuration[slider.Id].Volume, valueChangedCallback);
             UIPanel uiPanel = (UIPanel)uiSlider.parent;
             UILabel uiLabel = uiPanel.Find<UILabel>("Label");
-            UIDropDown uiDropDown = uiPanel.AttachUIComponent(GameObject.Instantiate((UITemplateManager.Peek(UITemplateDefs.ID_OPTIONS_DROPDOWN_TEMPLATE) as UIPanel).Find<UIDropDown>("Dropdown").gameObject)) as UIDropDown;
-            uiDropDown.items = new[] { "Default" }.Union(customAudioFiles.Select(a => a.Name)).ToArray();
-            uiDropDown.height = 28;
-            uiDropDown.textFieldPadding.top = 4;
-            if (configuration.ContainsKey(slider.Id) && !string.IsNullOrEmpty(configuration[slider.Id].Active))
-                uiDropDown.selectedValue = configuration[slider.Id].Active;
-            else
-                uiDropDown.selectedIndex = 0;
-            uiDropDown.eventSelectedIndexChanged += (c, i) =>
+            UIDropDown uiDropDown = null;
+            if (customAudioFiles.Length > 0)
             {
-                if (!configuration.ContainsKey(slider.Id))
-                    configuration.Add(slider.Id, new Configuration.Sound());
-
-                string name = ((UIDropDown)c).items[i];
-                configuration[slider.Id].Active = i > 0 ? name : "";
-                if (i > 0)
-                {
-                    SoundPackFile.Audio audioFile = customAudioFiles.FirstOrDefault(a => a.Name == name);
-                    patcher.PatchSound(slider.Id, audioFile);
-                    uiSlider.maxValue = Mathf.Max(audioFile.AudioInfo.MaxVolume, audioFile.AudioInfo.Volume);
-                    uiSlider.value = audioFile.AudioInfo.Volume;
-                }
+                uiDropDown = uiPanel.AttachUIComponent(GameObject.Instantiate((UITemplateManager.Peek(UITemplateDefs.ID_OPTIONS_DROPDOWN_TEMPLATE) as UIPanel).Find<UIDropDown>("Dropdown").gameObject)) as UIDropDown;
+                uiDropDown.items = new[] { "Default" }.Union(customAudioFiles.Select(a => a.Name)).ToArray();
+                uiDropDown.height = 28;
+                uiDropDown.textFieldPadding.top = 4;
+                if (configuration.ContainsKey(slider.Id) && !string.IsNullOrEmpty(configuration[slider.Id].Active))
+                    uiDropDown.selectedValue = configuration[slider.Id].Active;
                 else
+                    uiDropDown.selectedIndex = 0;
+                uiDropDown.eventSelectedIndexChanged += (c, i) =>
                 {
-                    patcher.RevertSound(slider.Id);
-                    if (patcher.OldSounds.ContainsKey(slider.Id))
+                    if (!configuration.ContainsKey(slider.Id))
+                        configuration.Add(slider.Id, new Configuration.Sound());
+
+                    string name = ((UIDropDown)c).items[i];
+                    configuration[slider.Id].Active = i > 0 ? name : "";
+                    if (i > 0)
                     {
-                        uiSlider.maxValue = patcher.OldSounds.ContainsKey(slider.Id) ? patcher.OldSounds[slider.Id].AudioInfo.MaxVolume : patcher.DefaultMaxVolumes[slider.Id];
-                        uiSlider.value = patcher.OldSounds.ContainsKey(slider.Id) ? patcher.OldSounds[slider.Id].AudioInfo.Volume : patcher.DefaultVolumes[slider.Id];
+                        SoundPackFile.Audio audioFile = customAudioFiles.FirstOrDefault(a => a.Name == name);
+                        patcher.PatchSound(slider.Id, audioFile);
+                        uiSlider.maxValue = Mathf.Max(audioFile.AudioInfo.MaxVolume, audioFile.AudioInfo.Volume);
+                        uiSlider.value = audioFile.AudioInfo.Volume;
                     }
                     else
                     {
-                        uiSlider.maxValue = patcher.DefaultMaxVolumes.ContainsKey(slider.Id) ? patcher.DefaultMaxVolumes[slider.Id] : 1;
-                        uiSlider.value = patcher.DefaultVolumes.ContainsKey(slider.Id) ? patcher.DefaultVolumes[slider.Id] : 1;
+                        patcher.RevertSound(slider.Id);
+                        if (patcher.OldSounds.ContainsKey(slider.Id))
+                        {
+                            uiSlider.maxValue = patcher.OldSounds.ContainsKey(slider.Id) ? patcher.OldSounds[slider.Id].AudioInfo.MaxVolume : patcher.DefaultMaxVolumes[slider.Id];
+                            uiSlider.value = patcher.OldSounds.ContainsKey(slider.Id) ? patcher.OldSounds[slider.Id].AudioInfo.Volume : patcher.DefaultVolumes[slider.Id];
+                        }
+                        else
+                        {
+                            uiSlider.maxValue = patcher.DefaultMaxVolumes.ContainsKey(slider.Id) ? patcher.DefaultMaxVolumes[slider.Id] : 1;
+                            uiSlider.value = patcher.DefaultVolumes.ContainsKey(slider.Id) ? patcher.DefaultVolumes[slider.Id] : 1;
+                        }
                     }
-                }
-            };
+                };
+            }
 
             uiPanel.autoLayout = false;
             uiLabel.anchor = UIAnchorStyle.Left | UIAnchorStyle.CenterVertical;
@@ -292,11 +296,17 @@ namespace AmbientSoundsTuner.UI
             uiSlider.builtinKeyNavigation = false;
             uiSlider.width = 207;
             uiSlider.relativePosition = new Vector3(uiLabel.relativePosition.x + uiLabel.width + 20, 0);
-            uiDropDown.anchor = UIAnchorStyle.CenterVertical;
-            uiDropDown.width = 180;
-            uiDropDown.relativePosition = new Vector3(uiSlider.relativePosition.x + uiSlider.width + 20, 0);
-
-            uiPanel.size = new Vector2(uiDropDown.relativePosition.x + uiDropDown.width, 32);
+            if (customAudioFiles.Length > 0)
+            {
+                uiDropDown.anchor = UIAnchorStyle.CenterVertical;
+                uiDropDown.width = 180;
+                uiDropDown.relativePosition = new Vector3(uiSlider.relativePosition.x + uiSlider.width + 20, 0);
+                uiPanel.size = new Vector2(uiDropDown.relativePosition.x + uiDropDown.width, 32);
+            }
+            else
+            {
+                uiPanel.size = new Vector2(uiSlider.relativePosition.x + uiSlider.width, 32);
+            }
         }
 
         /// <summary>
