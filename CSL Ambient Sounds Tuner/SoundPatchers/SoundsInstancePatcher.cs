@@ -17,6 +17,26 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// </summary>
         public abstract T[] Ids { get; }
 
+        private Dictionary<T, float> defaultVolumes = new Dictionary<T, float>();
+
+        /// <summary>
+        /// Gets the default volumes.
+        /// </summary>
+        public Dictionary<T, float> DefaultVolumes
+        {
+            get { return this.defaultVolumes; }
+        }
+
+        private Dictionary<T, float> defaultMaxVolumes = new Dictionary<T, float>();
+
+        /// <summary>
+        /// Gets the default max volumes.
+        /// </summary>
+        public Dictionary<T, float> DefaultMaxVolumes
+        {
+            get { return this.defaultMaxVolumes; }
+        }
+
         private Dictionary<T, float> oldVolumes = new Dictionary<T, float>();
 
         /// <summary>
@@ -118,6 +138,18 @@ namespace AmbientSoundsTuner.SoundPatchers
             return this.PatchAllVolumes(this.OldVolumes);
         }
 
+        /// <summary>
+        /// Reverts a specific volume to its default value.
+        /// </summary>
+        /// <param name="id">The id of the volume to revert.</param>
+        /// <returns>True if successful; false otherwise.</returns>
+        public virtual bool RevertVolume(T id)
+        {
+            if (this.OldVolumes.ContainsKey(id))
+                return this.PatchVolume(id, this.OldVolumes[id]);
+            return false;
+        }
+
 
         /// <summary>
         /// Backs up the sounds.
@@ -160,6 +192,18 @@ namespace AmbientSoundsTuner.SoundPatchers
         public virtual int RevertAllSounds()
         {
             return this.PatchAllSounds(this.OldSounds);
+        }
+
+        /// <summary>
+        /// Reverts a specific sound to its default value.
+        /// </summary>
+        /// <param name="id">The id of the sound to revert.</param>
+        /// <returns>True if successful; false otherwise.</returns>
+        public virtual bool RevertSound(T id)
+        {
+            if (this.OldSounds.ContainsKey(id))
+                return this.PatchSound(id, this.OldSounds[id]);
+            return false;
         }
     }
 }

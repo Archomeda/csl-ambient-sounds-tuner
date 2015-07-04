@@ -260,7 +260,29 @@ namespace AmbientSoundsTuner.UI
                 if (!configuration.ContainsKey(slider.Id))
                     configuration.Add(slider.Id, new Configuration.Sound());
 
-                configuration[slider.Id].Active = i > 0 ? ((UIDropDown)c).items[i] : "";
+                string name = ((UIDropDown)c).items[i];
+                configuration[slider.Id].Active = i > 0 ? name : "";
+                if (i > 0)
+                {
+                    SoundPackFile.Audio audioFile = customAudioFiles.FirstOrDefault(a => a.Name == name);
+                    patcher.PatchSound(slider.Id, audioFile);
+                    uiSlider.maxValue = Mathf.Max(audioFile.AudioInfo.MaxVolume, audioFile.AudioInfo.Volume);
+                    uiSlider.value = audioFile.AudioInfo.Volume;
+                }
+                else
+                {
+                    patcher.RevertSound(slider.Id);
+                    if (patcher.OldSounds.ContainsKey(slider.Id))
+                    {
+                        uiSlider.maxValue = patcher.OldSounds.ContainsKey(slider.Id) ? patcher.OldSounds[slider.Id].AudioInfo.MaxVolume : patcher.DefaultMaxVolumes[slider.Id];
+                        uiSlider.value = patcher.OldSounds.ContainsKey(slider.Id) ? patcher.OldSounds[slider.Id].AudioInfo.Volume : patcher.DefaultVolumes[slider.Id];
+                    }
+                    else
+                    {
+                        uiSlider.maxValue = patcher.DefaultMaxVolumes.ContainsKey(slider.Id) ? patcher.DefaultMaxVolumes[slider.Id] : 1;
+                        uiSlider.value = patcher.DefaultVolumes.ContainsKey(slider.Id) ? patcher.DefaultVolumes[slider.Id] : 1;
+                    }
+                }
             };
 
             uiPanel.autoLayout = false;

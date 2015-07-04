@@ -10,6 +10,17 @@ namespace AmbientSoundsTuner.SoundPatchers
     /// </summary>
     public class BuildingsPatcher : MiscellaneousSoundsInstancePatcher<string>
     {
+        public BuildingsPatcher()
+        {
+            this.DefaultVolumes.Add(SoundsCollection.BuildingSounds.ID_FUSION_POWER_PLANT, 4);
+            this.DefaultVolumes.Add(SoundsCollection.BuildingSounds.ID_INDUSTRIAL, 0.5f);
+            this.DefaultVolumes.Add(SoundsCollection.BuildingSounds.ID_ON_UPGRADE, 0.25f);
+
+            this.DefaultMaxVolumes.Add(SoundsCollection.BuildingSounds.ID_FUSION_POWER_PLANT, 4);
+            this.DefaultMaxVolumes.Add(SoundsCollection.BuildingSounds.ID_INDUSTRIAL, 0.5f);
+            this.DefaultMaxVolumes.Add(SoundsCollection.BuildingSounds.ID_ON_UPGRADE, 0.25f);
+        }
+
         public override string[] Ids
         {
             get
@@ -24,13 +35,13 @@ namespace AmbientSoundsTuner.SoundPatchers
                     SoundsCollection.BuildingSounds.ID_CREMATORY,
                     SoundsCollection.BuildingSounds.ID_ELEMENTARY_SCHOOL,
                     SoundsCollection.BuildingSounds.ID_FIRE_STATION,
-                    SoundsCollection.BuildingSounds.ID_FUSION_POWER_PLANT, // Default: 4
+                    SoundsCollection.BuildingSounds.ID_FUSION_POWER_PLANT,
                     SoundsCollection.BuildingSounds.ID_HARBOR,
                     SoundsCollection.BuildingSounds.ID_HIGH_SCHOOL,
                     SoundsCollection.BuildingSounds.ID_HOSPITAL,
                     SoundsCollection.BuildingSounds.ID_HYDRO_POWER_PLANT,
                     SoundsCollection.BuildingSounds.ID_INCINERATION_PLANT,
-                    SoundsCollection.BuildingSounds.ID_INDUSTRIAL, // Default: 0.5
+                    SoundsCollection.BuildingSounds.ID_INDUSTRIAL,
                     SoundsCollection.BuildingSounds.ID_METRO_STATION,
                     SoundsCollection.BuildingSounds.ID_NUCLEAR_POWER_PLANT,
                     SoundsCollection.BuildingSounds.ID_POLICE_STATION,
@@ -43,7 +54,7 @@ namespace AmbientSoundsTuner.SoundPatchers
                     SoundsCollection.BuildingSounds.ID_WIND_TURBINE,
 
                     SoundsCollection.BuildingSounds.ID_ON_FIRE,
-                    SoundsCollection.BuildingSounds.ID_ON_UPGRADE // Default: 0.25
+                    SoundsCollection.BuildingSounds.ID_ON_UPGRADE
                 };
             }
         }
