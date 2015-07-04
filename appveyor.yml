@@ -2,6 +2,10 @@ version: 1.2.0.{build}
 
 configuration: Release
 
+assembly_info:
+  patch: true
+  file: 'CSL Ambient Sounds Tuner\Properties\AssemblyInfo.cs'
+
 cache:
   - packages -> appveyor\packages.config
 
