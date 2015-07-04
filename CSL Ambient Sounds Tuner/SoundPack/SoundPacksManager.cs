@@ -29,42 +29,71 @@ namespace AmbientSoundsTuner.SoundPack
 
             foreach (var mod in mods)
             {
-                foreach (var file in mod.Value)
+                if (mod.Key.isEnabled)
                 {
-                    string path = Path.Combine(mod.Key.modPath, file);
-                    try
-                    {
-                        SoundPackFile soundPackFile = SoundPackFile.LoadConfig<SoundPackFile>(path);
-                        this.SoundPacks[soundPackFile] = mod.Key;
+                    this.AddSoundPacksMod(mod.Key, mod.Value);
+                }
 
-                        // Patch the paths
-                        Action<SoundPackFile.AudioInfo> patchAudioInfoClipPath = null;
-                        patchAudioInfoClipPath = new Action<SoundPackFile.AudioInfo>(a =>
+                PluginUtils.SubscribePluginStateChange(mod.Key, isEnabled =>
+                {
+                    if (isEnabled)
+                    {
+                        this.AddSoundPacksMod(mod.Key, mod.Value);
+                    }
+                    else
+                    {
+                        this.RemoveSoundPacksMod(mod.Key);
+                    }
+                });
+            }
+        }
+
+        private void AddSoundPacksMod(PluginManager.PluginInfo mod, IEnumerable<string> soundPack)
+        {
+            foreach (var file in soundPack)
+            {
+                string path = Path.Combine(mod.modPath, file);
+                try
+                {
+                    SoundPackFile soundPackFile = SoundPackFile.LoadConfig<SoundPackFile>(path);
+                    this.SoundPacks[soundPackFile] = mod;
+
+                    // Patch the paths
+                    Action<SoundPackFile.AudioInfo> patchAudioInfoClipPath = null;
+                    patchAudioInfoClipPath = new Action<SoundPackFile.AudioInfo>(a =>
+                    {
+                        a.Clip = Path.Combine(mod.modPath, a.Clip);
+                        if (a.Variations != null)
                         {
-                            a.Clip = Path.Combine(mod.Key.modPath, a.Clip);
-                            if (a.Variations != null)
+                            for (int i = 0; i < a.Variations.Length; i++)
                             {
-                                for (int i = 0; i < a.Variations.Length; i++)
-                                {
-                                    patchAudioInfoClipPath(a.Variations[i].AudioInfo);
-                                }
-                            }
-                        });
-                        foreach (var group in new[] { soundPackFile.Ambients, soundPackFile.Animals, soundPackFile.Buildings, soundPackFile.Vehicles, soundPackFile.Miscs })
-                        {
-                            for (int i = 0; i < group.Length; i++)
-                            {
-                                patchAudioInfoClipPath(group[i].AudioInfo);
+                                patchAudioInfoClipPath(a.Variations[i].AudioInfo);
                             }
                         }
-
-                        Mod.Log.Debug("Loaded sound pack {0} from mod {1}", soundPackFile.Name, mod.Key.userModInstance != null ? ((IUserMod)mod.Key.userModInstance as IUserMod).Name : mod.Key.name);
-                    }
-                    catch (Exception ex)
+                    });
+                    foreach (var group in new[] { soundPackFile.Ambients, soundPackFile.Animals, soundPackFile.Buildings, soundPackFile.Vehicles, soundPackFile.Miscs })
                     {
-                        Mod.Log.Warning("Could not initialize the sound pack from file '{0}' from mod {1}: {2}", path, mod.Key.userModInstance != null ? ((IUserMod)mod.Key.userModInstance as IUserMod).Name : mod.Key.name, ex);
+                        for (int i = 0; i < group.Length; i++)
+                        {
+                            patchAudioInfoClipPath(group[i].AudioInfo);
+                        }
                     }
+
+                    Mod.Log.Debug("Loaded sound pack {0} from mod {1}", soundPackFile.Name, mod.userModInstance != null ? ((IUserMod)mod.userModInstance as IUserMod).Name : mod.name);
                 }
+                catch (Exception ex)
+                {
+                    Mod.Log.Warning("Could not initialize the sound pack from file '{0}' from mod {1}: {2}", path, mod.userModInstance != null ? ((IUserMod)mod.userModInstance as IUserMod).Name : mod.name, ex);
+                }
+            }
+        }
+
+        private void RemoveSoundPacksMod(PluginManager.PluginInfo mod)
+        {
+            foreach (var soundpack in this.SoundPacks.Where(kvp => kvp.Value == mod))
+            {
+                this.SoundPacks.Remove(soundpack.Key);
+                Mod.Log.Debug("Disabled sound pack mod {0}", mod.userModInstance != null ? ((IUserMod)mod.userModInstance as IUserMod).Name : mod.name);
             }
         }
 
