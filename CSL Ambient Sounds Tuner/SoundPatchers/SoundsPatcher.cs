@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AmbientSoundsTuner.SoundPack;
+using UnityEngine;
 
 namespace AmbientSoundsTuner.SoundPatchers
 {
@@ -97,6 +99,137 @@ namespace AmbientSoundsTuner.SoundPatchers
                 {
                     info.m_variations[i].m_sound.m_volume = volume;
                 }
+                return true;
+            }
+            return false;
+        }
+
+
+        /// <summary>
+        /// Gets the sound pack file audio from an audio info.
+        /// </summary>
+        /// <param name="sound">The sound.</param>
+        /// <returns>The sound pack file audio.</returns>
+        public static SoundPackFile.Audio GetAudioInfo(SoundContainer sound)
+        {
+            if (sound.HasSound)
+            {
+                return GetAudioInfo(sound.AudioInfo);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the sound pack file audio from an audio info.
+        /// </summary>
+        /// <param name="audioInfo">The original audio info.</param>
+        /// <returns>The sound pack file audio.</returns>
+        public static SoundPackFile.Audio GetAudioInfo(AudioInfo audioInfo)
+        {
+            if (audioInfo != null)
+            {
+                SoundPackFile.Audio spfAudio = new SoundPackFile.Audio()
+                {
+                    Name = audioInfo.name,
+                    AudioInfo = new SoundPackFile.AudioInfo()
+                };
+
+                Action<AudioInfo, SoundPackFile.AudioInfo> backupAudioInfo = null;
+                backupAudioInfo = new Action<AudioInfo, SoundPackFile.AudioInfo>((ai, spf) =>
+                {
+                    spf.AudioClip = ai.m_clip;
+                    spf.Volume = ai.m_volume;
+                    spf.MaxVolume = Mathf.Max(ai.m_volume, 1);
+                    spf.Pitch = ai.m_pitch;
+                    spf.FadeLength = ai.m_fadeLength;
+                    spf.IsLoop = ai.m_loop;
+                    spf.Is3D = ai.m_is3D;
+                    spf.IsRandomTime = ai.m_randomTime;
+
+                    if (ai.m_variations != null)
+                    {
+                        spf.Variations = new SoundPackFile.Variation[ai.m_variations.Length];
+                        for (int i = 0; i < ai.m_variations.Length; i++)
+                        {
+                            spf.Variations[i] = new SoundPackFile.Variation()
+                            {
+                                Probability = ai.m_variations[i].m_probability,
+                                AudioInfo = new SoundPackFile.AudioInfo()
+                            };
+                            backupAudioInfo(ai.m_variations[i].m_sound, spf.Variations[i].AudioInfo);
+                        }
+                    }
+                });
+                backupAudioInfo(audioInfo, spfAudio.AudioInfo);
+                return spfAudio;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Sets the audio info to the data of a sound pack file audio.
+        /// </summary>
+        /// <param name="sound">The sound.</param>
+        /// <param name="spfAudio">The sound pack file audio.</param>
+        /// <returns>True if successful; false otherwise.</returns>
+        public static bool SetAudioInfo(SoundContainer sound, SoundPackFile.Audio spfAudio)
+        {
+            if (sound.HasSound)
+            {
+                return SetAudioInfo(sound.AudioInfo, spfAudio);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Sets the audio info to the data of a sound pack file audio.
+        /// </summary>
+        /// <param name="audioInfo">The audio info to set.</param>
+        /// <param name="spfAudio">The sound pack file audio.</param>
+        /// <returns>True if successful; false otherwise.</returns>
+        public static bool SetAudioInfo(AudioInfo audioInfo, SoundPackFile.Audio spfAudio)
+        {
+            if (audioInfo != null && spfAudio != null)
+            {
+                Action<AudioInfo, SoundPackFile.AudioInfo> patchAudioInfo = null;
+                int variation = 0;
+                patchAudioInfo = new Action<AudioInfo, SoundPackFile.AudioInfo>((ai, spf) =>
+                {
+                    if (spf.AudioClip != null)
+                        ai.m_clip = spf.AudioClip;
+                    else
+                    {
+                        WWW www = new WWW(spf.Clip);
+                        ai.m_clip = www.GetAudioClip(true, false);
+                        ai.name = spfAudio.Name + (variation > 0 ? " " + variation : "");
+                    }
+                    ai.m_volume = spf.Volume;
+                    ai.m_pitch = spf.Pitch;
+                    ai.m_fadeLength = spf.FadeLength;
+                    ai.m_loop = spf.IsLoop;
+                    ai.m_is3D = spf.Is3D;
+                    ai.m_randomTime = spf.IsRandomTime;
+
+                    variation++;
+                    if (spf.Variations != null)
+                    {
+                        ai.m_variations = new AudioInfo.Variation[spf.Variations.Length];
+                        for (int i = 0; i < spf.Variations.Length; i++)
+                        {
+                            ai.m_variations[i] = new AudioInfo.Variation()
+                            {
+                                m_probability = spf.Variations[i].Probability,
+                                m_sound = new AudioInfo()
+                            };
+                            patchAudioInfo(ai.m_variations[i].m_sound, spf.Variations[i].AudioInfo);
+                        }
+                    }
+                    else
+                    {
+                        ai.m_variations = null;
+                    }
+                });
+                patchAudioInfo(audioInfo, spfAudio.AudioInfo);
                 return true;
             }
             return false;

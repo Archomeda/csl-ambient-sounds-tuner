@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using CommonShared.Configuration;
+using UnityEngine;
 
 namespace AmbientSoundsTuner.SoundPack
 {
@@ -67,6 +68,8 @@ namespace AmbientSoundsTuner.SoundPack
 
             public string Clip { get; set; }
 
+            public AudioClip AudioClip { get; set; }
+
             public float Volume { get; set; }
 
             public float MaxVolume { get; set; }
@@ -87,7 +90,7 @@ namespace AmbientSoundsTuner.SoundPack
 
         public class Variation
         {
-            public float Probability { get; set; }
+            public int Probability { get; set; }
 
             public AudioInfo AudioInfo { get; set; }
         }

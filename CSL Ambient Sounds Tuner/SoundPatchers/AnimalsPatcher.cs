@@ -10,12 +10,16 @@ namespace AmbientSoundsTuner.SoundPatchers
     /// </summary>
     public class AnimalsPatcher : MiscellaneousSoundsInstancePatcher<string>
     {
-        public AnimalsPatcher()
-            : base()
+        public override string[] Ids
         {
-            this.DefaultVolumes.Add(SoundsCollection.AnimalSounds.ID_COW, 1);
-            this.DefaultVolumes.Add(SoundsCollection.AnimalSounds.ID_PIG, 1);
-            this.DefaultVolumes.Add(SoundsCollection.AnimalSounds.ID_SEAGULL, 1);
+            get
+            {
+                return new[] {
+                    SoundsCollection.AnimalSounds.ID_COW,
+                    SoundsCollection.AnimalSounds.ID_PIG,
+                    SoundsCollection.AnimalSounds.ID_SEAGULL
+                };
+            }
         }
 
         protected override AudioInfo GetAudioInfoById(string id)
