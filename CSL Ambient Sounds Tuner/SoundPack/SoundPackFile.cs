@@ -27,19 +27,19 @@ namespace AmbientSoundsTuner.SoundPack
         [XmlAttribute("author")]
         public string Author { get; set; }
 
-        [XmlElement("Ambients"), XmlArrayItem("Ambient")]
+        [XmlArray("Ambients"), XmlArrayItem("Ambient")]
         public Audio[] Ambients { get; set; }
 
-        [XmlElement("Animals"), XmlArrayItem("Animal")]
+        [XmlArray("Animals"), XmlArrayItem("Animal")]
         public Audio[] Animals { get; set; }
 
-        [XmlElement("Buildings"), XmlArrayItem("Building")]
+        [XmlArray("Buildings"), XmlArrayItem("Building")]
         public Audio[] Buildings { get; set; }
 
-        [XmlElement("Vehicles"), XmlArrayItem("Vehicle")]
+        [XmlArray("Vehicles"), XmlArrayItem("Vehicle")]
         public Audio[] Vehicles { get; set; }
 
-        [XmlElement("Miscs"), XmlArrayItem("Misc")]
+        [XmlArray("Miscs"), XmlArrayItem("Misc")]
         public Audio[] Miscs { get; set; }
 
 
@@ -84,7 +84,7 @@ namespace AmbientSoundsTuner.SoundPack
 
             public bool IsRandomTime { get; set; }
 
-            [XmlElement("Variations"), XmlArrayItem("Variation")]
+            [XmlArray("Variations"), XmlArrayItem("Variation")]
             public Variation[] Variations { get; set; }
         }
 
