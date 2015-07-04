@@ -260,7 +260,7 @@ namespace AmbientSoundsTuner.UI
                 if (!configuration.ContainsKey(slider.Id))
                     configuration.Add(slider.Id, new Configuration.Sound());
 
-                configuration[slider.Id].Active = i > 0 ? ((UIDropDown)c).items[i] : null;
+                configuration[slider.Id].Active = i > 0 ? ((UIDropDown)c).items[i] : "";
             };
 
             uiPanel.autoLayout = false;
