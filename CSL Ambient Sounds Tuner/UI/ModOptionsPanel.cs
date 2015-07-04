@@ -288,12 +288,13 @@ namespace AmbientSoundsTuner.UI
             uiPanel.autoLayout = false;
             uiLabel.anchor = UIAnchorStyle.Left | UIAnchorStyle.CenterVertical;
             uiLabel.width = 250;
-            uiSlider.relativePosition = new Vector3(uiLabel.relativePosition.x + uiLabel.width + 10, 0);
             uiSlider.anchor = UIAnchorStyle.CenterVertical;
             uiSlider.builtinKeyNavigation = false;
-            uiDropDown.width = 180;
-            uiDropDown.relativePosition = new Vector3(uiSlider.relativePosition.x + uiSlider.width + 10, 0);
+            uiSlider.width = 207;
+            uiSlider.relativePosition = new Vector3(uiLabel.relativePosition.x + uiLabel.width + 20, 0);
             uiDropDown.anchor = UIAnchorStyle.CenterVertical;
+            uiDropDown.width = 180;
+            uiDropDown.relativePosition = new Vector3(uiSlider.relativePosition.x + uiSlider.width + 20, 0);
 
             uiPanel.size = new Vector2(uiDropDown.relativePosition.x + uiDropDown.width, 32);
         }
