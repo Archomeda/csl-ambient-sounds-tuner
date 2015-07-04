@@ -82,7 +82,17 @@ namespace CommonShared.Utils
         /// <param name="callback">The callback that will be used when the state changes, with a boolean parameter that is true when the plugin is enabled, and false otherwise.</param>
         public static void SubscribePluginStateChange(IUserMod modInstance, Action<bool> callback)
         {
-            string pluginName = GetPluginInfo(modInstance).name;
+            SubscribePluginStateChange(GetPluginInfo(modInstance), callback);
+        }
+
+        /// <summary>
+        /// Subscribes to the event when the plugin state changes.
+        /// </summary>
+        /// <param name="modInfo">The plugin info.</param>
+        /// <param name="callback">The callback that will be used when the state changes, with a boolean parameter that is true when the plugin is enabled, and false otherwise.</param>
+        public static void SubscribePluginStateChange(PluginManager.PluginInfo modInfo, Action<bool> callback)
+        {
+            string pluginName = modInfo.name;
             if (pluginStateChangeCallbacks.Count == 0)
             {
                 PluginManager.instance.eventPluginsStateChanged += PluginManager_eventPluginsStateChanged;
@@ -127,7 +137,17 @@ namespace CommonShared.Utils
         /// <param name="callback">The callback that will be used when the state changes, with a boolean parameter that is true when the plugin is enabled, and false otherwise.</param>
         public static void UnsubscribePluginStateChange(IUserMod modInstance, Action<bool> callback)
         {
-            string pluginName = GetPluginInfo(modInstance).name;
+            UnsubscribePluginStateChange(GetPluginInfo(modInstance), callback);
+        }
+
+        /// <summary>
+        /// Unsubscribes from the event when the plugin state changes.
+        /// </summary>
+        /// <param name="modInfo">The plugin info.</param>
+        /// <param name="callback">The callback that will be used when the state changes, with a boolean parameter that is true when the plugin is enabled, and false otherwise.</param>
+        public static void UnsubscribePluginStateChange(PluginManager.PluginInfo modInfo, Action<bool> callback)
+        {
+            string pluginName = modInfo.name;
             if (pluginStateChangeCallbacks.ContainsKey(pluginName))
             {
                 pluginStateChangeCallbacks[pluginName].Remove(callback);
