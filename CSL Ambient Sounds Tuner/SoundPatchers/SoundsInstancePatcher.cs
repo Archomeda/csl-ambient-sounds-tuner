@@ -57,6 +57,37 @@ namespace AmbientSoundsTuner.SoundPatchers
             get { return this.oldSounds; }
         }
 
+        /// <summary>
+        /// Gets the unique prefix id for audios for this patcher.
+        /// </summary>
+        public abstract string AudioPrefixId { get; }
+
+        /// <summary>
+        /// Gets all available audios for a specific audio type.
+        /// </summary>
+        /// <param name="audioType">The audio type.</param>
+        /// <returns>The available audios.</returns>
+        public virtual IDictionary<string, SoundPackFile.Audio> GetAvailableAudiosForType(string audioType)
+        {
+            return SoundPacksManager.instance.AudioFiles.Where(kvp => kvp.Key.StartsWith(this.AudioPrefixId + "." + audioType)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        }
+
+        /// <summary>
+        /// Gets an audio by its name.
+        /// </summary>
+        /// <param name="audioType">The audio type.</param>
+        /// <param name="audioName">The name of the audio.</param>
+        /// <returns>The audio if it exists; null otherwise.</returns>
+        public virtual SoundPackFile.Audio GetAudioByName(string audioType, string audioName)
+        {
+            string id = this.AudioPrefixId + "." + audioType + "." + audioName;
+            if (SoundPacksManager.instance.AudioFiles.ContainsKey(id))
+            {
+                return SoundPacksManager.instance.AudioFiles[id];
+            }
+            return null;
+        }
+
 
         private int BackupAll(Func<T, bool> backupFunc)
         {

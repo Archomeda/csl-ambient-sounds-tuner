@@ -201,7 +201,6 @@ namespace AmbientSoundsTuner.SoundPatchers
                     {
                         WWW www = new WWW(new Uri(spf.Clip).AbsoluteUri);
                         ai.m_clip = www.GetAudioClip(true, false);
-                        ai.name = spfAudio.Name + (variation > 0 ? " " + variation : "");
                     }
                     ai.m_volume = spf.Volume;
                     ai.m_pitch = spf.Pitch;

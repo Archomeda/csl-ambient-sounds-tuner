@@ -59,6 +59,11 @@ namespace AmbientSoundsTuner.SoundPatchers
             }
         }
 
+        public override string AudioPrefixId
+        {
+            get { return "Building"; }
+        }
+
         protected override AudioInfo GetAudioInfoById(string id)
         {
             SoundContainer sound = SoundsCollection.Buildings[id];

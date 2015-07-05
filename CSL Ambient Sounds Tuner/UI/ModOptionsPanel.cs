@@ -190,11 +190,11 @@ namespace AmbientSoundsTuner.UI
 
             // Create tabs
             int tabWidth = (int)(tabstrip.tabPages.width / 5);
-            this.AddTab(tabstrip, tabWidth, "Ambients", this.AmbientsDef, Mod.Instance.AmbientsPatcher, Mod.Settings.AmbientSounds, SoundPacksManager.instance.SoundPacks.Keys.SelectMany(f => f.Ambients).ToArray());
-            this.AddTab(tabstrip, tabWidth, "Animals", this.AnimalsDef, Mod.Instance.AnimalsPatcher, Mod.Settings.AnimalSounds, SoundPacksManager.instance.SoundPacks.Keys.SelectMany(f => f.Animals).ToArray());
-            this.AddTab(tabstrip, tabWidth, "Buildings", this.BuildingsDef, Mod.Instance.BuildingsPatcher, Mod.Settings.BuildingSounds, SoundPacksManager.instance.SoundPacks.Keys.SelectMany(f => f.Buildings).ToArray());
-            this.AddTab(tabstrip, tabWidth, "Vehicles", this.VehiclesDef, Mod.Instance.VehiclesPatcher, Mod.Settings.VehicleSounds, SoundPacksManager.instance.SoundPacks.Keys.SelectMany(f => f.Vehicles).ToArray());
-            this.AddTab(tabstrip, tabWidth, "Misc", this.MiscDef, Mod.Instance.MiscPatcher, Mod.Settings.MiscSounds, SoundPacksManager.instance.SoundPacks.Keys.SelectMany(f => f.Miscs).ToArray());
+            this.AddTab(tabstrip, tabWidth, "Ambients", this.AmbientsDef, Mod.Instance.AmbientsPatcher, Mod.Settings.AmbientSounds);
+            this.AddTab(tabstrip, tabWidth, "Animals", this.AnimalsDef, Mod.Instance.AnimalsPatcher, Mod.Settings.AnimalSounds);
+            this.AddTab(tabstrip, tabWidth, "Buildings", this.BuildingsDef, Mod.Instance.BuildingsPatcher, Mod.Settings.BuildingSounds);
+            this.AddTab(tabstrip, tabWidth, "Vehicles", this.VehiclesDef, Mod.Instance.VehiclesPatcher, Mod.Settings.VehicleSounds);
+            this.AddTab(tabstrip, tabWidth, "Misc", this.MiscDef, Mod.Instance.MiscPatcher, Mod.Settings.MiscSounds);
 
             tabstrip.selectedIndex = -1;
             tabstrip.selectedIndex = 0;
@@ -214,7 +214,7 @@ namespace AmbientSoundsTuner.UI
             Mod.Settings.SaveConfig(Mod.SettingsFilename);
         }
 
-        protected void AddTab<T>(UITabstrip tabstrip, float buttonWidth, string title, IDictionary<string, SliderDef<T>[]> content, SoundsInstancePatcher<T> patcher, IDictionary<T, Configuration.Sound> configuration, SoundPackFile.Audio[] customAudioFiles)
+        protected void AddTab<T>(UITabstrip tabstrip, float buttonWidth, string title, IDictionary<string, SliderDef<T>[]> content, SoundsInstancePatcher<T> patcher, IDictionary<T, Configuration.Sound> configuration)
         {
             UIHelper tabHelper = this.RootHelper.AddScrollingTab(tabstrip, buttonWidth, title);
             foreach (var group in content)
@@ -222,19 +222,15 @@ namespace AmbientSoundsTuner.UI
                 UIHelper groupHelper = tabHelper.AddGroup2(group.Key);
                 foreach (var sliderDef in group.Value)
                 {
-                    SoundPackFile.Audio[] customAudios = null;
-                    if (!this.SoundPackBlacklist.Contains(sliderDef.Id.ToString()))
-                        customAudios = customAudioFiles.Where(a => a.Type == sliderDef.Id.ToString()).ToArray();
-                    else
-                        customAudios = new SoundPackFile.Audio[0];
-
-                    this.AddSoundRow(sliderDef, groupHelper, patcher, configuration, customAudios);
+                    this.AddSoundRow(sliderDef, groupHelper, patcher, configuration);
                 }
             }
         }
 
-        protected void AddSoundRow<T>(SliderDef<T> slider, UIHelperBase helper, SoundsInstancePatcher<T> patcher, IDictionary<T, Configuration.Sound> configuration, SoundPackFile.Audio[] customAudioFiles)
+        protected void AddSoundRow<T>(SliderDef<T> slider, UIHelperBase helper, SoundsInstancePatcher<T> patcher, IDictionary<T, Configuration.Sound> configuration)
         {
+            var customAudioFiles = patcher.GetAvailableAudiosForType(slider.Id.ToString()).Values.ToArray();
+
             OnValueChanged valueChangedCallback = v =>
             {
                 if (!configuration.ContainsKey(slider.Id))
@@ -258,27 +254,31 @@ namespace AmbientSoundsTuner.UI
                     uiDropDown.selectedValue = configuration[slider.Id].Active;
                 else
                     uiDropDown.selectedIndex = 0;
+
                 uiDropDown.eventSelectedIndexChanged += (c, i) =>
                 {
                     if (!configuration.ContainsKey(slider.Id))
                         configuration.Add(slider.Id, new Configuration.Sound());
 
-                    string name = ((UIDropDown)c).items[i];
-                    configuration[slider.Id].Active = i > 0 ? name : "";
                     if (i > 0)
                     {
-                        SoundPackFile.Audio audioFile = customAudioFiles.FirstOrDefault(a => a.Name == name);
+                        string name = ((UIDropDown)c).items[i];
+                        configuration[slider.Id].Active = name;
+
+                        SoundPackFile.Audio audioFile = patcher.GetAudioByName(slider.Id.ToString(), name);
                         patcher.PatchSound(slider.Id, audioFile);
                         uiSlider.maxValue = Mathf.Max(audioFile.AudioInfo.MaxVolume, audioFile.AudioInfo.Volume);
                         uiSlider.value = audioFile.AudioInfo.Volume;
                     }
                     else
                     {
+                        configuration[slider.Id].Active = "";
+
                         patcher.RevertSound(slider.Id);
                         if (patcher.OldSounds.ContainsKey(slider.Id))
                         {
-                            uiSlider.maxValue = patcher.OldSounds.ContainsKey(slider.Id) ? patcher.OldSounds[slider.Id].AudioInfo.MaxVolume : patcher.DefaultMaxVolumes[slider.Id];
-                            uiSlider.value = patcher.OldSounds.ContainsKey(slider.Id) ? patcher.OldSounds[slider.Id].AudioInfo.Volume : patcher.DefaultVolumes[slider.Id];
+                            uiSlider.maxValue = patcher.OldSounds[slider.Id].AudioInfo.MaxVolume;
+                            uiSlider.value = patcher.OldSounds[slider.Id].AudioInfo.Volume;
                         }
                         else
                         {

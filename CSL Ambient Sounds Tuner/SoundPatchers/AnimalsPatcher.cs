@@ -22,6 +22,11 @@ namespace AmbientSoundsTuner.SoundPatchers
             }
         }
 
+        public override string AudioPrefixId
+        {
+            get { return "Animal"; }
+        }
+
         protected override AudioInfo GetAudioInfoById(string id)
         {
             SoundContainer sound = SoundsCollection.Animals[id];

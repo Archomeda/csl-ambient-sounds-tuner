@@ -33,6 +33,11 @@ namespace AmbientSoundsTuner.SoundPatchers
             }
         }
 
+        public override string AudioPrefixId
+        {
+            get { return "Misc"; }
+        }
+
         protected override AudioInfo GetAudioInfoById(string id)
         {
             SoundContainer sound = SoundsCollection.Misc[id];

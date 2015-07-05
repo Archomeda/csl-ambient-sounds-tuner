@@ -44,6 +44,11 @@ namespace AmbientSoundsTuner.SoundPatchers
             }
         }
 
+        public override string AudioPrefixId
+        {
+            get { return "Vehicle"; }
+        }
+
         public override bool BackupVolume(string id)
         {
             if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
@@ -75,7 +80,7 @@ namespace AmbientSoundsTuner.SoundPatchers
             {
                 SoundContainer sound = SoundsCollection.Vehicles[id];
                 this.OldSounds[id] = SoundsPatcher.GetAudioInfo(sound);
-                return this.OldSounds != null;
+                return this.OldSounds[id] != null;
             }
             return false;
         }

@@ -215,7 +215,7 @@ namespace AmbientSoundsTuner
         #endregion
 
 
-        private void PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, Configuration.Sound> newSounds, SoundPackFile.Audio[] customAudioFiles)
+        private void PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, Configuration.Sound> newSounds)
         {
             int backedUpSounds = patcher.BackupAllSounds();
             Mod.Log.Debug("{0} sounds have been backed up through {1}", backedUpSounds, patcher.GetType().Name);
@@ -227,7 +227,7 @@ namespace AmbientSoundsTuner
             {
                 if (!string.IsNullOrEmpty(kvp.Value.Active))
                 {
-                    return customAudioFiles.FirstOrDefault(a => a.Name == kvp.Value.Active);
+                    return patcher.GetAudioByName(kvp.Key.ToString(), kvp.Value.Active);
                 }
                 return null;
             }));
@@ -257,11 +257,11 @@ namespace AmbientSoundsTuner
             // Try patching the sounds
             try
             {
-                this.PatchSounds(this.AmbientsPatcher, Settings.AmbientSounds, SoundPacksManager.instance.SoundPacks.Keys.SelectMany(f => f.Ambients).ToArray());
-                this.PatchSounds(this.AnimalsPatcher, Settings.AnimalSounds, SoundPacksManager.instance.SoundPacks.Keys.SelectMany(f => f.Animals).ToArray());
-                this.PatchSounds(this.BuildingsPatcher, Settings.BuildingSounds, SoundPacksManager.instance.SoundPacks.Keys.SelectMany(f => f.Buildings).ToArray());
-                this.PatchSounds(this.VehiclesPatcher, Settings.VehicleSounds, SoundPacksManager.instance.SoundPacks.Keys.SelectMany(f => f.Vehicles).ToArray());
-                this.PatchSounds(this.MiscPatcher, Settings.MiscSounds, SoundPacksManager.instance.SoundPacks.Keys.SelectMany(f => f.Miscs).ToArray());
+                this.PatchSounds(this.AmbientsPatcher, Settings.AmbientSounds);
+                this.PatchSounds(this.AnimalsPatcher, Settings.AnimalSounds);
+                this.PatchSounds(this.BuildingsPatcher, Settings.BuildingSounds);
+                this.PatchSounds(this.VehiclesPatcher, Settings.VehicleSounds);
+                this.PatchSounds(this.MiscPatcher, Settings.MiscSounds);
             }
             catch (Exception ex)
             {

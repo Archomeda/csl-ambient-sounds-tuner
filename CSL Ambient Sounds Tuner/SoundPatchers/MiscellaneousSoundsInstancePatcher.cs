@@ -45,7 +45,7 @@ namespace AmbientSoundsTuner.SoundPatchers
             {
                 AudioInfo audioInfo = this.GetAudioInfoById(id);
                 this.OldSounds[id] = SoundsPatcher.GetAudioInfo(audioInfo);
-                return this.OldSounds != null;
+                return this.OldSounds[id] != null;
             }
             return false;
         }
