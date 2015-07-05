@@ -89,6 +89,14 @@ namespace AmbientSoundsTuner.SoundPatchers
         }
 
 
+        /// <summary>
+        /// Gets a sound instance.
+        /// </summary>
+        /// <param name="id">The sound id.</param>
+        /// <returns>The sound if it exists; null otherwise.</returns>
+        public abstract SoundContainer GetSoundInstance(T id);
+
+
         private int BackupAll(Func<T, bool> backupFunc)
         {
             int counter = 0;
@@ -140,7 +148,20 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// </summary>
         /// <param name="id">The id of the volume to back up.</param>
         /// <returns>True if successful; false otherwise.</returns>
-        public abstract bool BackupVolume(T id);
+        public virtual bool BackupVolume(T id)
+        {
+            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
+            {
+                SoundContainer sound = this.GetSoundInstance(id);
+                float? volume = SoundsPatcher.GetVolume(sound);
+                if (volume.HasValue)
+                {
+                    this.OldVolumes[id] = volume.Value;
+                    return true;
+                }
+            }
+            return false;
+        }
 
         /// <summary>
         /// Patches the volumes.
@@ -158,7 +179,15 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// <param name="id">The id of the volume to patch.</param>
         /// <param name="newVolume">The new volume.</param>
         /// <returns>True if successful; false otherwise.</returns>
-        public abstract bool PatchVolume(T id, float newVolume);
+        public virtual bool PatchVolume(T id, float newVolume)
+        {
+            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
+            {
+                SoundContainer sound = this.GetSoundInstance(id);
+                return SoundsPatcher.SetVolume(sound, newVolume);
+            }
+            return false;
+        }
 
         /// <summary>
         /// Reverts the volumes to the default values.
@@ -196,7 +225,16 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// </summary>
         /// <param name="id">The id of the sound to back up.</param>
         /// <returns>True if successful; false otherwise.</returns>
-        public abstract bool BackupSound(T id);
+        public virtual bool BackupSound(T id)
+        {
+            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
+            {
+                SoundContainer sound = this.GetSoundInstance(id);
+                this.OldSounds[id] = SoundsPatcher.GetAudioInfo(sound);
+                return this.OldSounds[id] != null;
+            }
+            return false;
+        }
 
         /// <summary>
         /// Patches the sounds.
@@ -214,7 +252,15 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// <param name="id">The id of the sound to patch.</param>
         /// <param name="newSound">The new sound.</param>
         /// <returns>True if successful; false otherwise.</returns>
-        public abstract bool PatchSound(T id, SoundPackFile.Audio newSound);
+        public virtual bool PatchSound(T id, SoundPackFile.Audio newSound)
+        {
+            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
+            {
+                SoundContainer sound = this.GetSoundInstance(id);
+                return SoundsPatcher.SetAudioInfo(sound, newSound);
+            }
+            return false;
+        }
 
         /// <summary>
         /// Reverts the sounds to the default values.

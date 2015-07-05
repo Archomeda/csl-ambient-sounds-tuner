@@ -9,26 +9,54 @@ namespace AmbientSoundsTuner.SoundPatchers
     /// <summary>
     /// A class that can patch instances of miscellaneous sounds.
     /// </summary>
-    public class MiscPatcher : MiscellaneousSoundsInstancePatcher<string>
+    public class MiscPatcher : SoundsInstancePatcher<string>
     {
+        public const string ID_BUILDING_BULLDOZE = "Building Bulldoze Sound";
+        public const string ID_BUILDING_PLACEMENT = "Building Placement Sound";
+        public const string ID_PROP_BULLDOZE = "Prop Bulldoze Sound";
+        public const string ID_PROP_PLACEMENT = "Prop Placement Sound";
+        public const string ID_ROAD_BULLDOZE = "Road Bulldoze Sound";
+        public const string ID_ROAD_DRAW = "Road Draw Sound";
+        public const string ID_ROAD_PLACEMENT = "Road Placement Sound";
+        public const string ID_ZONE_FILL = "Zone Fill Sound";
+
         public const string ID_CLICK_SOUND = "UI Clicks";
         public const string ID_DISABLED_CLICK_SOUND = "UI Clicks (Disabled)";
+
+
+        public MiscPatcher()
+            : base()
+        {
+            this.UIClickSoundVolume = 1;
+            this.UIDisabledClickSoundVolume = 1;
+        }
+
+        /// <summary>
+        /// Gets or sets the click sound volume in UI.
+        /// </summary>
+        public float UIClickSoundVolume { get; set; }
+
+        /// <summary>
+        /// Gets or sets the disabled click sound volume in UI.
+        /// </summary>
+        public float UIDisabledClickSoundVolume { get; set; }
+
 
         public override string[] Ids
         {
             get
             {
                 return new[] {
-                    SoundsCollection.MiscSounds.ID_BUILDING_BULLDOZE,
-                    SoundsCollection.MiscSounds.ID_PROP_BULLDOZE,
-                    SoundsCollection.MiscSounds.ID_ROAD_BULLDOZE,
-                    SoundsCollection.MiscSounds.ID_BUILDING_PLACEMENT,
-                    SoundsCollection.MiscSounds.ID_PROP_PLACEMENT,
-                    SoundsCollection.MiscSounds.ID_ROAD_PLACEMENT,
-                    SoundsCollection.MiscSounds.ID_ROAD_DRAW,
+                    ID_BUILDING_BULLDOZE,
+                    ID_PROP_BULLDOZE,
+                    ID_ROAD_BULLDOZE,
+                    ID_BUILDING_PLACEMENT,
+                    ID_PROP_PLACEMENT,
+                    ID_ROAD_PLACEMENT,
+                    ID_ROAD_DRAW,
                     ID_CLICK_SOUND,
                     ID_DISABLED_CLICK_SOUND,
-                    SoundsCollection.MiscSounds.ID_ZONE_FILL
+                    ID_ZONE_FILL
                 };
             }
         }
@@ -38,17 +66,54 @@ namespace AmbientSoundsTuner.SoundPatchers
             get { return "Misc"; }
         }
 
-        protected override AudioInfo GetAudioInfoById(string id)
+        public override SoundContainer GetSoundInstance(string id)
         {
-            SoundContainer sound = SoundsCollection.Misc[id];
-
-            if (sound.HasSound)
+            switch (id)
             {
-                return sound.AudioInfo;
+                case ID_BUILDING_BULLDOZE:
+                    if (BuildingManager.instance.m_properties != null)
+                        return new SoundContainer(SoundPatchersManager.GetSubEffectFromMultiEffect(BuildingManager.instance.m_properties.m_bulldozeEffect as MultiEffect, id));
+                    break;
+
+                case ID_BUILDING_PLACEMENT:
+                    if (BuildingManager.instance.m_properties != null)
+                        return new SoundContainer(SoundPatchersManager.GetSubEffectFromMultiEffect(BuildingManager.instance.m_properties.m_placementEffect as MultiEffect, id));
+                    break;
+
+                case ID_PROP_BULLDOZE:
+                    if (PropManager.instance.m_properties != null)
+                        return new SoundContainer(SoundPatchersManager.GetSubEffectFromMultiEffect(PropManager.instance.m_properties.m_bulldozeEffect as MultiEffect, id));
+                    break;
+
+                case ID_PROP_PLACEMENT:
+                    if (PropManager.instance.m_properties != null)
+                        return new SoundContainer(SoundPatchersManager.GetSubEffectFromMultiEffect(PropManager.instance.m_properties.m_placementEffect as MultiEffect, id));
+                    break;
+
+                case ID_ROAD_BULLDOZE:
+                    if (NetManager.instance.m_properties != null)
+                        return new SoundContainer(SoundPatchersManager.GetSubEffectFromMultiEffect(NetManager.instance.m_properties.m_bulldozeEffect as MultiEffect, id));
+                    break;
+
+                case ID_ROAD_DRAW:
+                    if (NetManager.instance.m_properties != null)
+                        return new SoundContainer(NetManager.instance.m_properties.m_drawSound);
+                    break;
+
+                case ID_ROAD_PLACEMENT:
+                    if (NetManager.instance.m_properties != null)
+                        return new SoundContainer(SoundPatchersManager.GetSubEffectFromMultiEffect(NetManager.instance.m_properties.m_placementEffect as MultiEffect, id));
+                    break;
+
+                case ID_ZONE_FILL:
+                    if (ZoneManager.instance.m_properties != null)
+                        return new SoundContainer(ZoneManager.instance.m_properties.m_fillEffect as SoundEffect);
+                    break;
             }
 
             return null;
         }
+
 
         public override bool BackupVolume(string id)
         {
@@ -68,10 +133,10 @@ namespace AmbientSoundsTuner.SoundPatchers
             switch (id)
             {
                 case ID_CLICK_SOUND:
-                    SoundsCollection.Misc.UIClickSoundVolume = newVolume;
+                    this.UIClickSoundVolume = newVolume;
                     return true;
                 case ID_DISABLED_CLICK_SOUND:
-                    SoundsCollection.Misc.UIDisabledClickSoundVolume = newVolume;
+                    this.UIDisabledClickSoundVolume = newVolume;
                     return true;
                 default:
                     return base.PatchVolume(id, newVolume);

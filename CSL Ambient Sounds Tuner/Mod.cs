@@ -27,11 +27,6 @@ namespace AmbientSoundsTuner
         internal static Mod Instance { get; private set; }
 
         internal ModOptionsPanel OptionsPanel { get; private set; }
-        internal AmbientsPatcher AmbientsPatcher { get; private set; }
-        internal AnimalsPatcher AnimalsPatcher { get; private set; }
-        internal BuildingsPatcher BuildingsPatcher { get; private set; }
-        internal VehiclesPatcher VehiclesPatcher { get; private set; }
-        internal MiscPatcher MiscPatcher { get; private set; }
 
         internal static HashSet<ulong> IncompatibleMods = new HashSet<ulong>()
         {
@@ -94,12 +89,6 @@ namespace AmbientSoundsTuner
             SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(this), "AmbientSoundsTuner.xml");
             Log = new Logger(this);
             Instance = this;
-
-            this.AmbientsPatcher = new AmbientsPatcher();
-            this.AnimalsPatcher = new AnimalsPatcher();
-            this.BuildingsPatcher = new BuildingsPatcher();
-            this.VehiclesPatcher = new VehiclesPatcher();
-            this.MiscPatcher = new MiscPatcher();
 
             Mod.Log.Debug("Mod initialized");
         }
@@ -257,11 +246,11 @@ namespace AmbientSoundsTuner
             // Try patching the sounds
             try
             {
-                this.PatchSounds(this.AmbientsPatcher, Settings.AmbientSounds);
-                this.PatchSounds(this.AnimalsPatcher, Settings.AnimalSounds);
-                this.PatchSounds(this.BuildingsPatcher, Settings.BuildingSounds);
-                this.PatchSounds(this.VehiclesPatcher, Settings.VehicleSounds);
-                this.PatchSounds(this.MiscPatcher, Settings.MiscSounds);
+                this.PatchSounds(SoundPatchersManager.instance.AmbientsPatcher, Settings.AmbientSounds);
+                this.PatchSounds(SoundPatchersManager.instance.AnimalsPatcher, Settings.AnimalSounds);
+                this.PatchSounds(SoundPatchersManager.instance.BuildingsPatcher, Settings.BuildingSounds);
+                this.PatchSounds(SoundPatchersManager.instance.VehiclesPatcher, Settings.VehicleSounds);
+                this.PatchSounds(SoundPatchersManager.instance.MiscPatcher, Settings.MiscSounds);
             }
             catch (Exception ex)
             {
@@ -275,7 +264,7 @@ namespace AmbientSoundsTuner
             {
                 if (Mod.Settings.MiscSounds.ContainsKey(id))
                 {
-                    this.MiscPatcher.PatchVolume(id, Mod.Settings.MiscSounds[id].Volume);
+                    SoundPatchersManager.instance.MiscPatcher.PatchVolume(id, Mod.Settings.MiscSounds[id].Volume);
                 }
             }
         }

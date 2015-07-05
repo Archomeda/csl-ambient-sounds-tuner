@@ -35,50 +35,14 @@ namespace AmbientSoundsTuner.SoundPatchers
             get { return "Ambient"; }
         }
 
-        public override bool BackupVolume(AudioManager.AmbientType id)
+        public override SoundContainer GetSoundInstance(AudioManager.AmbientType id)
         {
-            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
+            if (AudioManager.instance.m_properties != null && AudioManager.instance.m_properties.m_ambients != null
+                && AudioManager.instance.m_properties.m_ambients.Length > (int)id)
             {
-                SoundContainer sound = SoundsCollection.Ambients[id];
-                float? volume = SoundsPatcher.GetVolume(sound);
-                if (volume.HasValue)
-                {
-                    this.OldVolumes[id] = volume.Value;
-                    return true;
-                }
+                return new SoundContainer(AudioManager.instance.m_properties.m_ambients[(int)id]);
             }
-            return false;
-        }
-
-        public override bool PatchVolume(AudioManager.AmbientType id, float newVolume)
-        {
-            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
-            {
-                SoundContainer sound = SoundsCollection.Ambients[id];
-                return SoundsPatcher.SetVolume(sound, newVolume);
-            }
-            return false;
-        }
-
-        public override bool BackupSound(AudioManager.AmbientType id)
-        {
-            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
-            {
-                SoundContainer sound = SoundsCollection.Ambients[id];
-                this.OldSounds[id] = SoundsPatcher.GetAudioInfo(sound);
-                return this.OldSounds[id] != null;
-            }
-            return false;
-        }
-
-        public override bool PatchSound(AudioManager.AmbientType id, SoundPackFile.Audio newSound)
-        {
-            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
-            {
-                SoundContainer sound = SoundsCollection.Ambients[id];
-                return SoundsPatcher.SetAudioInfo(sound, newSound);
-            }
-            return false;
+            return null;
         }
     }
 }
