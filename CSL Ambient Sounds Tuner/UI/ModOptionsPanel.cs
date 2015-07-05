@@ -29,15 +29,15 @@ namespace AmbientSoundsTuner.UI
         {
             { "Ambients", new[]
                 {
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Agricultural, "Agricultural"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.City, "City"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Forest, "Forest"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Industrial, "Industrial"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Plaza, "Plaza"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Sea, "Sea"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Stream, "Stream"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Suburban, "Suburban"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.World, "World")
+                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Agricultural, "Ambient", "Agricultural"),
+                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.City, "Ambient", "City"),
+                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Forest, "Ambient", "Forest"),
+                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Industrial, "Ambient", "Industrial"),
+                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Plaza, "Ambient", "Plaza"),
+                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Sea, "Ambient", "Sea"),
+                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Stream, "Ambient", "Stream"),
+                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Suburban, "Ambient", "Suburban"),
+                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.World, "Ambient", "World")
                 }
             }
         };
@@ -46,9 +46,9 @@ namespace AmbientSoundsTuner.UI
         {
             { "Animals", new[]
                 {
-                    new SliderDef<string>(AnimalsPatcher.ID_COW, "Cows"),
-                    new SliderDef<string>(AnimalsPatcher.ID_PIG, "Pigs"),
-                    new SliderDef<string>(AnimalsPatcher.ID_SEAGULL, "Seagulls")
+                    new SliderDef<string>(AnimalsPatcher.ID_COW, "Animal", "Cows"),
+                    new SliderDef<string>(AnimalsPatcher.ID_PIG, "Animal", "Pigs"),
+                    new SliderDef<string>(AnimalsPatcher.ID_SEAGULL, "Animal", "Seagulls")
                 }
             }
         };
@@ -57,50 +57,50 @@ namespace AmbientSoundsTuner.UI
         {
             { "Electricity and Water", new[]
                 {
-                    new SliderDef<string>(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, "Advanced Wind Turbine"),
-                    new SliderDef<string>(BuildingsPatcher.ID_COAL_POWER_PLANT, "Coal/Oil Power Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_FUSION_POWER_PLANT, "Fusion Power Plant", 4),
-                    new SliderDef<string>(BuildingsPatcher.ID_HYDRO_POWER_PLANT, "Hydro Power Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_INCINERATION_PLANT, "Incineration Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, "Nuclear Power Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_POWER_PLANT_SMALL, "Small Power Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_SOLAR_POWER_PLANT, "Solar Power Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_WATER_DRAIN_PIPE, "Water Drain/Treatment Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_WATER_PUMPING_STATION, "Water Pumping Station"),
-                    new SliderDef<string>(BuildingsPatcher.ID_WIND_TURBINE, "Wind Turbine")
+                    new SliderDef<string>(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, "Building", "Advanced Wind Turbine"),
+                    new SliderDef<string>(BuildingsPatcher.ID_COAL_POWER_PLANT, "Building", "Coal/Oil Power Plant"),
+                    new SliderDef<string>(BuildingsPatcher.ID_FUSION_POWER_PLANT, "Building", "Fusion Power Plant", 4),
+                    new SliderDef<string>(BuildingsPatcher.ID_HYDRO_POWER_PLANT, "Building", "Hydro Power Plant"),
+                    new SliderDef<string>(BuildingsPatcher.ID_INCINERATION_PLANT, "Building", "Incineration Plant"),
+                    new SliderDef<string>(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, "Building", "Nuclear Power Plant"),
+                    new SliderDef<string>(BuildingsPatcher.ID_POWER_PLANT_SMALL, "Building", "Small Power Plant"),
+                    new SliderDef<string>(BuildingsPatcher.ID_SOLAR_POWER_PLANT, "Building", "Solar Power Plant"),
+                    new SliderDef<string>(BuildingsPatcher.ID_WATER_DRAIN_PIPE, "Building", "Water Drain/Treatment Plant"),
+                    new SliderDef<string>(BuildingsPatcher.ID_WATER_PUMPING_STATION, "Building", "Water Pumping Station"),
+                    new SliderDef<string>(BuildingsPatcher.ID_WIND_TURBINE, "Building", "Wind Turbine")
                 }
             },
             { "Services", new[]
                 {
-                    new SliderDef<string>(BuildingsPatcher.ID_CEMETERY, "Cemetery"),
-                    new SliderDef<string>(BuildingsPatcher.ID_CREMATORY, "Crematory"),
-                    new SliderDef<string>(BuildingsPatcher.ID_ELEMENTARY_SCHOOL, "Elementary School"),
-                    new SliderDef<string>(BuildingsPatcher.ID_FIRE_STATION, "Fire Station"),
-                    new SliderDef<string>(BuildingsPatcher.ID_HIGH_SCHOOL, "High School"),
-                    new SliderDef<string>(BuildingsPatcher.ID_HOSPITAL, "Hospital"),
-                    new SliderDef<string>(BuildingsPatcher.ID_POLICE_STATION, "Police Station"),
-                    new SliderDef<string>(BuildingsPatcher.ID_UNIVERSITY, "University")
+                    new SliderDef<string>(BuildingsPatcher.ID_CEMETERY, "Building", "Cemetery"),
+                    new SliderDef<string>(BuildingsPatcher.ID_CREMATORY, "Building", "Crematory"),
+                    new SliderDef<string>(BuildingsPatcher.ID_ELEMENTARY_SCHOOL, "Building", "Elementary School"),
+                    new SliderDef<string>(BuildingsPatcher.ID_FIRE_STATION, "Building", "Fire Station"),
+                    new SliderDef<string>(BuildingsPatcher.ID_HIGH_SCHOOL, "Building", "High School"),
+                    new SliderDef<string>(BuildingsPatcher.ID_HOSPITAL, "Building", "Hospital"),
+                    new SliderDef<string>(BuildingsPatcher.ID_POLICE_STATION, "Building", "Police Station"),
+                    new SliderDef<string>(BuildingsPatcher.ID_UNIVERSITY, "Building", "University")
                 }
             },
             { "Public Transport", new[]
                 {
-                    new SliderDef<string>(BuildingsPatcher.ID_AIRPORT, "Airport"),
-                    new SliderDef<string>(BuildingsPatcher.ID_BUS_DEPOT, "Bus Depot"),
-                    new SliderDef<string>(BuildingsPatcher.ID_HARBOR, "Harbor"),
-                    new SliderDef<string>(BuildingsPatcher.ID_METRO_STATION, "Metro Station"),
-                    new SliderDef<string>(BuildingsPatcher.ID_TRAIN_STATION, "Train Station")
+                    new SliderDef<string>(BuildingsPatcher.ID_AIRPORT, "Building", "Airport"),
+                    new SliderDef<string>(BuildingsPatcher.ID_BUS_DEPOT, "Building", "Bus Depot"),
+                    new SliderDef<string>(BuildingsPatcher.ID_HARBOR, "Building", "Harbor"),
+                    new SliderDef<string>(BuildingsPatcher.ID_METRO_STATION, "Building", "Metro Station"),
+                    new SliderDef<string>(BuildingsPatcher.ID_TRAIN_STATION, "Building", "Train Station")
                 }
             },
             { "Other", new[]
                 {
-                    new SliderDef<string>(BuildingsPatcher.ID_COMMERCIAL, "Commercial"),
-                    new SliderDef<string>(BuildingsPatcher.ID_INDUSTRIAL, "Industrial", 0.5f)
+                    new SliderDef<string>(BuildingsPatcher.ID_COMMERCIAL, "Building", "Commercial"),
+                    new SliderDef<string>(BuildingsPatcher.ID_INDUSTRIAL, "Building", "Industrial", 0.5f)
                 }
             },
             { "Miscellaneous", new[]
                 {
-                    new SliderDef<string>(BuildingsPatcher.ID_ON_FIRE, "On Fire"),
-                    new SliderDef<string>(BuildingsPatcher.ID_ON_UPGRADE, "On Upgrade", 0.25f)
+                    new SliderDef<string>(BuildingsPatcher.ID_ON_FIRE, "Building", "On Fire"),
+                    new SliderDef<string>(BuildingsPatcher.ID_ON_UPGRADE, "Building", "On Upgrade", 0.25f)
                 }
             }
         };
@@ -109,23 +109,23 @@ namespace AmbientSoundsTuner.UI
         {
             { "Engines", new[]
                 {
-                    new SliderDef<string>(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, "Aircrafts"),
-                    new SliderDef<string>(VehiclesPatcher.ID_LARGE_CAR_SOUND, "Large Cars", 1.5f),
-                    new SliderDef<string>(VehiclesPatcher.ID_METRO_MOVEMENT, "Metros"),
-                    new SliderDef<string>(VehiclesPatcher.ID_SMALL_CAR_SOUND, "Small Cars/Scooters", 1.5f),
-                    new SliderDef<string>(VehiclesPatcher.ID_TRAIN_MOVEMENT, "Trains")
+                    new SliderDef<string>(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, "Vehicle", "Aircrafts"),
+                    new SliderDef<string>(VehiclesPatcher.ID_LARGE_CAR_SOUND, "Vehicle", "Large Cars", 1.5f),
+                    new SliderDef<string>(VehiclesPatcher.ID_METRO_MOVEMENT, "Vehicle", "Metros"),
+                    new SliderDef<string>(VehiclesPatcher.ID_SMALL_CAR_SOUND, "Vehicle", "Small Cars/Scooters", 1.5f),
+                    new SliderDef<string>(VehiclesPatcher.ID_TRAIN_MOVEMENT, "Vehicle", "Trains")
                 }
             },
             { "Sirens", new[]
                 {
-                    new SliderDef<string>(VehiclesPatcher.ID_AMBULANCE_SIREN, "Ambulances"),
-                    new SliderDef<string>(VehiclesPatcher.ID_FIRE_TRUCK_SIREN, "Fire Trucks", 3),
-                    new SliderDef<string>(VehiclesPatcher.ID_POLICE_CAR_SIREN, "Police Cars")
+                    new SliderDef<string>(VehiclesPatcher.ID_AMBULANCE_SIREN, "Vehicle", "Ambulances"),
+                    new SliderDef<string>(VehiclesPatcher.ID_FIRE_TRUCK_SIREN, "Vehicle", "Fire Trucks", 3),
+                    new SliderDef<string>(VehiclesPatcher.ID_POLICE_CAR_SIREN, "Vehicle", "Police Cars")
                 }
             },
             { "Miscellaneous", new[]
                 {
-                    new SliderDef<string>(VehiclesPatcher.ID_TRANSPORT_ARRIVE, "Transport Arrivals")
+                    new SliderDef<string>(VehiclesPatcher.ID_TRANSPORT_ARRIVE, "Vehicle", "Transport Arrivals")
                 }
             }
         };
@@ -134,24 +134,24 @@ namespace AmbientSoundsTuner.UI
         {
             { "Bulldozer", new[]
                 {
-                    new SliderDef<string>(MiscPatcher.ID_BUILDING_BULLDOZE, "Buildings"),
-                    new SliderDef<string>(MiscPatcher.ID_PROP_BULLDOZE, "Props"),
-                    new SliderDef<string>(MiscPatcher.ID_ROAD_BULLDOZE, "Roads"),
+                    new SliderDef<string>(MiscPatcher.ID_BUILDING_BULLDOZE, "Misc", "Buildings"),
+                    new SliderDef<string>(MiscPatcher.ID_PROP_BULLDOZE, "Misc", "Props"),
+                    new SliderDef<string>(MiscPatcher.ID_ROAD_BULLDOZE, "Misc", "Roads"),
                 }
             },
             { "Placements", new[]
                 {
-                    new SliderDef<string>(MiscPatcher.ID_BUILDING_PLACEMENT, "Buildings"),
-                    new SliderDef<string>(MiscPatcher.ID_PROP_PLACEMENT, "Props"),
-                    new SliderDef<string>(MiscPatcher.ID_ROAD_PLACEMENT, "Roads")
+                    new SliderDef<string>(MiscPatcher.ID_BUILDING_PLACEMENT, "Misc", "Buildings"),
+                    new SliderDef<string>(MiscPatcher.ID_PROP_PLACEMENT, "Misc", "Props"),
+                    new SliderDef<string>(MiscPatcher.ID_ROAD_PLACEMENT, "Misc", "Roads")
                 }
             },
             { "User Interface", new[]
                 {
-                    new SliderDef<string>(MiscPatcher.ID_CLICK_SOUND, "Clicks"),
-                    new SliderDef<string>(MiscPatcher.ID_DISABLED_CLICK_SOUND, "Clicks (disabled components)"),
-                    new SliderDef<string>(MiscPatcher.ID_ROAD_DRAW, "Road Drawer"),
-                    new SliderDef<string>(MiscPatcher.ID_ZONE_FILL, "Zone Filler")
+                    new SliderDef<string>(MiscPatcher.ID_CLICK_SOUND, "Misc", "Clicks"),
+                    new SliderDef<string>(MiscPatcher.ID_DISABLED_CLICK_SOUND, "Misc", "Clicks (disabled components)"),
+                    new SliderDef<string>(MiscPatcher.ID_ROAD_DRAW, "Misc", "Road Drawer"),
+                    new SliderDef<string>(MiscPatcher.ID_ZONE_FILL, "Misc", "Zone Filler")
                 }
             }
         };
@@ -190,11 +190,11 @@ namespace AmbientSoundsTuner.UI
 
             // Create tabs
             int tabWidth = (int)(tabstrip.tabPages.width / 5);
-            this.AddTab(tabstrip, tabWidth, "Ambients", this.AmbientsDef, SoundPatchersManager.instance.AmbientsPatcher, Mod.Settings.AmbientSounds);
-            this.AddTab(tabstrip, tabWidth, "Animals", this.AnimalsDef, SoundPatchersManager.instance.AnimalsPatcher, Mod.Settings.AnimalSounds);
-            this.AddTab(tabstrip, tabWidth, "Buildings", this.BuildingsDef, SoundPatchersManager.instance.BuildingsPatcher, Mod.Settings.BuildingSounds);
-            this.AddTab(tabstrip, tabWidth, "Vehicles", this.VehiclesDef, SoundPatchersManager.instance.VehiclesPatcher, Mod.Settings.VehicleSounds);
-            this.AddTab(tabstrip, tabWidth, "Misc", this.MiscDef, SoundPatchersManager.instance.MiscPatcher, Mod.Settings.MiscSounds);
+            this.AddTab(tabstrip, tabWidth, "Ambients", this.AmbientsDef);
+            this.AddTab(tabstrip, tabWidth, "Animals", this.AnimalsDef);
+            this.AddTab(tabstrip, tabWidth, "Buildings", this.BuildingsDef);
+            this.AddTab(tabstrip, tabWidth, "Vehicles", this.VehiclesDef);
+            this.AddTab(tabstrip, tabWidth, "Misc", this.MiscDef);
 
             tabstrip.selectedIndex = -1;
             tabstrip.selectedIndex = 0;
@@ -214,7 +214,7 @@ namespace AmbientSoundsTuner.UI
             Mod.Settings.SaveConfig(Mod.SettingsFilename);
         }
 
-        protected void AddTab<T>(UITabstrip tabstrip, float buttonWidth, string title, IDictionary<string, SliderDef<T>[]> content, SoundsInstancePatcher<T> patcher, IDictionary<T, Configuration.Sound> configuration)
+        protected void AddTab<T>(UITabstrip tabstrip, float buttonWidth, string title, IDictionary<string, SliderDef<T>[]> content)
         {
             UIHelper tabHelper = this.RootHelper.AddScrollingTab(tabstrip, buttonWidth, title);
             foreach (var group in content)
@@ -222,17 +222,22 @@ namespace AmbientSoundsTuner.UI
                 UIHelper groupHelper = tabHelper.AddGroup2(group.Key);
                 foreach (var sliderDef in group.Value)
                 {
-                    this.AddSoundRow(sliderDef, groupHelper, patcher, configuration);
+                    this.AddSoundRow(sliderDef, groupHelper);
                 }
             }
         }
 
-        protected void AddSoundRow<T>(SliderDef<T> slider, UIHelperBase helper, SoundsInstancePatcher<T> patcher, IDictionary<T, Configuration.Sound> configuration)
+        protected void AddSoundRow<T>(SliderDef<T> slider, UIHelperBase helper)
         {
+            // Get all used singletons
+            var patcher = SoundPatchersManager.instance.GetPatcherById<T>(slider.Prefix);
+            var configuration = Mod.Settings.GetSoundsByCategoryId<T>(slider.Prefix);
+
             var customAudioFiles = patcher.GetAvailableAudiosForType(slider.Id.ToString()).Values.ToArray();
 
             OnValueChanged valueChangedCallback = v =>
             {
+                // Volume changed
                 if (!configuration.ContainsKey(slider.Id))
                     configuration.Add(slider.Id, new Configuration.Sound());
 
@@ -240,10 +245,12 @@ namespace AmbientSoundsTuner.UI
                 patcher.PatchVolume(slider.Id, v);
             };
 
+            // Add UI components
             UISlider uiSlider = (UISlider)helper.AddSlider(slider.Text, slider.MinValue, slider.MaxValue, 0.01f, configuration[slider.Id].Volume, valueChangedCallback);
             UIPanel uiPanel = (UIPanel)uiSlider.parent;
             UILabel uiLabel = uiPanel.Find<UILabel>("Label");
             UIDropDown uiDropDown = null;
+
             if (customAudioFiles.Length > 0)
             {
                 uiDropDown = uiPanel.AttachUIComponent(GameObject.Instantiate((UITemplateManager.Peek(UITemplateDefs.ID_OPTIONS_DROPDOWN_TEMPLATE) as UIPanel).Find<UIDropDown>("Dropdown").gameObject)) as UIDropDown;
@@ -257,11 +264,13 @@ namespace AmbientSoundsTuner.UI
 
                 uiDropDown.eventSelectedIndexChanged += (c, i) =>
                 {
+                    // Selected audio changed
                     if (!configuration.ContainsKey(slider.Id))
                         configuration.Add(slider.Id, new Configuration.Sound());
 
                     if (i > 0)
                     {
+                        // Chosen audio is a custom audio
                         string name = ((UIDropDown)c).items[i];
                         configuration[slider.Id].Active = name;
 
@@ -272,6 +281,7 @@ namespace AmbientSoundsTuner.UI
                     }
                     else
                     {
+                        // Chosen audio is the default one
                         configuration[slider.Id].Active = "";
 
                         patcher.RevertSound(slider.Id);
@@ -289,6 +299,7 @@ namespace AmbientSoundsTuner.UI
                 };
             }
 
+            // Configure UI components
             uiPanel.autoLayout = false;
             uiLabel.anchor = UIAnchorStyle.Left | UIAnchorStyle.CenterVertical;
             uiLabel.width = 250;
@@ -316,17 +327,19 @@ namespace AmbientSoundsTuner.UI
         public struct SliderDef<T>
         {
             public T Id;
+            public string Prefix;
             public string Text;
             public float MinValue;
             public float MaxValue;
 
-            public SliderDef(T id, string text) : this(id, text, 0, 1) { }
+            public SliderDef(T id, string prefix, string text) : this(id, prefix, text, 0, 1) { }
 
-            public SliderDef(T id, string text, float maxValue) : this(id, text, 0, maxValue) { }
+            public SliderDef(T id, string prefix, string text, float maxValue) : this(id, prefix, text, 0, maxValue) { }
 
-            public SliderDef(T id, string text, float minValue, float maxValue)
+            public SliderDef(T id, string prefix, string text, float minValue, float maxValue)
             {
                 this.Id = id;
+                this.Prefix = prefix;
                 this.Text = text;
                 this.MinValue = minValue;
                 this.MaxValue = maxValue;

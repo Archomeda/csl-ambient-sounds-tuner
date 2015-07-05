@@ -27,6 +27,19 @@ namespace AmbientSoundsTuner.SoundPatchers
 
         public MiscPatcher MiscPatcher { get; private set; }
 
+        public SoundsInstancePatcher<T> GetPatcherById<T>(string id)
+        {
+            switch (id)
+            {
+                case "Ambient": return this.AmbientsPatcher as SoundsInstancePatcher<T>;
+                case "Animal": return this.AnimalsPatcher as SoundsInstancePatcher<T>;
+                case "Building": return this.BuildingsPatcher as SoundsInstancePatcher<T>;
+                case "Vehicle": return this.VehiclesPatcher as SoundsInstancePatcher<T>;
+                case "Misc": return this.MiscPatcher as SoundsInstancePatcher<T>;
+            }
+            return null;
+        }
+
 
         public static AudioInfo GetAudioInfoFromBuildingInfo(string id)
         {

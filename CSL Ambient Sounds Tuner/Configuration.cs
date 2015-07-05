@@ -37,6 +37,19 @@ namespace AmbientSoundsTuner
 
         public SerializableDictionary<string, Sound> MiscSounds { get; set; }
 
+        public IDictionary<T, Sound> GetSoundsByCategoryId<T>(string id)
+        {
+            switch (id)
+            {
+                case "Ambient": return this.AmbientSounds as IDictionary<T, Sound>;
+                case "Animal": return this.AnimalSounds as IDictionary<T, Sound>;
+                case "Building": return this.BuildingSounds as IDictionary<T, Sound>;
+                case "Vehicle": return this.VehicleSounds as IDictionary<T, Sound>;
+                case "Misc": return this.MiscSounds as IDictionary<T, Sound>;
+            }
+            return null;
+        }
+
         public class Sound
         {
             public string Active { get; set; }
