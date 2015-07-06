@@ -110,7 +110,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// </summary>
         /// <param name="sound">The sound.</param>
         /// <returns>The sound pack file audio.</returns>
-        public static SoundPackFile.Audio GetAudioInfo(SoundContainer sound)
+        public static SoundPacksFile.Audio GetAudioInfo(SoundContainer sound)
         {
             if (sound.HasSound)
             {
@@ -124,18 +124,18 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// </summary>
         /// <param name="audioInfo">The original audio info.</param>
         /// <returns>The sound pack file audio.</returns>
-        public static SoundPackFile.Audio GetAudioInfo(AudioInfo audioInfo)
+        public static SoundPacksFile.Audio GetAudioInfo(AudioInfo audioInfo)
         {
             if (audioInfo != null)
             {
-                SoundPackFile.Audio spfAudio = new SoundPackFile.Audio()
+                SoundPacksFile.Audio spfAudio = new SoundPacksFile.Audio()
                 {
                     Name = audioInfo.name,
-                    AudioInfo = new SoundPackFile.AudioInfo()
+                    AudioInfo = new SoundPacksFile.AudioInfo()
                 };
 
-                Action<AudioInfo, SoundPackFile.AudioInfo> backupAudioInfo = null;
-                backupAudioInfo = new Action<AudioInfo, SoundPackFile.AudioInfo>((ai, spf) =>
+                Action<AudioInfo, SoundPacksFile.AudioInfo> backupAudioInfo = null;
+                backupAudioInfo = new Action<AudioInfo, SoundPacksFile.AudioInfo>((ai, spf) =>
                 {
                     spf.AudioClip = ai.m_clip;
                     spf.Volume = ai.m_volume;
@@ -148,13 +148,13 @@ namespace AmbientSoundsTuner.SoundPatchers
 
                     if (ai.m_variations != null)
                     {
-                        spf.Variations = new SoundPackFile.Variation[ai.m_variations.Length];
+                        spf.Variations = new SoundPacksFile.Variation[ai.m_variations.Length];
                         for (int i = 0; i < ai.m_variations.Length; i++)
                         {
-                            spf.Variations[i] = new SoundPackFile.Variation()
+                            spf.Variations[i] = new SoundPacksFile.Variation()
                             {
                                 Probability = ai.m_variations[i].m_probability,
-                                AudioInfo = new SoundPackFile.AudioInfo()
+                                AudioInfo = new SoundPacksFile.AudioInfo()
                             };
                             backupAudioInfo(ai.m_variations[i].m_sound, spf.Variations[i].AudioInfo);
                         }
@@ -172,7 +172,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// <param name="sound">The sound.</param>
         /// <param name="spfAudio">The sound pack file audio.</param>
         /// <returns>True if successful; false otherwise.</returns>
-        public static bool SetAudioInfo(SoundContainer sound, SoundPackFile.Audio spfAudio)
+        public static bool SetAudioInfo(SoundContainer sound, SoundPacksFile.Audio spfAudio)
         {
             if (sound.HasSound)
             {
@@ -187,13 +187,13 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// <param name="audioInfo">The audio info to set.</param>
         /// <param name="spfAudio">The sound pack file audio.</param>
         /// <returns>True if successful; false otherwise.</returns>
-        public static bool SetAudioInfo(AudioInfo audioInfo, SoundPackFile.Audio spfAudio)
+        public static bool SetAudioInfo(AudioInfo audioInfo, SoundPacksFile.Audio spfAudio)
         {
             if (audioInfo != null && spfAudio != null)
             {
-                Action<AudioInfo, SoundPackFile.AudioInfo> patchAudioInfo = null;
+                Action<AudioInfo, SoundPacksFile.AudioInfo> patchAudioInfo = null;
                 int variation = 0;
-                patchAudioInfo = new Action<AudioInfo, SoundPackFile.AudioInfo>((ai, spf) =>
+                patchAudioInfo = new Action<AudioInfo, SoundPacksFile.AudioInfo>((ai, spf) =>
                 {
                     if (spf.AudioClip != null)
                         ai.m_clip = spf.AudioClip;

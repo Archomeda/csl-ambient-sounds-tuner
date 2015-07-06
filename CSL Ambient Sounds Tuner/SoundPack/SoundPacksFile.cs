@@ -8,40 +8,48 @@ using UnityEngine;
 
 namespace AmbientSoundsTuner.SoundPack
 {
-    [XmlRoot("SoundPack")]
-    public class SoundPackFile : VersionedConfig
+    [XmlRoot("SoundPacksFile")]
+    public class SoundPacksFile : VersionedConfig
     {
-        public SoundPackFile()
+        public SoundPacksFile()
         {
             this.Version = 1;
-            this.Ambients = new Audio[0];
-            this.Animals = new Audio[0];
-            this.Buildings = new Audio[0];
-            this.Vehicles = new Audio[0];
-            this.Miscs = new Audio[0];
+            this.SoundPacks = new SoundPack[0];
         }
 
-        [XmlAttribute("name")]
-        public string Name { get; set; }
+        [XmlArray("SoundPacks"), XmlArrayItem("SoundPack")]
+        public SoundPack[] SoundPacks { get; set; }
 
-        [XmlAttribute("author")]
-        public string Author { get; set; }
 
-        [XmlArray("Ambients"), XmlArrayItem("Ambient")]
-        public Audio[] Ambients { get; set; }
+        public class SoundPack
+        {
+            public SoundPack()
+            {
+                this.Ambients = new Audio[0];
+                this.Animals = new Audio[0];
+                this.Buildings = new Audio[0];
+                this.Vehicles = new Audio[0];
+                this.Miscs = new Audio[0];
+            }
 
-        [XmlArray("Animals"), XmlArrayItem("Animal")]
-        public Audio[] Animals { get; set; }
+            [XmlAttribute("name")]
+            public string Name { get; set; }
 
-        [XmlArray("Buildings"), XmlArrayItem("Building")]
-        public Audio[] Buildings { get; set; }
+            [XmlArray("Ambients"), XmlArrayItem("Ambient")]
+            public Audio[] Ambients { get; set; }
 
-        [XmlArray("Vehicles"), XmlArrayItem("Vehicle")]
-        public Audio[] Vehicles { get; set; }
+            [XmlArray("Animals"), XmlArrayItem("Animal")]
+            public Audio[] Animals { get; set; }
 
-        [XmlArray("Miscs"), XmlArrayItem("Misc")]
-        public Audio[] Miscs { get; set; }
+            [XmlArray("Buildings"), XmlArrayItem("Building")]
+            public Audio[] Buildings { get; set; }
 
+            [XmlArray("Vehicles"), XmlArrayItem("Vehicle")]
+            public Audio[] Vehicles { get; set; }
+
+            [XmlArray("Miscs"), XmlArrayItem("Misc")]
+            public Audio[] Miscs { get; set; }
+        }
 
         public class Audio
         {

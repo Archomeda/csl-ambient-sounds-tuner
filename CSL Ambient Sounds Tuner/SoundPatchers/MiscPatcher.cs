@@ -156,7 +156,7 @@ namespace AmbientSoundsTuner.SoundPatchers
             }
         }
 
-        public override bool PatchSound(string id, SoundPackFile.Audio newSound)
+        public override bool PatchSound(string id, SoundPacksFile.Audio newSound)
         {
             switch (id)
             {

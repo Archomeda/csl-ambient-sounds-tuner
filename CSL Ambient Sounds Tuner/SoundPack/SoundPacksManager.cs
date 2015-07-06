@@ -13,64 +13,52 @@ namespace AmbientSoundsTuner.SoundPack
 {
     public class SoundPacksManager : Singleton<SoundPacksManager>
     {
+        public const string SOUNDPACKS_FILENAME = "AmbientSoundsTuner.SoundPacks.xml";
+
         public SoundPacksManager()
         {
-            this.SoundPackMods = new Dictionary<PluginManager.PluginInfo, IList<SoundPackFile>>();
-            this.AudioFiles = new Dictionary<string, SoundPackFile.Audio>();
+            this.SoundPackMods = new Dictionary<PluginManager.PluginInfo, SoundPacksFile>();
+            this.AudioFiles = new Dictionary<string, SoundPacksFile.Audio>();
         }
 
-        public IDictionary<PluginManager.PluginInfo, IList<SoundPackFile>> SoundPackMods { get; private set; }
+        public IDictionary<PluginManager.PluginInfo, SoundPacksFile> SoundPackMods { get; private set; }
 
-        public IDictionary<string, SoundPackFile.Audio> AudioFiles { get; private set; }
+        public IDictionary<string, SoundPacksFile.Audio> AudioFiles { get; private set; }
 
         public void InitSoundPacks()
         {
             this.SoundPackMods.Clear();
             this.AudioFiles.Clear();
 
-            var mods = instance.GetSoundPackMods();
-            Mod.Log.Debug("Found {0} sound pack mods", mods.Count);
-
-            foreach (var mod in mods)
+            foreach (var mod in instance.GetSoundPackMods())
             {
-                if (mod.Key.isEnabled)
-                {
-                    this.AddSoundPackMod(mod.Key, mod.Value);
-                }
+                if (mod.isEnabled)
+                    this.AddSoundPackMod(mod);
 
-                PluginUtils.SubscribePluginStateChange(mod.Key, isEnabled =>
+                PluginUtils.SubscribePluginStateChange(mod, isEnabled =>
                 {
                     if (isEnabled)
-                    {
-                        this.AddSoundPackMod(mod.Key, mod.Value);
-                    }
+                        this.AddSoundPackMod(mod);
                     else
-                    {
-                        this.RemoveSoundPackMod(mod.Key);
-                    }
+                        this.RemoveSoundPackMod(mod);
                 });
             }
         }
 
-        private void AddSoundPackMod(PluginManager.PluginInfo mod, IEnumerable<string> soundPack)
+        private void AddSoundPackMod(PluginManager.PluginInfo mod)
         {
             string modName = mod.userModInstance != null ? ((IUserMod)mod.userModInstance as IUserMod).Name : mod.name;
-
-            foreach (var file in soundPack)
+            string path = Path.Combine(mod.modPath, SOUNDPACKS_FILENAME);
+            try
             {
-                if (!this.SoundPackMods.ContainsKey(mod))
-                {
-                    this.SoundPackMods.Add(mod, new List<SoundPackFile>());
-                }
+                SoundPacksFile soundPackFile = SoundPacksFile.LoadConfig<SoundPacksFile>(path);
+                this.SoundPackMods.Add(mod, soundPackFile);
 
-                string path = Path.Combine(mod.modPath, file);
-                try
+                foreach (var soundPack in soundPackFile.SoundPacks)
                 {
-                    SoundPackFile soundPackFile = SoundPackFile.LoadConfig<SoundPackFile>(path);
-
                     // Patch the paths
-                    Action<SoundPackFile.AudioInfo> patchAudioInfoClipPath = null;
-                    patchAudioInfoClipPath = new Action<SoundPackFile.AudioInfo>(a =>
+                    Action<SoundPacksFile.AudioInfo> patchAudioInfoClipPath = null;
+                    patchAudioInfoClipPath = new Action<SoundPacksFile.AudioInfo>(a =>
                     {
                         a.Clip = Path.Combine(mod.modPath, a.Clip);
                         if (a.Variations != null)
@@ -81,7 +69,7 @@ namespace AmbientSoundsTuner.SoundPack
                             }
                         }
                     });
-                    foreach (var group in new[] { soundPackFile.Ambients, soundPackFile.Animals, soundPackFile.Buildings, soundPackFile.Vehicles, soundPackFile.Miscs })
+                    foreach (var group in new[] { soundPack.Ambients, soundPack.Animals, soundPack.Buildings, soundPack.Vehicles, soundPack.Miscs })
                     {
                         for (int i = 0; i < group.Length; i++)
                         {
@@ -90,43 +78,44 @@ namespace AmbientSoundsTuner.SoundPack
                     }
 
                     // Get every audio
-                    var audioFiles = new Dictionary<string, SoundPackFile.Audio>();
-                    foreach (var group in new Dictionary<string, SoundPackFile.Audio[]>() { 
-                        { "Ambient", soundPackFile.Ambients }, 
-                        { "Animal", soundPackFile.Animals }, 
-                        { "Building", soundPackFile.Buildings },
-                        { "Vehicle", soundPackFile.Vehicles },
-                        { "Misc", soundPackFile.Miscs } })
+                    var audioFiles = new Dictionary<string, SoundPacksFile.Audio>();
+                    foreach (var group in new Dictionary<string, SoundPacksFile.Audio[]>() { 
+                        { "Ambient", soundPack.Ambients }, 
+                        { "Animal", soundPack.Animals }, 
+                        { "Building", soundPack.Buildings },
+                        { "Vehicle", soundPack.Vehicles },
+                        { "Misc", soundPack.Miscs } })
                     {
                         foreach (var audio in group.Value)
                         {
                             string uniqueName = group.Key + "." + audio.Type.ToString() + "." + audio.Name;
                             if (this.AudioFiles.ContainsKey(uniqueName))
                             {
-                                Mod.Log.Warning("Audio file {0} loaded from sound pack {1} in mod {2} already exists", uniqueName, soundPackFile.Name, modName);
+                                Mod.Log.Warning("Audio file {0} loaded from sound pack {1} in mod {2} already exists", uniqueName, soundPack.Name, modName);
                             }
                             else
                             {
                                 this.AudioFiles[uniqueName] = audio;
-                                Mod.Log.Debug("Loaded audio file {0} from sound pack {1}", uniqueName, soundPackFile.Name);
+                                Mod.Log.Debug("Loaded audio file {0} from sound pack {1}", uniqueName, soundPack.Name);
                             }
                         }
                     }
 
-                    Mod.Log.Debug("Loaded sound pack {0} from mod {1}", soundPackFile.Name, modName);
-                }
-                catch (Exception ex)
-                {
-                    Mod.Log.Warning("Could not initialize the sound pack from file '{0}' from mod {1}: {2}", path, modName, ex);
+                    Mod.Log.Debug("Loaded sound pack {0} from mod {1}", soundPack.Name, modName);
                 }
             }
+            catch (Exception ex)
+            {
+                Mod.Log.Warning("Could not initialize the sound packs from mod {0}: {1}", modName, ex);
+            }
+
         }
 
         private void RemoveSoundPackMod(PluginManager.PluginInfo mod)
         {
-            foreach (var soundPackFile in this.SoundPackMods[mod])
+            foreach (var soundPackFile in this.SoundPackMods[mod].SoundPacks)
             {
-                foreach (var group in new Dictionary<string, SoundPackFile.Audio[]>() { 
+                foreach (var group in new Dictionary<string, SoundPacksFile.Audio[]>() { 
                         { "Ambient", soundPackFile.Ambients }, 
                         { "Animal", soundPackFile.Animals }, 
                         { "Building", soundPackFile.Buildings },
@@ -152,18 +141,9 @@ namespace AmbientSoundsTuner.SoundPack
             Mod.Log.Debug("Unloaded sound pack mod {0}", mod.userModInstance != null ? ((IUserMod)mod.userModInstance as IUserMod).Name : mod.name);
         }
 
-        private Dictionary<PluginManager.PluginInfo, IEnumerable<string>> GetSoundPackMods()
+        private IEnumerable<PluginManager.PluginInfo> GetSoundPackMods()
         {
-            var list = new Dictionary<PluginManager.PluginInfo, IEnumerable<string>>();
-            foreach (var plugin in PluginManager.instance.GetPluginsInfo().Where(i => i.userModInstance != null))
-            {
-                PropertyInfo property = plugin.userModInstance.GetType().GetProperty("SoundPackFiles", typeof(IEnumerable<string>));
-                if (property != null)
-                {
-                    list.Add(plugin, (IEnumerable<string>)property.GetValue(plugin.userModInstance, null));
-                }
-            }
-            return list;
+            return PluginManager.instance.GetPluginsInfo().Where(i => File.Exists(Path.Combine(i.modPath, SOUNDPACKS_FILENAME)));
         }
     }
 }

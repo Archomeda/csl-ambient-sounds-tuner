@@ -47,12 +47,12 @@ namespace AmbientSoundsTuner.SoundPatchers
             get { return this.oldVolumes; }
         }
 
-        private Dictionary<T, SoundPackFile.Audio> oldSounds = new Dictionary<T, SoundPackFile.Audio>();
+        private Dictionary<T, SoundPacksFile.Audio> oldSounds = new Dictionary<T, SoundPacksFile.Audio>();
 
         /// <summary>
         /// Gets the backed up sounds.
         /// </summary>
-        public Dictionary<T, SoundPackFile.Audio> OldSounds
+        public Dictionary<T, SoundPacksFile.Audio> OldSounds
         {
             get { return this.oldSounds; }
         }
@@ -67,7 +67,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// </summary>
         /// <param name="audioType">The audio type.</param>
         /// <returns>The available audios.</returns>
-        public virtual IDictionary<string, SoundPackFile.Audio> GetAvailableAudiosForType(string audioType)
+        public virtual IDictionary<string, SoundPacksFile.Audio> GetAvailableAudiosForType(string audioType)
         {
             return SoundPacksManager.instance.AudioFiles.Where(kvp => kvp.Key.StartsWith(this.AudioPrefixId + "." + audioType)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
@@ -78,7 +78,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// <param name="audioType">The audio type.</param>
         /// <param name="audioName">The name of the audio.</param>
         /// <returns>The audio if it exists; null otherwise.</returns>
-        public virtual SoundPackFile.Audio GetAudioByName(string audioType, string audioName)
+        public virtual SoundPacksFile.Audio GetAudioByName(string audioType, string audioName)
         {
             string id = this.AudioPrefixId + "." + audioType + "." + audioName;
             if (SoundPacksManager.instance.AudioFiles.ContainsKey(id))
@@ -241,7 +241,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// </summary>
         /// <param name="newSounds">The new sounds.</param>
         /// <returns>The number of succeeded operations.</returns>
-        public virtual int PatchAllSounds(IDictionary<T, SoundPackFile.Audio> newSounds)
+        public virtual int PatchAllSounds(IDictionary<T, SoundPacksFile.Audio> newSounds)
         {
             return this.PatchAll(this.PatchSound, newSounds);
         }
@@ -252,7 +252,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// <param name="id">The id of the sound to patch.</param>
         /// <param name="newSound">The new sound.</param>
         /// <returns>True if successful; false otherwise.</returns>
-        public virtual bool PatchSound(T id, SoundPackFile.Audio newSound)
+        public virtual bool PatchSound(T id, SoundPacksFile.Audio newSound)
         {
             if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
             {

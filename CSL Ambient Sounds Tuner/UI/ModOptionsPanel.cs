@@ -274,7 +274,7 @@ namespace AmbientSoundsTuner.UI
                         string name = ((UIDropDown)c).items[i];
                         configuration[slider.Id].Active = name;
 
-                        SoundPackFile.Audio audioFile = patcher.GetAudioByName(slider.Id.ToString(), name);
+                        SoundPacksFile.Audio audioFile = patcher.GetAudioByName(slider.Id.ToString(), name);
                         patcher.PatchSound(slider.Id, audioFile);
                         uiSlider.maxValue = Mathf.Max(audioFile.AudioInfo.MaxVolume, audioFile.AudioInfo.Volume);
                         uiSlider.value = audioFile.AudioInfo.Volume;
