@@ -17,6 +17,7 @@ namespace AmbientSoundsTuner
         {
             this.Version = 3;
 
+            this.SoundPackPreset = "Default";
             this.ExtraDebugLogging = false;
             this.AmbientSounds = new SerializableDictionary<AudioManager.AmbientType, Sound>();
             this.AnimalSounds = new SerializableDictionary<string, Sound>();
@@ -24,6 +25,8 @@ namespace AmbientSoundsTuner
             this.VehicleSounds = new SerializableDictionary<string, Sound>();
             this.MiscSounds = new SerializableDictionary<string, Sound>();
         }
+
+        public string SoundPackPreset { get; set; }
 
         public bool ExtraDebugLogging { get; set; }
 

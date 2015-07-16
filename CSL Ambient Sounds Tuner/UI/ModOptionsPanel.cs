@@ -179,6 +179,7 @@ namespace AmbientSoundsTuner.UI
             groupHelper = this.RootHelper.AddGroup2("Mod settings");
             this.soundPacks = new[] { "Default", "Custom" }.Union(SoundPacksManager.instance.SoundPacks.Values.OrderBy(p => p.Name).Select(p => p.Name)).ToArray();
             this.soundPackPresetDropDown = (UIDropDown)groupHelper.AddDropdown("Sound pack preset", this.soundPacks, 0, this.SoundPackPresetDropDownSelectionChanged);
+            this.soundPackPresetDropDown.selectedValue = Mod.Settings.SoundPackPreset;
             groupHelper.AddCheckbox("Enable debug logging (don't use this during normal gameplay)", Mod.Settings.ExtraDebugLogging, v =>
             {
                 Mod.Settings.ExtraDebugLogging = v;
@@ -393,6 +394,7 @@ namespace AmbientSoundsTuner.UI
                 }
             }
 
+            Mod.Settings.SoundPackPreset = this.soundPackPresetDropDown.selectedValue;
             this.isChangingSoundPackPreset = false;
         }
 
