@@ -165,6 +165,8 @@ namespace AmbientSoundsTuner.UI
         #endregion
 
         private string[] soundPacks;
+        private bool isChangingSoundPackPreset = false;
+        private UIDropDown soundPackPresetDropDown;
         private Dictionary<string, UIDropDown> soundSelections = new Dictionary<string, UIDropDown>();
 
         public ModOptionsPanel(UIHelper helper) : base(helper) { }
@@ -176,7 +178,7 @@ namespace AmbientSoundsTuner.UI
             // Create global options
             groupHelper = this.RootHelper.AddGroup2("Mod settings");
             this.soundPacks = new[] { "Default", "Custom" }.Union(SoundPacksManager.instance.SoundPacks.Values.OrderBy(p => p.Name).Select(p => p.Name)).ToArray();
-            groupHelper.AddDropdown("Sound pack preset", this.soundPacks, 0, this.SoundPackPresetDropDownSelectionChanged);
+            this.soundPackPresetDropDown = (UIDropDown)groupHelper.AddDropdown("Sound pack preset", this.soundPacks, 0, this.SoundPackPresetDropDownSelectionChanged);
             groupHelper.AddCheckbox("Enable debug logging (don't use this during normal gameplay)", Mod.Settings.ExtraDebugLogging, v =>
             {
                 Mod.Settings.ExtraDebugLogging = v;
@@ -273,6 +275,10 @@ namespace AmbientSoundsTuner.UI
                     if (!configuration.ContainsKey(slider.Id))
                         configuration.Add(slider.Id, new Configuration.Sound());
 
+                    // Set preset to custom
+                    if (!this.isChangingSoundPackPreset)
+                        this.soundPackPresetDropDown.selectedIndex = 1;
+
                     if (i > 0)
                     {
                         // Chosen audio is a custom audio
@@ -329,6 +335,8 @@ namespace AmbientSoundsTuner.UI
 
         private void SoundPackPresetDropDownSelectionChanged(int value)
         {
+            this.isChangingSoundPackPreset = true;
+
             if (value == 0)
             {
                 // Default
@@ -384,6 +392,8 @@ namespace AmbientSoundsTuner.UI
                     }
                 }
             }
+
+            this.isChangingSoundPackPreset = false;
         }
 
         /// <summary>
