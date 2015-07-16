@@ -164,6 +164,9 @@ namespace AmbientSoundsTuner.UI
 
         #endregion
 
+        private string[] soundPacks;
+        private Dictionary<string, UIDropDown> soundSelections = new Dictionary<string, UIDropDown>();
+
         public ModOptionsPanel(UIHelper helper) : base(helper) { }
 
         protected override void PopulateUI()
@@ -172,6 +175,8 @@ namespace AmbientSoundsTuner.UI
 
             // Create global options
             groupHelper = this.RootHelper.AddGroup2("Mod settings");
+            this.soundPacks = new[] { "Default", "Custom" }.Union(SoundPacksManager.instance.SoundPacks.Values.OrderBy(p => p.Name).Select(p => p.Name)).ToArray();
+            groupHelper.AddDropdown("Sound pack preset", this.soundPacks, 0, this.SoundPackPresetDropDownSelectionChanged);
             groupHelper.AddCheckbox("Enable debug logging (don't use this during normal gameplay)", Mod.Settings.ExtraDebugLogging, v =>
             {
                 Mod.Settings.ExtraDebugLogging = v;
@@ -297,6 +302,8 @@ namespace AmbientSoundsTuner.UI
                         }
                     }
                 };
+
+                this.soundSelections[slider.Prefix + "." + slider.Id.ToString()] = uiDropDown;
             }
 
             // Configure UI components
@@ -317,6 +324,65 @@ namespace AmbientSoundsTuner.UI
             else
             {
                 uiPanel.size = new Vector2(uiSlider.relativePosition.x + uiSlider.width, 32);
+            }
+        }
+
+        private void SoundPackPresetDropDownSelectionChanged(int value)
+        {
+            if (value == 0)
+            {
+                // Default
+                Mod.Log.Debug("Resetting sound pack to default");
+                foreach (UIDropDown dropDown in this.soundSelections.Values)
+                    dropDown.selectedIndex = 0;
+            }
+            else if (value == 1)
+            {
+                // Custom, don't do anything here
+            }
+            else if (value >= 2)
+            {
+                // Sound pack
+                string soundPackName = this.soundPacks[value];
+                SoundPacksFile.SoundPack soundPack = null;
+                Mod.Log.Debug("Setting sound pack to {0}", soundPackName);
+
+                if (SoundPacksManager.instance.SoundPacks.TryGetValue(soundPackName, out soundPack))
+                {
+                    foreach (var dropDown in this.soundSelections)
+                    {
+                        var prefix = dropDown.Key.Substring(0, dropDown.Key.IndexOf('.'));
+                        var id = dropDown.Key.Substring(dropDown.Key.IndexOf('.') + 1);
+                        SoundPacksFile.Audio[] audios = null;
+                        switch (prefix)
+                        {
+                            case "Ambient":
+                                audios = soundPack.Ambients;
+                                break;
+                            case "Animal":
+                                audios = soundPack.Animals;
+                                break;
+                            case "Building":
+                                audios = soundPack.Buildings;
+                                break;
+                            case "Vehicle":
+                                audios = soundPack.Vehicles;
+                                break;
+                            case "Misc":
+                                audios = soundPack.Miscs;
+                                break;
+                        }
+                        if (audios != null)
+                        {
+                            SoundPacksFile.Audio audio = audios.FirstOrDefault(a => a.Type == id);
+                            if (audio != null)
+                            {
+                                Mod.Log.Debug("Setting sound {0} to {1}", audio.Type, audio.Name);
+                                dropDown.Value.selectedValue = audio.Name;
+                            }
+                        }
+                    }
+                }
             }
         }
 

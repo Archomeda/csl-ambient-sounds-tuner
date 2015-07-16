@@ -18,10 +18,13 @@ namespace AmbientSoundsTuner.SoundPack
         public SoundPacksManager()
         {
             this.SoundPackMods = new Dictionary<PluginManager.PluginInfo, SoundPacksFile>();
+            this.SoundPacks = new Dictionary<string, SoundPacksFile.SoundPack>();
             this.AudioFiles = new Dictionary<string, SoundPacksFile.Audio>();
         }
 
         public IDictionary<PluginManager.PluginInfo, SoundPacksFile> SoundPackMods { get; private set; }
+
+        public IDictionary<string, SoundPacksFile.SoundPack> SoundPacks { get; private set; }
 
         public IDictionary<string, SoundPacksFile.Audio> AudioFiles { get; private set; }
 
@@ -52,7 +55,7 @@ namespace AmbientSoundsTuner.SoundPack
             try
             {
                 SoundPacksFile soundPackFile = SoundPacksFile.LoadConfig<SoundPacksFile>(path);
-                this.SoundPackMods.Add(mod, soundPackFile);
+                this.SoundPackMods[mod] = soundPackFile;
 
                 foreach (var soundPack in soundPackFile.SoundPacks)
                 {
@@ -100,6 +103,8 @@ namespace AmbientSoundsTuner.SoundPack
                             }
                         }
                     }
+
+                    this.SoundPacks[soundPack.Name] = soundPack;
 
                     Mod.Log.Debug("Loaded sound pack {0} from mod {1}", soundPack.Name, modName);
                 }
