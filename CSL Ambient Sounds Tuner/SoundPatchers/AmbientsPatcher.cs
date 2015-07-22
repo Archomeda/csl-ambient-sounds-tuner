@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AmbientSoundsTuner.SoundPack;
 using CommonShared.Extensions;
 
 namespace AmbientSoundsTuner.SoundPatchers
@@ -11,49 +12,37 @@ namespace AmbientSoundsTuner.SoundPatchers
     /// </summary>
     public class AmbientsPatcher : SoundsInstancePatcher<AudioManager.AmbientType>
     {
-        public AmbientsPatcher()
-            : base()
+        public override AudioManager.AmbientType[] Ids
         {
-            this.DefaultVolumes.Add(AudioManager.AmbientType.Agricultural, 1);
-            this.DefaultVolumes.Add(AudioManager.AmbientType.City, 1);
-            this.DefaultVolumes.Add(AudioManager.AmbientType.Forest, 1);
-            this.DefaultVolumes.Add(AudioManager.AmbientType.Industrial, 1);
-            this.DefaultVolumes.Add(AudioManager.AmbientType.Plaza, 1);
-            this.DefaultVolumes.Add(AudioManager.AmbientType.Sea, 1);
-            this.DefaultVolumes.Add(AudioManager.AmbientType.Stream, 1);
-            this.DefaultVolumes.Add(AudioManager.AmbientType.Suburban, 1);
-            this.DefaultVolumes.Add(AudioManager.AmbientType.World, 1);
+            get
+            {
+                return new[] {
+                    AudioManager.AmbientType.Agricultural,
+                    AudioManager.AmbientType.City,
+                    AudioManager.AmbientType.Forest,
+                    AudioManager.AmbientType.Industrial,
+                    AudioManager.AmbientType.Plaza,
+                    AudioManager.AmbientType.Sea,
+                    AudioManager.AmbientType.Stream,
+                    AudioManager.AmbientType.Suburban,
+                    AudioManager.AmbientType.World
+                };
+            }
         }
 
-        public override bool BackupVolume(AudioManager.AmbientType id)
+        public override string AudioPrefixId
         {
-            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
-            {
-                SoundContainer sound = SoundsCollection.Ambients[id];
-                if (sound.HasSound)
-                {
-                    float? volume = SoundsPatcher.GetVolume(sound);
-                    if (volume.HasValue)
-                    {
-                        this.DefaultVolumes[id] = volume.Value;
-                        return true;
-                    }
-                }
-            }
-            return false;
+            get { return "Ambient"; }
         }
 
-        public override bool PatchVolume(AudioManager.AmbientType id, float newVolume)
+        public override SoundContainer GetSoundInstance(AudioManager.AmbientType id)
         {
-            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
+            if (AudioManager.instance.m_properties != null && AudioManager.instance.m_properties.m_ambients != null
+                && AudioManager.instance.m_properties.m_ambients.Length > (int)id)
             {
-                SoundContainer sound = SoundsCollection.Ambients[id];
-                if (sound.HasSound)
-                {
-                    return SoundsPatcher.SetVolume(sound, newVolume);
-                }
+                return new SoundContainer(AudioManager.instance.m_properties.m_ambients[(int)id]);
             }
-            return false;
+            return null;
         }
     }
 }

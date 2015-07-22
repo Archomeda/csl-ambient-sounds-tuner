@@ -50,12 +50,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Defs\UITemplateDefs.cs" />
     <Compile Include="Detour\CustomPlayClickSound.cs" />
+    <Compile Include="Migration\ConfigurationV2.cs" />
     <Compile Include="Migration\ConfigurationV1.cs" />
     <Compile Include="Migration\ConfigurationMigrator.cs" />
     <Compile Include="Migration\ConfigurationV0.cs" />
+    <Compile Include="SoundPack\SoundPacksFile.cs" />
+    <Compile Include="SoundPack\SoundPacksManager.cs" />
     <Compile Include="SoundPatchers\MiscPatcher.cs" />
     <Compile Include="SoundPatchers\SoundContainer.cs" />
+    <Compile Include="SoundPatchers\SoundPatchersManager.cs" />
     <Compile Include="SoundPatchers\VehiclesPatcher.cs" />
     <Compile Include="SoundPatchers\AmbientsPatcher.cs" />
     <Compile Include="Compatibility\SirensPatcher.cs" />
@@ -64,9 +69,7 @@
     <Compile Include="SoundPatchers\BuildingsPatcher.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SoundPatchers\SoundsCollection.cs" />
     <Compile Include="SoundPatchers\AnimalsPatcher.cs" />
-    <Compile Include="SoundPatchers\MiscellaneousSoundsInstancePatcher.cs" />
     <Compile Include="SoundPatchers\SoundsInstancePatcher.cs" />
     <Compile Include="SoundPatchers\SoundsPatcher.cs" />
     <Compile Include="UI\ModOptionsPanel.cs" />

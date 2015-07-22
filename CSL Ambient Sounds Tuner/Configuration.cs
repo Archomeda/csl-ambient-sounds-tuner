@@ -13,43 +13,51 @@ namespace AmbientSoundsTuner
     [XmlRoot("Configuration")]
     public class Configuration : VersionedConfig
     {
-        [XmlRoot("State")]
-        public class StateConfig
-        {
-            public StateConfig() { }
-        }
-
         public Configuration()
         {
-            this.Version = 2;
+            this.Version = 3;
 
-            this.State = new StateConfig();
+            this.SoundPackPreset = "Default";
             this.ExtraDebugLogging = false;
-
-            this.AmbientVolumes = new SerializableDictionary<AudioManager.AmbientType, float>();
-            this.AnimalVolumes = new SerializableDictionary<string, float>();
-            this.BuildingVolumes = new SerializableDictionary<string, float>();
-            this.VehicleVolumes = new SerializableDictionary<string, float>();
-            this.MiscVolumes = new SerializableDictionary<string, float>();
+            this.AmbientSounds = new SerializableDictionary<AudioManager.AmbientType, Sound>();
+            this.AnimalSounds = new SerializableDictionary<string, Sound>();
+            this.BuildingSounds = new SerializableDictionary<string, Sound>();
+            this.VehicleSounds = new SerializableDictionary<string, Sound>();
+            this.MiscSounds = new SerializableDictionary<string, Sound>();
         }
 
-        public StateConfig State { get; set; }
+        public string SoundPackPreset { get; set; }
 
         public bool ExtraDebugLogging { get; set; }
 
-        [XmlElement("AmbientVolumes")]
-        public SerializableDictionary<AudioManager.AmbientType, float> AmbientVolumes { get; set; }
+        public SerializableDictionary<AudioManager.AmbientType, Sound> AmbientSounds { get; set; }
 
-        [XmlElement("AnimalVolumes")]
-        public SerializableDictionary<string, float> AnimalVolumes { get; set; }
+        public SerializableDictionary<string, Sound> AnimalSounds { get; set; }
 
-        [XmlElement("BuildingVolumes")]
-        public SerializableDictionary<string, float> BuildingVolumes { get; set; }
+        public SerializableDictionary<string, Sound> BuildingSounds { get; set; }
 
-        [XmlElement("VehicleVolumes")]
-        public SerializableDictionary<string, float> VehicleVolumes { get; set; }
+        public SerializableDictionary<string, Sound> VehicleSounds { get; set; }
 
-        [XmlElement("MiscVolumes")]
-        public SerializableDictionary<string, float> MiscVolumes { get; set; }
+        public SerializableDictionary<string, Sound> MiscSounds { get; set; }
+
+        public IDictionary<T, Sound> GetSoundsByCategoryId<T>(string id)
+        {
+            switch (id)
+            {
+                case "Ambient": return this.AmbientSounds as IDictionary<T, Sound>;
+                case "Animal": return this.AnimalSounds as IDictionary<T, Sound>;
+                case "Building": return this.BuildingSounds as IDictionary<T, Sound>;
+                case "Vehicle": return this.VehicleSounds as IDictionary<T, Sound>;
+                case "Misc": return this.MiscSounds as IDictionary<T, Sound>;
+            }
+            return null;
+        }
+
+        public class Sound
+        {
+            public string Active { get; set; }
+
+            public float Volume { get; set; }
+        }
     }
 }

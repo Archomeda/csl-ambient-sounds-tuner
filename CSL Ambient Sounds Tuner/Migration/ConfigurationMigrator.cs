@@ -16,13 +16,15 @@ namespace AmbientSoundsTuner.Migration
             this.MigrationMethods = new Dictionary<uint, Func<object, object>>()
             {
                 { 0, this.MigrateFromVersion0 },
-                { 1, this.MigrateFromVersion1 }
+                { 1, this.MigrateFromVersion1 },
+                { 2, this.MigrateFromVersion2 }
             };
 
             this.VersionTypes = new Dictionary<uint, Type>()
             {
                 { 0, typeof(ConfigurationV0) },
-                { 1, typeof(ConfigurationV1) }
+                { 1, typeof(ConfigurationV1) },
+                { 2, typeof(ConfigurationV2) }
             };
         }
 
@@ -43,7 +45,7 @@ namespace AmbientSoundsTuner.Migration
         protected object MigrateFromVersion1(object oldConfig)
         {
             ConfigurationV1 config = (ConfigurationV1)oldConfig;
-            Configuration newConfig = new Configuration();
+            ConfigurationV2 newConfig = new ConfigurationV2();
 
             newConfig.ExtraDebugLogging = config.ExtraDebugLogging;
             foreach (var kvp in config.AmbientVolumes)
@@ -69,6 +71,27 @@ namespace AmbientSoundsTuner.Migration
             }
             foreach (var kvp in config.MiscVolumes)
                 newConfig.MiscVolumes.Add(kvp.Key, kvp.Value);
+
+            return newConfig;
+        }
+
+
+        protected object MigrateFromVersion2(object oldConfig)
+        {
+            ConfigurationV2 config = (ConfigurationV2)oldConfig;
+            Configuration newConfig = new Configuration();
+
+            newConfig.ExtraDebugLogging = config.ExtraDebugLogging;
+            foreach (var kvp in config.AmbientVolumes)
+                newConfig.AmbientSounds.Add(kvp.Key, new Configuration.Sound() { Volume = kvp.Value });
+            foreach (var kvp in config.AnimalVolumes)
+                newConfig.AnimalSounds.Add(kvp.Key, new Configuration.Sound() { Volume = kvp.Value });
+            foreach (var kvp in config.BuildingVolumes)
+                newConfig.BuildingSounds.Add(kvp.Key, new Configuration.Sound() { Volume = kvp.Value });
+            foreach (var kvp in config.VehicleVolumes)
+                newConfig.VehicleSounds.Add(kvp.Key, new Configuration.Sound() { Volume = kvp.Value });
+            foreach (var kvp in config.MiscVolumes)
+                newConfig.MiscSounds.Add(kvp.Key, new Configuration.Sound() { Volume = kvp.Value });
 
             return newConfig;
         }

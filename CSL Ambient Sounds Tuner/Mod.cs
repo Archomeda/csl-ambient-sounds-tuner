@@ -6,6 +6,7 @@ using System.Text;
 using AmbientSoundsTuner.Compatibility;
 using AmbientSoundsTuner.Detour;
 using AmbientSoundsTuner.Migration;
+using AmbientSoundsTuner.SoundPack;
 using AmbientSoundsTuner.SoundPatchers;
 using AmbientSoundsTuner.UI;
 using ColossalFramework.Plugins;
@@ -26,11 +27,6 @@ namespace AmbientSoundsTuner
         internal static Mod Instance { get; private set; }
 
         internal ModOptionsPanel OptionsPanel { get; private set; }
-        internal AmbientsPatcher AmbientsPatcher { get; private set; }
-        internal AnimalsPatcher AnimalsPatcher { get; private set; }
-        internal BuildingsPatcher BuildingsPatcher { get; private set; }
-        internal VehiclesPatcher VehiclesPatcher { get; private set; }
-        internal MiscPatcher MiscPatcher { get; private set; }
 
         internal static HashSet<ulong> IncompatibleMods = new HashSet<ulong>()
         {
@@ -94,12 +90,6 @@ namespace AmbientSoundsTuner
             Log = new Logger(this);
             Instance = this;
 
-            this.AmbientsPatcher = new AmbientsPatcher();
-            this.AnimalsPatcher = new AnimalsPatcher();
-            this.BuildingsPatcher = new BuildingsPatcher();
-            this.VehiclesPatcher = new VehiclesPatcher();
-            this.MiscPatcher = new MiscPatcher();
-
             Mod.Log.Debug("Mod initialized");
         }
 
@@ -133,6 +123,9 @@ namespace AmbientSoundsTuner
             {
                 Mod.Log.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
             }
+
+            // Load sound packs
+            SoundPacksManager.instance.InitSoundPacks();
 
             // Patch sounds based on game state
             CustomPlayClickSound.Detour();
@@ -211,10 +204,26 @@ namespace AmbientSoundsTuner
         #endregion
 
 
-        private int PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, float> newVolumes)
+        private void PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, Configuration.Sound> newSounds)
         {
-            patcher.BackupVolumes();
-            return patcher.PatchVolumes(newVolumes);
+            int backedUpSounds = patcher.BackupAllSounds();
+            Mod.Log.Debug("{0} sounds have been backed up through {1}", backedUpSounds, patcher.GetType().Name);
+
+            int backedUpVolumes = patcher.BackupAllVolumes();
+            Mod.Log.Debug("{0} volumes have been backed up through {1}", backedUpVolumes, patcher.GetType().Name);
+
+            int patchedSounds = patcher.PatchAllSounds(newSounds.ToDictionary(kvp => kvp.Key, kvp =>
+            {
+                if (!string.IsNullOrEmpty(kvp.Value.Active))
+                {
+                    return patcher.GetAudioByName(kvp.Key.ToString(), kvp.Value.Active);
+                }
+                return null;
+            }));
+            Mod.Log.Debug("{0} sounds have been patched through {1}", patchedSounds, patcher.GetType().Name);
+
+            int patchedVolumes = patcher.PatchAllVolumes(newSounds.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Volume));
+            Mod.Log.Debug("{0} volumes have been patched through {1}", patchedVolumes, patcher.GetType().Name);
         }
 
         internal void PatchSounds()
@@ -234,31 +243,30 @@ namespace AmbientSoundsTuner
                     break;
             }
 
-            // Try patching the sound volumes
+            // Try patching the sounds
             try
             {
-                int patched = this.PatchSounds(this.AmbientsPatcher, Settings.AmbientVolumes);
-                patched += this.PatchSounds(this.AnimalsPatcher, Settings.AnimalVolumes);
-                patched += this.PatchSounds(this.BuildingsPatcher, Settings.BuildingVolumes);
-                patched += this.PatchSounds(this.VehiclesPatcher, Settings.VehicleVolumes);
-                patched += this.PatchSounds(this.MiscPatcher, Settings.MiscVolumes);
-                Mod.Log.Debug("{0} sound volumes have been patched", patched);
+                this.PatchSounds(SoundPatchersManager.instance.AmbientsPatcher, Settings.AmbientSounds);
+                this.PatchSounds(SoundPatchersManager.instance.AnimalsPatcher, Settings.AnimalSounds);
+                this.PatchSounds(SoundPatchersManager.instance.BuildingsPatcher, Settings.BuildingSounds);
+                this.PatchSounds(SoundPatchersManager.instance.VehiclesPatcher, Settings.VehicleSounds);
+                this.PatchSounds(SoundPatchersManager.instance.MiscPatcher, Settings.MiscSounds);
             }
             catch (Exception ex)
             {
-                Mod.Log.Warning("Could not patch sound volumes: {0}", ex);
+                Mod.Log.Warning("Could not patch sounds: {0}", ex);
             }
         }
 
         internal void PatchUISounds()
         {
-            float clickVolume = 1;
-            float disabledClickVolume = 1;
-            Mod.Settings.MiscVolumes.TryGetValue(MiscPatcher.ID_CLICK_SOUND, out clickVolume);
-            Mod.Settings.MiscVolumes.TryGetValue(MiscPatcher.ID_DISABLED_CLICK_SOUND, out disabledClickVolume);
-
-            this.MiscPatcher.PatchVolume(MiscPatcher.ID_CLICK_SOUND, clickVolume);
-            this.MiscPatcher.PatchVolume(MiscPatcher.ID_DISABLED_CLICK_SOUND, disabledClickVolume);
+            foreach (var id in new[] { MiscPatcher.ID_CLICK_SOUND, MiscPatcher.ID_DISABLED_CLICK_SOUND })
+            {
+                if (Mod.Settings.MiscSounds.ContainsKey(id))
+                {
+                    SoundPatchersManager.instance.MiscPatcher.PatchVolume(id, Mod.Settings.MiscSounds[id].Volume);
+                }
+            }
         }
 
 
