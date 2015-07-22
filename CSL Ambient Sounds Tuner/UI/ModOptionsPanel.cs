@@ -243,6 +243,17 @@ namespace AmbientSoundsTuner.UI
 
             var customAudioFiles = patcher.GetAvailableAudiosForType(slider.Id.ToString()).Values.ToArray();
 
+            float volume = 0;
+            if (configuration.ContainsKey(slider.Id))
+            {
+                volume = configuration[slider.Id].Volume;
+            }
+            else
+            {
+                Mod.Log.Info("No volume configuration found for {0}, using default value", slider.Id.ToString());
+                volume = patcher.DefaultVolumes.ContainsKey(slider.Id) ? patcher.DefaultVolumes[slider.Id] : 1;
+            }
+
             OnValueChanged valueChangedCallback = v =>
             {
                 // Volume changed
@@ -254,7 +265,7 @@ namespace AmbientSoundsTuner.UI
             };
 
             // Add UI components
-            UISlider uiSlider = (UISlider)helper.AddSlider(slider.Text, slider.MinValue, slider.MaxValue, 0.01f, configuration[slider.Id].Volume, valueChangedCallback);
+            UISlider uiSlider = (UISlider)helper.AddSlider(slider.Text, slider.MinValue, slider.MaxValue, 0.01f, volume, valueChangedCallback);
             UIPanel uiPanel = (UIPanel)uiSlider.parent;
             UILabel uiLabel = uiPanel.Find<UILabel>("Label");
             UIDropDown uiDropDown = null;
