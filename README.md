@@ -46,25 +46,7 @@ following stuff:
 - Detouring of `UIComponent.PlayClickSound()` and
   `UIComponent.PlayDisabledClickSound()`
 
-The following mods are known to be **incompatible**:
-- *[ARIS] Remove Cows* <br>
-  This mod basically removes the sound effects of the cows in the same location
-  where Ambient Sounds Tuner changes the volume. However, Ambient Sounds Tuner
-  allows you to customize the volume of the cows. Therefore, [ARIS] Remove Cows
-  is not needed when using Ambient Sounds Tuner and has to be disabled or
-  removed.
-- *[ARIS] Remove Pigs* <br>
-  This mod basically removes the sound effects of the pigs in the same location
-  where Ambient Sounds Tuner changes the volume. However, Ambient Sounds Tuner
-  allows you to customize the volume of the pigs. Therefore, [ARIS] Remove Pigs
-  is not needed when using Ambient Sounds Tuner and has to be disabled or
-  removed.
-- *[ARIS] Remove Seagulls* <br>
-  This mod basically removes the sound effects of the seagulls in the same
-  location where Ambient Sounds Tuner changes the volume. However, Ambient
-  Sounds Tuner allows you to customize the volume of the seagulls. Therefore,
-  [ARIS] Remove Seagulls is not needed when using Ambient Sounds Tuner and has
-  to be disabled or removed.
+The following mods are **known to be incompatible**:
 - *SilenceObnoxiousSirens* <br>
   This mod basically sets the volume of every siren to 0 in the same location as
   Ambient Sounds Tuner does. However, Ambient Sounds Tuner allows you to
@@ -74,6 +56,20 @@ The following mods are known to be **incompatible**:
 If you happen to have one or more of these mods installed and enabled, you will
 be warned in the debug log (F7). Please do not report issues with these mods as
 they are incompatible.
+
+The following mods are **possibly incompatible**:
+- *[ARIS] Remove Cows* <br>
+  Note that this mod overwrites the sounds of the cows. This means that while
+  this mod is active, Ambient Sounds Tuner might not able to change the sound
+  and/or volume of cows.
+- *[ARIS] Remove Pigs* <br>
+  Note that this mod overwrites the sounds of the pigs. This means that while
+  this mod is active, Ambient Sounds Tuner might not able to change the sound
+  and/or volume of pigs.
+- *[ARIS] Remove Seagulls* <br>
+  Note that this mod overwrites the sounds of the seagulls. This means that
+  while this mod is active, Ambient Sounds Tuner might not able to change the
+  sound and/or volume of seagulls.
 
 ## Contributing
 I'm open for any contributions you can make. If you find a bug, create an issue

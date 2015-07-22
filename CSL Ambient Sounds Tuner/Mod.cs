@@ -30,9 +30,9 @@ namespace AmbientSoundsTuner
 
         internal static HashSet<ulong> IncompatibleMods = new HashSet<ulong>()
         {
-            421050717, // [ARIS] Remove Cows
-            421052798, // [ARIS] Remove Pigs
-            421041154, // [ARIS] Remove Seagulls
+            //421050717, // [ARIS] Remove Cows
+            //421052798, // [ARIS] Remove Pigs
+            //421041154, // [ARIS] Remove Seagulls
             421527612, // SilenceObnoxiousSirens
         };
 
