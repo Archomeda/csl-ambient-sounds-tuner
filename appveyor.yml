@@ -1,5 +1,9 @@
 version: 1.2.2.{build}
 
+environment:
+    access_token:
+        PhbSIBOVh8cHGsE5jtPJWNhVYjxE078QRL80l5c//EL93Ae7HeqqRDrv/wORQIh0
+
 configuration: Release
 
 assembly_info:

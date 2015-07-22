@@ -1,6 +1,4 @@
-Function RegexReplaceFile($file, $regex, $replace, $encoding = "ASCII") {
-    (Get-Content $file -encoding $encoding) -replace $regex,$replace | Set-Content $file -encoding $encoding
-}
+. .\appveyor\RegexReplaceFile.ps1
 
 $version = $env:APPVEYOR_BUILD_VERSION
 $csl_version = (Select-Xml -Path appveyor\packages.config -XPath "/packages/package[@id='CitiesSkylinesAPI']").node.version
