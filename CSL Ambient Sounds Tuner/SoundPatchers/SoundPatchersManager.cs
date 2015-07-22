@@ -6,7 +6,7 @@ using ColossalFramework;
 
 namespace AmbientSoundsTuner.SoundPatchers
 {
-    public class SoundPatchersManager : Singleton<SoundPatchersManager>
+    public class SoundPatchersManager : SingletonLite<SoundPatchersManager>
     {
         public SoundPatchersManager()
         {

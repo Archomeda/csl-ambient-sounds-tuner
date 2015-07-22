@@ -11,7 +11,7 @@ using ICities;
 
 namespace AmbientSoundsTuner.SoundPack
 {
-    public class SoundPacksManager : Singleton<SoundPacksManager>
+    public class SoundPacksManager : SingletonLite<SoundPacksManager>
     {
         public const string SOUNDPACKS_FILENAME = "AmbientSoundsTuner.SoundPacks.xml";
 
