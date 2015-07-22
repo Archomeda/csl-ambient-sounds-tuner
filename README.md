@@ -7,9 +7,8 @@ Sick of hearing those wind sounds when zoomed out, or those seagulls screaming
 at you, but you still want to hear other ambient sounds? This mod will allow you
 to tune each different ambient sound type individually.
 
-After installing this mod, go to the audio settings. You should see a new button
-appear that will open a new window where you can change the volume of various
-sounds in the game. The volumes of the following sounds can be changed:
+After installing this mod, there will be a new category in the game settings.
+Within this category, you can change the volume and various sounds:
 - Various ambient sounds, like Agricultural, City, Industrial, Sea, and more
 - Animal sounds, like cows, pigs and seagulls
 - Various sounds from buildings, like Commercial, Industrial, various power
@@ -19,8 +18,11 @@ sounds in the game. The volumes of the following sounds can be changed:
 - Various miscellaneous sounds, like bulldozer sounds, UI clicking sounds, and
   more
 
-**Note:** Although it's not needed anymore, if the button does not show up after
-enabling, try restarting the game.
+**Note:** In order to enable custom sounds, you have to create or install custom
+sound packs. More information about creating sound packs can be found
+[on the wiki](https://github.com/Archomeda/csl-ambient-sounds-tuner/wiki/Creating%20Sound%20Packs).
+Have you created a custom sound pack and you want to have it included here on
+GitHub and the Steam Workshop? Let me know!
 
 ## Installation
 Go to the
