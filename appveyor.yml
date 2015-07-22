@@ -16,6 +16,9 @@ cache:
 build_script:
   - ps: appveyor\Build.ps1
 
+on_success:
+  - ps: appveyor\PrepareNewBuildVersion.ps1
+
 artifacts:
   - path: bin
     name: AmbientSoundsTuner-v$(appveyor_build_version)
