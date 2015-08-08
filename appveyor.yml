@@ -7,13 +7,20 @@ assembly_info:
   file: 'CSL Ambient Sounds Tuner\Properties\AssemblyInfo.cs'
 
 cache:
-  - packages -> appveyor\packages.config
+  - packages -> **\packages.config
 
-build_script:
-  - ps: appveyor\Build.ps1
+before_build:
+  - ps: .appveyor\UpdateBuildVersion.ps1
+  - nuget restore
+
+build:
+  verbosity: minimal
+
+after_build:
+  - ps: .appveyor\PrepareArtifactsContents.ps1
 
 on_success:
-  - ps: appveyor\PrepareNewBuildVersion.ps1
+  - ps: .appveyor\PrepareNewBuildVersion.ps1
 
 artifacts:
   - path: bin

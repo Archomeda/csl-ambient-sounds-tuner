@@ -87,7 +87,7 @@ namespace AmbientSoundsTuner
         private void Init()
         {
             SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(this), "AmbientSoundsTuner.xml");
-            Log = new Logger(this);
+            Log = new Logger(this.GetType().Assembly);
             Instance = this;
 
             Mod.Log.Debug("Mod initialized");
@@ -162,8 +162,8 @@ namespace AmbientSoundsTuner
             if (list.Count > 0)
             {
                 string text = string.Join(", ",
-                    list.Where(kvp => kvp.Value.isEnabled)
-                        .Select(kvp => string.Format("{0} ({1})", kvp.Value.GetInstances<IUserMod>()[0].Name, kvp.Value.publishedFileID.AsUInt64.ToString()))
+                    list.Where(kvp => kvp.Value.IsEnabled)
+                        .Select(kvp => string.Format("{0} ({1})", kvp.Value.GetInstances<IUserMod>()[0].Name, kvp.Value.PublishedFileID.AsUInt64.ToString()))
                         .OrderBy(s => s)
                         .ToArray());
 

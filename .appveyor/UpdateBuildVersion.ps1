@@ -1,7 +1,7 @@
-. .\appveyor\RegexReplaceFile.ps1
+. .\.appveyor\Functions.ps1
 
 $version = $env:APPVEYOR_BUILD_VERSION
-$csl_version = (Select-Xml -Path appveyor\packages.config -XPath "/packages/package[@id='CitiesSkylinesAPI']").node.version
+$csl_version = (Select-Xml -Path "CSL Ambient Sounds Tuner\packages.config" -XPath "/packages/package[@id='CitiesSkylines.ICities']").node.version
 $version = "$version-$csl_version"
 if ($env:APPVEYOR_REPO_TAG -eq "false") {
     $postfix = "dev"
@@ -26,6 +26,4 @@ if ($version -ne $env:APPVEYOR_BUILD_VERSION) {
 }
 
 Write-Host "  - Apply to code" -ForegroundColor "Yellow"
-$regex = '(get { return ")dev version("; })'
-$replace = "`${1}$version`${2}"
-RegexReplaceFile -file "CSL Ambient Sounds Tuner\Mod.cs" -regex $regex -replace $replace
+SetModVersion $version

@@ -1,4 +1,4 @@
-. .\appveyor\RegexReplaceFile.ps1
+. .\.appveyor\Functions.ps1
 
 if (!$env:APPVEYOR_PULL_REQUEST_NUMBER) {
     if ($env:APPVEYOR_REPO_TAG -eq "true") {
@@ -22,5 +22,7 @@ if (!$env:APPVEYOR_PULL_REQUEST_NUMBER) {
         git add "appveyor.yml"
         git commit -q -m "[AppVeyor] Prepare for version $newVersion [ci skip]"
         git push -q github master
+    } else {
+        Write-Host "No tag has been pushed; skip preparing for a new version" -ForegroundColor "Yellow"
     }
 }

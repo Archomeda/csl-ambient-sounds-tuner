@@ -31,12 +31,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
+      <HintPath>..\packages\CitiesSkylines.Assembly-CSharp.1.1.1\lib\net35\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ColossalManaged">
+      <HintPath>..\packages\CitiesSkylines.ColossalManaged.1.1.1\lib\net35\ColossalManaged.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CommonShared, Version=1.2.0.51, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CslCommonShared.1.2.0.51\lib\net35\CommonShared.dll</HintPath>
+    </Reference>
     <Reference Include="ICities">
+      <HintPath>..\packages\CitiesSkylines.ICities.1.1.1\lib\net35\ICities.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -46,6 +57,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
+      <HintPath>..\packages\CitiesSkylines.UnityEngine.1.1.1\lib\net35\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -75,10 +87,7 @@
     <Compile Include="UI\ModOptionsPanel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\csl-common-shared-library\CSL Common Shared\CSL Common Shared.csproj">
-      <Project>{0492b5af-5b0e-4cfb-8812-465f94070a57}</Project>
-      <Name>CSL Common Shared</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

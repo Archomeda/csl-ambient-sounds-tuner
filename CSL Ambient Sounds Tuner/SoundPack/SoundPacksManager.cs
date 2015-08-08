@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using ColossalFramework;
 using ColossalFramework.Plugins;
+using CommonShared.Proxies.Plugins;
 using CommonShared.Utils;
 using ICities;
 
@@ -17,12 +18,12 @@ namespace AmbientSoundsTuner.SoundPack
 
         public SoundPacksManager()
         {
-            this.SoundPackMods = new Dictionary<PluginManager.PluginInfo, SoundPacksFile>();
+            this.SoundPackMods = new Dictionary<IPluginInfoInteractor, SoundPacksFile>();
             this.SoundPacks = new Dictionary<string, SoundPacksFile.SoundPack>();
             this.AudioFiles = new Dictionary<string, SoundPacksFile.Audio>();
         }
 
-        public IDictionary<PluginManager.PluginInfo, SoundPacksFile> SoundPackMods { get; private set; }
+        public IDictionary<IPluginInfoInteractor, SoundPacksFile> SoundPackMods { get; private set; }
 
         public IDictionary<string, SoundPacksFile.SoundPack> SoundPacks { get; private set; }
 
@@ -35,7 +36,7 @@ namespace AmbientSoundsTuner.SoundPack
 
             foreach (var mod in instance.GetSoundPackMods())
             {
-                if (mod.isEnabled)
+                if (mod.IsEnabled)
                     this.AddSoundPackMod(mod);
 
                 PluginUtils.SubscribePluginStateChange(mod, isEnabled =>
@@ -48,10 +49,10 @@ namespace AmbientSoundsTuner.SoundPack
             }
         }
 
-        private void AddSoundPackMod(PluginManager.PluginInfo mod)
+        private void AddSoundPackMod(IPluginInfoInteractor mod)
         {
-            string modName = mod.userModInstance != null ? ((IUserMod)mod.userModInstance as IUserMod).Name : mod.name;
-            string path = Path.Combine(mod.modPath, SOUNDPACKS_FILENAME);
+            string modName = mod.UserModInstance != null ? ((IUserMod)mod.UserModInstance as IUserMod).Name : mod.Name;
+            string path = Path.Combine(mod.ModPath, SOUNDPACKS_FILENAME);
             try
             {
                 SoundPacksFile soundPackFile = SoundPacksFile.LoadConfig<SoundPacksFile>(path);
@@ -63,7 +64,7 @@ namespace AmbientSoundsTuner.SoundPack
                     Action<SoundPacksFile.AudioInfo> patchAudioInfoClipPath = null;
                     patchAudioInfoClipPath = new Action<SoundPacksFile.AudioInfo>(a =>
                     {
-                        a.Clip = Path.Combine(mod.modPath, a.Clip);
+                        a.Clip = Path.Combine(mod.ModPath, a.Clip);
                         if (a.Variations != null)
                         {
                             for (int i = 0; i < a.Variations.Length; i++)
@@ -116,7 +117,7 @@ namespace AmbientSoundsTuner.SoundPack
 
         }
 
-        private void RemoveSoundPackMod(PluginManager.PluginInfo mod)
+        private void RemoveSoundPackMod(IPluginInfoInteractor mod)
         {
             foreach (var soundPackFile in this.SoundPackMods[mod].SoundPacks)
             {
@@ -143,12 +144,12 @@ namespace AmbientSoundsTuner.SoundPack
             }
 
             this.SoundPackMods.Remove(mod);
-            Mod.Log.Debug("Unloaded sound pack mod {0}", mod.userModInstance != null ? ((IUserMod)mod.userModInstance as IUserMod).Name : mod.name);
+            Mod.Log.Debug("Unloaded sound pack mod {0}", mod.UserModInstance != null ? ((IUserMod)mod.UserModInstance as IUserMod).Name : mod.Name);
         }
 
-        private IEnumerable<PluginManager.PluginInfo> GetSoundPackMods()
+        private IEnumerable<IPluginInfoInteractor> GetSoundPackMods()
         {
-            return PluginManager.instance.GetPluginsInfo().Where(i => File.Exists(Path.Combine(i.modPath, SOUNDPACKS_FILENAME)));
+            return PluginUtils.PluginManagerInteractor.GetPluginsInfo().Where(i => File.Exists(Path.Combine(i.ModPath, SOUNDPACKS_FILENAME)));
         }
     }
 }
