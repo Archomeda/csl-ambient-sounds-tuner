@@ -254,18 +254,8 @@ namespace AmbientSoundsTuner.UI
                 volume = patcher.DefaultVolumes.ContainsKey(slider.Id) ? patcher.DefaultVolumes[slider.Id] : 1;
             }
 
-            OnValueChanged valueChangedCallback = v =>
-            {
-                // Volume changed
-                if (!configuration.ContainsKey(slider.Id))
-                    configuration.Add(slider.Id, new Configuration.Sound());
-
-                configuration[slider.Id].Volume = v;
-                patcher.PatchVolume(slider.Id, v);
-            };
-
             // Add UI components
-            UISlider uiSlider = (UISlider)helper.AddSlider(slider.Text, slider.MinValue, slider.MaxValue, 0.01f, volume, valueChangedCallback);
+            UISlider uiSlider = (UISlider)helper.AddSlider(slider.Text, slider.MinValue, slider.MaxValue, 0.01f, volume, v => this.SoundVolumeChanged<T>(slider.Prefix, slider.Id, v));
             UIPanel uiPanel = (UIPanel)uiSlider.parent;
             UILabel uiLabel = uiPanel.Find<UILabel>("Label");
             UIDropDown uiDropDown = null;
@@ -281,46 +271,7 @@ namespace AmbientSoundsTuner.UI
                 else
                     uiDropDown.selectedIndex = 0;
 
-                uiDropDown.eventSelectedIndexChanged += (c, i) =>
-                {
-                    // Selected audio changed
-                    if (!configuration.ContainsKey(slider.Id))
-                        configuration.Add(slider.Id, new Configuration.Sound());
-
-                    // Set preset to custom
-                    if (!this.isChangingSoundPackPreset)
-                        this.soundPackPresetDropDown.selectedIndex = 1;
-
-                    if (i > 0)
-                    {
-                        // Chosen audio is a custom audio
-                        string name = ((UIDropDown)c).items[i];
-                        configuration[slider.Id].Active = name;
-
-                        SoundPacksFile.Audio audioFile = patcher.GetAudioByName(slider.Id.ToString(), name);
-                        patcher.PatchSound(slider.Id, audioFile);
-                        uiSlider.maxValue = Mathf.Max(audioFile.AudioInfo.MaxVolume, audioFile.AudioInfo.Volume);
-                        uiSlider.value = audioFile.AudioInfo.Volume;
-                    }
-                    else
-                    {
-                        // Chosen audio is the default one
-                        configuration[slider.Id].Active = "";
-
-                        patcher.RevertSound(slider.Id);
-                        if (patcher.OldSounds.ContainsKey(slider.Id))
-                        {
-                            uiSlider.maxValue = patcher.OldSounds[slider.Id].AudioInfo.MaxVolume;
-                            uiSlider.value = patcher.OldSounds[slider.Id].AudioInfo.Volume;
-                        }
-                        else
-                        {
-                            uiSlider.maxValue = patcher.DefaultMaxVolumes.ContainsKey(slider.Id) ? patcher.DefaultMaxVolumes[slider.Id] : 1;
-                            uiSlider.value = patcher.DefaultVolumes.ContainsKey(slider.Id) ? patcher.DefaultVolumes[slider.Id] : 1;
-                        }
-                    }
-                };
-
+                uiDropDown.eventSelectedIndexChanged += (c, i) => this.SoundPackChanged(slider.Prefix, slider.Id, i > 0 ? ((UIDropDown)c).items[i] : null, uiSlider);
                 this.soundSelections[slider.Prefix + "." + slider.Id.ToString()] = uiDropDown;
             }
 
@@ -342,6 +293,58 @@ namespace AmbientSoundsTuner.UI
             else
             {
                 uiPanel.size = new Vector2(uiSlider.relativePosition.x + uiSlider.width, 32);
+            }
+        }
+
+        private void SoundVolumeChanged<T>(string categoryId, T soundId, float value)
+        {
+            var patcher = SoundPatchersManager.instance.GetPatcherById<T>(categoryId);
+            var configuration = Mod.Instance.Settings.GetSoundsByCategoryId<T>(categoryId);
+
+            if (!configuration.ContainsKey(soundId))
+                configuration.Add(soundId, new Configuration.Sound());
+
+            configuration[soundId].Volume = value;
+            patcher.PatchVolume(soundId, value);
+        }
+
+        private void SoundPackChanged<T>(string categoryId, T soundId, string name, UISlider uiSlider)
+        {
+            var patcher = SoundPatchersManager.instance.GetPatcherById<T>(categoryId);
+            var configuration = Mod.Instance.Settings.GetSoundsByCategoryId<T>(categoryId);
+
+            // Selected audio changed
+            if (!configuration.ContainsKey(soundId))
+                configuration.Add(soundId, new Configuration.Sound());
+
+            // Set preset to custom
+            if (!this.isChangingSoundPackPreset)
+                this.soundPackPresetDropDown.selectedIndex = 1;
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                // Chosen audio is a custom audio
+                configuration[soundId].Active = name;
+                SoundPacksFile.Audio audioFile = patcher.GetAudioByName(soundId.ToString(), name);
+                patcher.PatchSound(soundId, audioFile);
+                uiSlider.maxValue = Mathf.Max(audioFile.AudioInfo.MaxVolume, audioFile.AudioInfo.Volume);
+                uiSlider.value = audioFile.AudioInfo.Volume;
+            }
+            else
+            {
+                // Chosen audio is the default one
+                configuration[soundId].Active = "";
+                patcher.RevertSound(soundId);
+                if (patcher.OldSounds.ContainsKey(soundId))
+                {
+                    uiSlider.maxValue = patcher.OldSounds[soundId].AudioInfo.MaxVolume;
+                    uiSlider.value = patcher.OldSounds[soundId].AudioInfo.Volume;
+                }
+                else
+                {
+                    uiSlider.maxValue = patcher.DefaultMaxVolumes.ContainsKey(soundId) ? patcher.DefaultMaxVolumes[soundId] : 1;
+                    uiSlider.value = patcher.DefaultVolumes.ContainsKey(soundId) ? patcher.DefaultVolumes[soundId] : 1;
+                }
             }
         }
 
