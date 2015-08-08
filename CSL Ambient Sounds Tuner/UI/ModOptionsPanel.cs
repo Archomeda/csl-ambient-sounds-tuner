@@ -179,11 +179,11 @@ namespace AmbientSoundsTuner.UI
             groupHelper = this.RootHelper.AddGroup2("Mod settings");
             this.soundPacks = new[] { "Default", "Custom" }.Union(SoundPacksManager.instance.SoundPacks.Values.OrderBy(p => p.Name).Select(p => p.Name)).ToArray();
             this.soundPackPresetDropDown = (UIDropDown)groupHelper.AddDropdown("Sound pack preset", this.soundPacks, 0, this.SoundPackPresetDropDownSelectionChanged);
-            this.soundPackPresetDropDown.selectedValue = Mod.Settings.SoundPackPreset;
-            groupHelper.AddCheckbox("Enable debug logging (don't use this during normal gameplay)", Mod.Settings.ExtraDebugLogging, v =>
+            this.soundPackPresetDropDown.selectedValue = Mod.Instance.Settings.SoundPackPreset;
+            groupHelper.AddCheckbox("Enable debug logging (don't use this during normal gameplay)", Mod.Instance.Settings.ExtraDebugLogging, v =>
             {
-                Mod.Settings.ExtraDebugLogging = v;
-                Mod.Log.EnableDebugLogging = v;
+                Mod.Instance.Settings.ExtraDebugLogging = v;
+                Mod.Instance.Log.EnableDebugLogging = v;
             });
 
             // Create tab strip
@@ -218,8 +218,8 @@ namespace AmbientSoundsTuner.UI
 
         protected override void OnClose()
         {
-            Mod.Log.Debug("Options panel closed, saving config");
-            Mod.Settings.SaveConfig(Mod.SettingsFilename);
+            Mod.Instance.Log.Debug("Options panel closed, saving config");
+            Mod.Instance.Settings.SaveConfig(Mod.Instance.SettingsFilename);
         }
 
         protected void AddTab<T>(UITabstrip tabstrip, float buttonWidth, string title, IDictionary<string, SliderDef<T>[]> content)
@@ -239,7 +239,7 @@ namespace AmbientSoundsTuner.UI
         {
             // Get all used singletons
             var patcher = SoundPatchersManager.instance.GetPatcherById<T>(slider.Prefix);
-            var configuration = Mod.Settings.GetSoundsByCategoryId<T>(slider.Prefix);
+            var configuration = Mod.Instance.Settings.GetSoundsByCategoryId<T>(slider.Prefix);
 
             var customAudioFiles = patcher.GetAvailableAudiosForType(slider.Id.ToString()).Values.ToArray();
 
@@ -250,7 +250,7 @@ namespace AmbientSoundsTuner.UI
             }
             else
             {
-                Mod.Log.Info("No volume configuration found for {0}, using default value", slider.Id.ToString());
+                Mod.Instance.Log.Info("No volume configuration found for {0}, using default value", slider.Id.ToString());
                 volume = patcher.DefaultVolumes.ContainsKey(slider.Id) ? patcher.DefaultVolumes[slider.Id] : 1;
             }
 
@@ -352,7 +352,7 @@ namespace AmbientSoundsTuner.UI
             if (value == 0)
             {
                 // Default
-                Mod.Log.Debug("Resetting sound pack to default");
+                Mod.Instance.Log.Debug("Resetting sound pack to default");
                 foreach (UIDropDown dropDown in this.soundSelections.Values)
                     dropDown.selectedIndex = 0;
             }
@@ -365,7 +365,7 @@ namespace AmbientSoundsTuner.UI
                 // Sound pack
                 string soundPackName = this.soundPacks[value];
                 SoundPacksFile.SoundPack soundPack = null;
-                Mod.Log.Debug("Setting sound pack to {0}", soundPackName);
+                Mod.Instance.Log.Debug("Setting sound pack to {0}", soundPackName);
 
                 if (SoundPacksManager.instance.SoundPacks.TryGetValue(soundPackName, out soundPack))
                 {
@@ -397,7 +397,7 @@ namespace AmbientSoundsTuner.UI
                             SoundPacksFile.Audio audio = audios.FirstOrDefault(a => a.Type == id);
                             if (audio != null)
                             {
-                                Mod.Log.Debug("Setting sound {0} to {1}", audio.Type, audio.Name);
+                                Mod.Instance.Log.Debug("Setting sound {0} to {1}", audio.Type, audio.Name);
                                 dropDown.Value.selectedValue = audio.Name;
                             }
                         }
@@ -405,7 +405,7 @@ namespace AmbientSoundsTuner.UI
                 }
             }
 
-            Mod.Settings.SoundPackPreset = this.soundPackPresetDropDown.selectedValue;
+            Mod.Instance.Settings.SoundPackPreset = this.soundPackPresetDropDown.selectedValue;
             this.isChangingSoundPackPreset = false;
         }
 

@@ -21,10 +21,11 @@ namespace AmbientSoundsTuner
 {
     public class Mod : LoadingExtensionBase, IUserMod
     {
-        internal static Configuration Settings { get; private set; }
-        internal static string SettingsFilename { get; private set; }
-        internal static Logger Log { get; private set; }
         internal static Mod Instance { get; private set; }
+
+        internal Configuration Settings { get; private set; }
+        internal string SettingsFilename { get; private set; }
+        internal Logger Log { get; private set; }
 
         internal ModOptionsPanel OptionsPanel { get; private set; }
 
@@ -67,11 +68,11 @@ namespace AmbientSoundsTuner
             {
                 this.OptionsPanel = new ModOptionsPanel(uiHelper);
                 this.OptionsPanel.PerformLayout();
-                Mod.Log.Debug("Options panel created");
+                this.Log.Debug("Options panel created");
             }
             else
             {
-                Mod.Log.Warning("Could not populate the settings panel, helper is null or not a UIHelper");
+                this.Log.Warning("Could not populate the settings panel, helper is null or not a UIHelper");
             }
         }
 
@@ -86,11 +87,11 @@ namespace AmbientSoundsTuner
 
         private void Init()
         {
-            SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(this), "AmbientSoundsTuner.xml");
-            Log = new Logger(this.GetType().Assembly);
+            this.SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(this), "AmbientSoundsTuner.xml");
+            this.Log = new Logger(this.GetType().Assembly);
             Instance = this;
 
-            Mod.Log.Debug("Mod initialized");
+            this.Log.Debug("Mod initialized");
         }
 
         private void Load(GameState state)
@@ -116,12 +117,12 @@ namespace AmbientSoundsTuner
             // Load regular
             this.CheckIncompatibility();
 
-            Mod.Settings = VersionedConfig.LoadConfig<Configuration>(Mod.SettingsFilename, new ConfigurationMigrator());
-            Mod.Log.EnableDebugLogging = Mod.Settings.ExtraDebugLogging;
+            this.Settings = VersionedConfig.LoadConfig<Configuration>(this.SettingsFilename, new ConfigurationMigrator());
+            this.Log.EnableDebugLogging = this.Settings.ExtraDebugLogging;
 
-            if (Mod.Settings.ExtraDebugLogging)
+            if (this.Settings.ExtraDebugLogging)
             {
-                Mod.Log.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
+                this.Log.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
             }
 
             // Load sound packs
@@ -140,12 +141,12 @@ namespace AmbientSoundsTuner
                 this.isLoadedInMainMenu = true;
             }
 
-            Mod.Log.Debug("Mod loaded");
+            this.Log.Debug("Mod loaded");
         }
 
         private void Unload()
         {
-            Mod.Settings.SaveConfig(Mod.SettingsFilename);
+            this.Settings.SaveConfig(this.SettingsFilename);
             CustomPlayClickSound.UnDetour();
 
             // Actually, to be consistent and nice, we should also revert the other sound patching here.
@@ -153,7 +154,7 @@ namespace AmbientSoundsTuner
             // If it's needed at some point in the future, we can add that logic here.
 
             this.isLoadedInMainMenu = false;
-            Mod.Log.Debug("Mod unloaded");
+            this.Log.Debug("Mod unloaded");
         }
 
         private void CheckIncompatibility()
@@ -169,11 +170,11 @@ namespace AmbientSoundsTuner
 
                 if (text != "")
                 {
-                    Mod.Log.Warning("You've got some known incompatible mods enabled! It's possible that this mod doesn't work as expected.\nThe following incompatible mods are enabled: {0}.", text);
+                    this.Log.Warning("You've got some known incompatible mods enabled! It's possible that this mod doesn't work as expected.\nThe following incompatible mods are enabled: {0}.", text);
                 }
             }
 
-            Mod.Log.Debug("Incompatibility check completed");
+            this.Log.Debug("Incompatibility check completed");
         }
 
         #endregion
@@ -207,10 +208,10 @@ namespace AmbientSoundsTuner
         private void PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, Configuration.Sound> newSounds)
         {
             int backedUpSounds = patcher.BackupAllSounds();
-            Mod.Log.Debug("{0} sounds have been backed up through {1}", backedUpSounds, patcher.GetType().Name);
+            this.Log.Debug("{0} sounds have been backed up through {1}", backedUpSounds, patcher.GetType().Name);
 
             int backedUpVolumes = patcher.BackupAllVolumes();
-            Mod.Log.Debug("{0} volumes have been backed up through {1}", backedUpVolumes, patcher.GetType().Name);
+            this.Log.Debug("{0} volumes have been backed up through {1}", backedUpVolumes, patcher.GetType().Name);
 
             int patchedSounds = patcher.PatchAllSounds(newSounds.ToDictionary(kvp => kvp.Key, kvp =>
             {
@@ -220,10 +221,10 @@ namespace AmbientSoundsTuner
                 }
                 return null;
             }));
-            Mod.Log.Debug("{0} sounds have been patched through {1}", patchedSounds, patcher.GetType().Name);
+            this.Log.Debug("{0} sounds have been patched through {1}", patchedSounds, patcher.GetType().Name);
 
             int patchedVolumes = patcher.PatchAllVolumes(newSounds.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Volume));
-            Mod.Log.Debug("{0} volumes have been patched through {1}", patchedVolumes, patcher.GetType().Name);
+            this.Log.Debug("{0} volumes have been patched through {1}", patchedVolumes, patcher.GetType().Name);
         }
 
         internal void PatchSounds()
@@ -233,13 +234,13 @@ namespace AmbientSoundsTuner
             switch (patchResult)
             {
                 case SirensPatcher.PatchResult.Success:
-                    Mod.Log.Debug("Police sirens have been patched");
+                    this.Log.Debug("Police sirens have been patched");
                     break;
                 case SirensPatcher.PatchResult.AlreadyPatched:
-                    Mod.Log.Debug("Police sirens have been patched already");
+                    this.Log.Debug("Police sirens have been patched already");
                     break;
                 case SirensPatcher.PatchResult.NotFound:
-                    Mod.Log.Warning("Could not patch the police sirens to be different from the ambulance sirens");
+                    this.Log.Warning("Could not patch the police sirens to be different from the ambulance sirens");
                     break;
             }
 
@@ -254,7 +255,7 @@ namespace AmbientSoundsTuner
             }
             catch (Exception ex)
             {
-                Mod.Log.Warning("Could not patch sounds: {0}", ex);
+                this.Log.Warning("Could not patch sounds: {0}", ex);
             }
         }
 
@@ -262,9 +263,9 @@ namespace AmbientSoundsTuner
         {
             foreach (var id in new[] { MiscPatcher.ID_CLICK_SOUND, MiscPatcher.ID_DISABLED_CLICK_SOUND })
             {
-                if (Mod.Settings.MiscSounds.ContainsKey(id))
+                if (this.Settings.MiscSounds.ContainsKey(id))
                 {
-                    SoundPatchersManager.instance.MiscPatcher.PatchVolume(id, Mod.Settings.MiscSounds[id].Volume);
+                    SoundPatchersManager.instance.MiscPatcher.PatchVolume(id, this.Settings.MiscSounds[id].Volume);
                 }
             }
         }

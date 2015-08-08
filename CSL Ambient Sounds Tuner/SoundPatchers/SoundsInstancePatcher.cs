@@ -104,12 +104,12 @@ namespace AmbientSoundsTuner.SoundPatchers
             {
                 if (backupFunc(key))
                 {
-                    Mod.Log.Debug("Sound instance of '{0}' has been backed up", key);
+                    Mod.Instance.Log.Debug("Sound instance of '{0}' has been backed up", key);
                     counter++;
                 }
                 else
                 {
-                    Mod.Log.Debug("Sound instance of '{0}' has not been backed up", key);
+                    Mod.Instance.Log.Debug("Sound instance of '{0}' has not been backed up", key);
                 }
             }
             return counter;
@@ -122,12 +122,12 @@ namespace AmbientSoundsTuner.SoundPatchers
             {
                 if (patchFunc(newItem.Key, newItem.Value))
                 {
-                    Mod.Log.Debug("Sound instance of '{0}' has been patched", newItem.Key);
+                    Mod.Instance.Log.Debug("Sound instance of '{0}' has been patched", newItem.Key);
                     counter++;
                 }
                 else
                 {
-                    Mod.Log.Debug("Sound instance of '{0}' has not been patched", newItem.Key);
+                    Mod.Instance.Log.Debug("Sound instance of '{0}' has not been patched", newItem.Key);
                 }
             }
             return counter;

@@ -95,24 +95,24 @@ namespace AmbientSoundsTuner.SoundPack
                             string uniqueName = group.Key + "." + audio.Type.ToString() + "." + audio.Name;
                             if (this.AudioFiles.ContainsKey(uniqueName))
                             {
-                                Mod.Log.Warning("Audio file {0} loaded from sound pack {1} in mod {2} already exists", uniqueName, soundPack.Name, modName);
+                                Mod.Instance.Log.Warning("Audio file {0} loaded from sound pack {1} in mod {2} already exists", uniqueName, soundPack.Name, modName);
                             }
                             else
                             {
                                 this.AudioFiles[uniqueName] = audio;
-                                Mod.Log.Debug("Loaded audio file {0} from sound pack {1}", uniqueName, soundPack.Name);
+                                Mod.Instance.Log.Debug("Loaded audio file {0} from sound pack {1}", uniqueName, soundPack.Name);
                             }
                         }
                     }
 
                     this.SoundPacks[soundPack.Name] = soundPack;
 
-                    Mod.Log.Debug("Loaded sound pack {0} from mod {1}", soundPack.Name, modName);
+                    Mod.Instance.Log.Debug("Loaded sound pack {0} from mod {1}", soundPack.Name, modName);
                 }
             }
             catch (Exception ex)
             {
-                Mod.Log.Warning("Could not initialize the sound packs from mod {0}: {1}", modName, ex);
+                Mod.Instance.Log.Warning("Could not initialize the sound packs from mod {0}: {1}", modName, ex);
             }
 
         }
@@ -133,18 +133,18 @@ namespace AmbientSoundsTuner.SoundPack
                         string uniqueName = group.Key + "." + audio.Type.ToString() + "." + audio.Name;
                         if (this.AudioFiles.Remove(uniqueName))
                         {
-                            Mod.Log.Warning("Unloaded audio file {0} loaded from sound pack {1}", uniqueName, soundPackFile.Name);
+                            Mod.Instance.Log.Warning("Unloaded audio file {0} loaded from sound pack {1}", uniqueName, soundPackFile.Name);
                         }
                         else
                         {
-                            Mod.Log.Debug("Audio file {0} from sound pack {1} was not added", uniqueName, soundPackFile.Name);
+                            Mod.Instance.Log.Debug("Audio file {0} from sound pack {1} was not added", uniqueName, soundPackFile.Name);
                         }
                     }
                 }
             }
 
             this.SoundPackMods.Remove(mod);
-            Mod.Log.Debug("Unloaded sound pack mod {0}", mod.UserModInstance != null ? ((IUserMod)mod.UserModInstance as IUserMod).Name : mod.Name);
+            Mod.Instance.Log.Debug("Unloaded sound pack mod {0}", mod.UserModInstance != null ? ((IUserMod)mod.UserModInstance as IUserMod).Name : mod.Name);
         }
 
         private IEnumerable<IPluginInfoInteractor> GetSoundPackMods()

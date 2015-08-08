@@ -26,21 +26,21 @@ namespace AmbientSoundsTuner.Detour
             try
             {
                 playClickSoundState = DetourUtils.RedirectCalls(playClickSoundOriginal, playClickSoundReplacement);
-                Mod.Log.Debug("UIComponent.PlayClickSound() has been detoured");
+                Mod.Instance.Log.Debug("UIComponent.PlayClickSound() has been detoured");
             }
             catch (Exception ex)
             {
-                Mod.Log.Error("Exception while detouring UIComponent.PlayClickSound(): {0}", ex);
+                Mod.Instance.Log.Error("Exception while detouring UIComponent.PlayClickSound(): {0}", ex);
             }
 
             try
             {
                 playDisabledClickSoundState = DetourUtils.RedirectCalls(playDisabledClickSoundOriginal, playDisabledClickSoundReplacement);
-                Mod.Log.Debug("UIComponent.PlayDisabledClickSound() has been detoured");
+                Mod.Instance.Log.Debug("UIComponent.PlayDisabledClickSound() has been detoured");
             }
             catch (Exception ex)
             {
-                Mod.Log.Error("Exception while detouring UIComponent.PlayDisabledClickSound(): {0}", ex);
+                Mod.Instance.Log.Error("Exception while detouring UIComponent.PlayDisabledClickSound(): {0}", ex);
             }
         }
 
@@ -49,21 +49,21 @@ namespace AmbientSoundsTuner.Detour
             try
             {
                 DetourUtils.RevertRedirect(playClickSoundOriginal, playClickSoundState);
-                Mod.Log.Debug("UIComponent.PlayClickSound() detour has been reverted");
+                Mod.Instance.Log.Debug("UIComponent.PlayClickSound() detour has been reverted");
             }
             catch (Exception ex)
             {
-                Mod.Log.Error("Exception while reverting detour UIComponent.PlayClickSound(): {0}", ex);
+                Mod.Instance.Log.Error("Exception while reverting detour UIComponent.PlayClickSound(): {0}", ex);
             }
 
             try
             {
                 DetourUtils.RevertRedirect(playDisabledClickSoundOriginal, playDisabledClickSoundState);
-                Mod.Log.Debug("UIComponent.PlayDisabledClickSound() detour has been reverted");
+                Mod.Instance.Log.Debug("UIComponent.PlayDisabledClickSound() detour has been reverted");
             }
             catch (Exception ex)
             {
-                Mod.Log.Error("Exception while reverting detour UIComponent.PlayDisabledClickSound(): {0}", ex);
+                Mod.Instance.Log.Error("Exception while reverting detour UIComponent.PlayDisabledClickSound(): {0}", ex);
             }
         }
 
