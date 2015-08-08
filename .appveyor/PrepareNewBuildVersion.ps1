@@ -8,9 +8,7 @@ if (!$env:APPVEYOR_PULL_REQUEST_NUMBER) {
         Write-Host "Prepare for next version automatically: $newVersion" -ForegroundColor "Yellow"
 
         Write-Host "  - Apply to appveyor.yml" -ForegroundColor "Yellow"
-        $regex = "(version: ).+"
-        $replace = "`${1}$newVersion.{build}"
-        RegexReplaceFile -file "appveyor.xml" -regex $regex -replace $replace
+        SetAppVeyorYmlVersion "$newVersion.{build}"
 
         Write-Host "  - Commit and push to GitHub repository" -ForegroundColor "Yellow"
         git config --global credential.helper store
