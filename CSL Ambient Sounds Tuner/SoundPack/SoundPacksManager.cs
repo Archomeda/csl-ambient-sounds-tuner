@@ -241,11 +241,11 @@ namespace AmbientSoundsTuner.SoundPack
                 IsLoop = true
             };
 
-            misc.Name = "Some click sound";
-            misc.Type = "UI Clicks";
+            misc.Name = "Some bulldoze sound";
+            misc.Type = "Building Bulldoze Sound";
             misc.AudioInfo = new SoundPacksFile.AudioInfo()
             {
-                Clip = "ClickClipFile.ogg",
+                Clip = "BulldozeClipFile.ogg",
                 Volume = 1,
                 MaxVolume = 1,
                 Pitch = 1
