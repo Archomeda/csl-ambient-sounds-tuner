@@ -266,8 +266,8 @@ namespace AmbientSoundsTuner.UI
                 uiDropDown.items = new[] { "Default" }.Union(customAudioFiles.Select(a => a.Name)).ToArray();
                 uiDropDown.height = 28;
                 uiDropDown.textFieldPadding.top = 4;
-                if (configuration.ContainsKey(slider.Id) && !string.IsNullOrEmpty(configuration[slider.Id].Active))
-                    uiDropDown.selectedValue = configuration[slider.Id].Active;
+                if (configuration.ContainsKey(slider.Id) && !string.IsNullOrEmpty(configuration[slider.Id].SoundPack))
+                    uiDropDown.selectedValue = configuration[slider.Id].SoundPack;
                 else
                     uiDropDown.selectedIndex = 0;
 
@@ -324,7 +324,7 @@ namespace AmbientSoundsTuner.UI
             if (!string.IsNullOrEmpty(name))
             {
                 // Chosen audio is a custom audio
-                configuration[soundId].Active = name;
+                configuration[soundId].SoundPack = name;
                 SoundPacksFile.Audio audioFile = patcher.GetAudioByName(soundId.ToString(), name);
                 patcher.PatchSound(soundId, audioFile);
                 uiSlider.maxValue = Mathf.Max(audioFile.AudioInfo.MaxVolume, audioFile.AudioInfo.Volume);
@@ -333,7 +333,7 @@ namespace AmbientSoundsTuner.UI
             else
             {
                 // Chosen audio is the default one
-                configuration[soundId].Active = "";
+                configuration[soundId].SoundPack = "";
                 patcher.RevertSound(soundId);
                 if (patcher.OldSounds.ContainsKey(soundId))
                 {

@@ -8,14 +8,14 @@ using CommonShared;
 using CommonShared.Configuration;
 using CommonShared.Utils;
 
-namespace AmbientSoundsTuner
+namespace AmbientSoundsTuner.Migration
 {
     [XmlRoot("Configuration")]
-    public class Configuration : VersionedConfig
+    public class ConfigurationV3 : VersionedConfig
     {
-        public Configuration()
+        public ConfigurationV3()
         {
-            this.Version = 4;
+            this.Version = 3;
 
             this.SoundPackPreset = "Default";
             this.ExtraDebugLogging = false;
@@ -55,7 +55,7 @@ namespace AmbientSoundsTuner
 
         public class Sound
         {
-            public string SoundPack { get; set; }
+            public string Active { get; set; }
 
             public float Volume { get; set; }
         }
