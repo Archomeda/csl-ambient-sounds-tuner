@@ -58,15 +58,17 @@ namespace AmbientSoundsTuner.UI
             { "Electricity and Water", new[]
                 {
                     new SliderDef<string>(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, "Building", "Advanced Wind Turbine"),
-                    new SliderDef<string>(BuildingsPatcher.ID_COAL_POWER_PLANT, "Building", "Coal/Oil Power Plant"),
+                    new SliderDef<string>(BuildingsPatcher.ID_COAL_POWER_PLANT, "Building", "Coal Power Plant"),
                     new SliderDef<string>(BuildingsPatcher.ID_FUSION_POWER_PLANT, "Building", "Fusion Power Plant", 4),
                     new SliderDef<string>(BuildingsPatcher.ID_HYDRO_POWER_PLANT, "Building", "Hydro Power Plant"),
                     new SliderDef<string>(BuildingsPatcher.ID_INCINERATION_PLANT, "Building", "Incineration Plant"),
                     new SliderDef<string>(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, "Building", "Nuclear Power Plant"),
+                    new SliderDef<string>(BuildingsPatcher.ID_OIL_POWER_PLANT, "Building", "Oil Power Plant"),
                     new SliderDef<string>(BuildingsPatcher.ID_POWER_PLANT_SMALL, "Building", "Small Power Plant"),
                     new SliderDef<string>(BuildingsPatcher.ID_SOLAR_POWER_PLANT, "Building", "Solar Power Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_WATER_DRAIN_PIPE, "Building", "Water Drain/Treatment Plant"),
+                    new SliderDef<string>(BuildingsPatcher.ID_WATER_DRAIN_PIPE, "Building", "Water Drain Pipe"),
                     new SliderDef<string>(BuildingsPatcher.ID_WATER_PUMPING_STATION, "Building", "Water Pumping Station"),
+                    new SliderDef<string>(BuildingsPatcher.ID_WATER_TREATMENT_PLANT, "Building", "Water Treatment Plant"),
                     new SliderDef<string>(BuildingsPatcher.ID_WIND_TURBINE, "Building", "Wind Turbine")
                 }
             },
@@ -112,7 +114,8 @@ namespace AmbientSoundsTuner.UI
                     new SliderDef<string>(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, "Vehicle", "Aircrafts"),
                     new SliderDef<string>(VehiclesPatcher.ID_LARGE_CAR_SOUND, "Vehicle", "Large Cars", 1.5f),
                     new SliderDef<string>(VehiclesPatcher.ID_METRO_MOVEMENT, "Vehicle", "Metros"),
-                    new SliderDef<string>(VehiclesPatcher.ID_SMALL_CAR_SOUND, "Vehicle", "Small Cars/Scooters", 1.5f),
+                    new SliderDef<string>(VehiclesPatcher.ID_SMALL_CAR_SOUND, "Vehicle", "Small Cars", 1.5f),
+                    new SliderDef<string>(VehiclesPatcher.ID_SCOOTER_SOUND, "Vehicle", "Scooters", 1.5f),
                     new SliderDef<string>(VehiclesPatcher.ID_TRAIN_MOVEMENT, "Vehicle", "Trains")
                 }
             },

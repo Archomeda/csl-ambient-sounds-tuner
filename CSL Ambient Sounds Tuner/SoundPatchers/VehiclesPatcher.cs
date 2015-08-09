@@ -17,7 +17,9 @@ namespace AmbientSoundsTuner.SoundPatchers
         private const string ID_LARGE_CAR_MOVEMENT = "Large Car Movement";
         public const string ID_LARGE_CAR_SOUND = "Large Car Sound";
         public const string ID_METRO_MOVEMENT = "Metro Movement";
-        public const string ID_POLICE_CAR_SIREN = "Police Car Siren";
+        public const string ID_POLICE_CAR_SIREN = Compatibility.SoundDuplicator.EFFECT_POLICE_CAR_SIREN;
+        private const string ID_SCOOTER_MOVEMENT = Compatibility.SoundDuplicator.EFFECT_SCOOTER_MOVEMENT;
+        public const string ID_SCOOTER_SOUND = Compatibility.SoundDuplicator.EFFECT_SCOOTER_SOUND;
         private const string ID_SMALL_CAR_MOVEMENT = "Small Car Movement";
         public const string ID_SMALL_CAR_SOUND = "Small Car Sound";
         public const string ID_TRAIN_MOVEMENT = "Train Movement";
@@ -31,11 +33,13 @@ namespace AmbientSoundsTuner.SoundPatchers
             this.DefaultVolumes.Add(ID_FIRE_TRUCK_SIREN, 3);
             this.DefaultVolumes.Add(ID_LARGE_CAR_SOUND, 1.5f);
             this.DefaultVolumes.Add(ID_METRO_MOVEMENT, 0.5f);
+            this.DefaultVolumes.Add(ID_SCOOTER_SOUND, 1.5f);
             this.DefaultVolumes.Add(ID_SMALL_CAR_SOUND, 1.5f);
             this.DefaultVolumes.Add(ID_TRAIN_MOVEMENT, 0.5f);
 
             this.DefaultMaxVolumes.Add(ID_FIRE_TRUCK_SIREN, 3);
             this.DefaultMaxVolumes.Add(ID_LARGE_CAR_SOUND, 1.5f);
+            this.DefaultMaxVolumes.Add(ID_SCOOTER_SOUND, 1.5f);
             this.DefaultMaxVolumes.Add(ID_SMALL_CAR_SOUND, 1.5f);
 
         }
@@ -51,6 +55,7 @@ namespace AmbientSoundsTuner.SoundPatchers
                     ID_LARGE_CAR_SOUND,
                     ID_METRO_MOVEMENT,
                     ID_POLICE_CAR_SIREN,
+                    ID_SCOOTER_SOUND,
                     ID_SMALL_CAR_SOUND,
                     ID_TRAIN_MOVEMENT,
                     ID_TRANSPORT_ARRIVE
@@ -90,6 +95,10 @@ namespace AmbientSoundsTuner.SoundPatchers
 
                 case ID_LARGE_CAR_SOUND:
                     multiEffect = EffectCollection.FindEffect(ID_LARGE_CAR_MOVEMENT) as MultiEffect;
+                    break;
+
+                case ID_SCOOTER_SOUND:
+                    multiEffect = EffectCollection.FindEffect(ID_SCOOTER_MOVEMENT) as MultiEffect;
                     break;
             }
 

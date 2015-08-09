@@ -30,6 +30,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         public const string ID_INDUSTRIAL = "Building Industrial";
         public const string ID_METRO_STATION = "Building Metro Station";
         public const string ID_NUCLEAR_POWER_PLANT = "Nuclear Power Plant";
+        public const string ID_OIL_POWER_PLANT = Compatibility.SoundDuplicator.BUILDING_OIL_POWER_PLANT;
         public const string ID_POLICE_STATION = "Building Police Station";
         public const string ID_POWER_PLANT_SMALL = "Building Power Plant Small";
         public const string ID_SOLAR_POWER_PLANT = "Solar Power Plant";
@@ -38,6 +39,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         private const string ID_UNIVERSITY_EU = "University_EU";
         public const string ID_WATER_DRAIN_PIPE = "Water Outlet";
         public const string ID_WATER_PUMPING_STATION = "Water Intake";
+        public const string ID_WATER_TREATMENT_PLANT = Compatibility.SoundDuplicator.BUILDING_WATER_TREATMENT_PLANT;
         public const string ID_WIND_TURBINE = "Wind Turbine";
 
         public const string ID_ON_FIRE = "On Fire";
@@ -80,6 +82,7 @@ namespace AmbientSoundsTuner.SoundPatchers
                     ID_INDUSTRIAL,
                     ID_METRO_STATION,
                     ID_NUCLEAR_POWER_PLANT,
+                    ID_OIL_POWER_PLANT,
                     ID_POLICE_STATION,
                     ID_POWER_PLANT_SMALL,
                     ID_SOLAR_POWER_PLANT,
@@ -87,6 +90,7 @@ namespace AmbientSoundsTuner.SoundPatchers
                     ID_UNIVERSITY,
                     ID_WATER_DRAIN_PIPE,
                     ID_WATER_PUMPING_STATION,
+                    ID_WATER_TREATMENT_PLANT,
                     ID_WIND_TURBINE,
 
                     ID_ON_FIRE,
@@ -112,9 +116,11 @@ namespace AmbientSoundsTuner.SoundPatchers
                 case ID_HYDRO_POWER_PLANT:
                 case ID_INCINERATION_PLANT:
                 case ID_NUCLEAR_POWER_PLANT:
+                case ID_OIL_POWER_PLANT:
                 case ID_SOLAR_POWER_PLANT:
                 case ID_WATER_DRAIN_PIPE:
                 case ID_WATER_PUMPING_STATION:
+                case ID_WATER_TREATMENT_PLANT:
                 case ID_WIND_TURBINE:
                     return new SoundContainer(SoundPatchersManager.GetAudioInfoFromBuildingInfo(id));
 

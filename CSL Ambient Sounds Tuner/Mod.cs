@@ -229,18 +229,53 @@ namespace AmbientSoundsTuner
 
         internal void PatchSounds()
         {
-            // Patch the sirens for compatibility first!
-            var patchResult = SirensPatcher.PatchPoliceSiren();
-            switch (patchResult)
+            // Patch various sounds for compatibility first!
+            switch (SoundDuplicator.PatchPoliceSiren())
             {
-                case SirensPatcher.PatchResult.Success:
-                    this.Log.Debug("Police sirens have been patched");
+                case SoundDuplicator.PatchResult.Success:
+                    this.Log.Debug("Police sirens have been patched for compatibility");
                     break;
-                case SirensPatcher.PatchResult.AlreadyPatched:
-                    this.Log.Debug("Police sirens have been patched already");
+                case SoundDuplicator.PatchResult.AlreadyPatched:
+                    this.Log.Debug("Police sirens have been patched for compatibility already");
                     break;
-                case SirensPatcher.PatchResult.NotFound:
-                    this.Log.Warning("Could not patch the police sirens to be different from the ambulance sirens");
+                case SoundDuplicator.PatchResult.NotFound:
+                    this.Log.Warning("Could not patch the police sirens for compatibility");
+                    break;
+            }
+            switch (SoundDuplicator.PatchScooterSound())
+            {
+                case SoundDuplicator.PatchResult.Success:
+                    this.Log.Debug("Scooter sounds have been patched for compatibility");
+                    break;
+                case SoundDuplicator.PatchResult.AlreadyPatched:
+                    this.Log.Debug("Scooter sounds have been patched for compatibility already");
+                    break;
+                case SoundDuplicator.PatchResult.NotFound:
+                    this.Log.Warning("Could not patch the scooter sounds for compatibility");
+                    break;
+            }
+            switch (SoundDuplicator.PatchOilPowerPlant())
+            {
+                case SoundDuplicator.PatchResult.Success:
+                    this.Log.Debug("Oil power plant sounds have been patched for compatibility");
+                    break;
+                case SoundDuplicator.PatchResult.AlreadyPatched:
+                    this.Log.Debug("Oil power plant sounds have been patched for compatibility already");
+                    break;
+                case SoundDuplicator.PatchResult.NotFound:
+                    this.Log.Warning("Could not patch the oil power plant sounds for compatibility");
+                    break;
+            }
+            switch (SoundDuplicator.PatchWaterTreatmentPlant())
+            {
+                case SoundDuplicator.PatchResult.Success:
+                    this.Log.Debug("Water treatment plant sounds have been patched for compatibility");
+                    break;
+                case SoundDuplicator.PatchResult.AlreadyPatched:
+                    this.Log.Debug("Water treatment plant sounds have been patched for compatibility already");
+                    break;
+                case SoundDuplicator.PatchResult.NotFound:
+                    this.Log.Warning("Could not patch the water treatment plant sounds for compatibility");
                     break;
             }
 
