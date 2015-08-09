@@ -152,6 +152,10 @@ namespace AmbientSoundsTuner
                 this.isLoadedInMainMenu = true;
             }
 
+            // Export example sound pack files (added here to keep it always up-to-date)
+            //TODO: Move this to somewhere else when a better location has been found
+            SoundPacksManager.instance.ExportExampleFiles();
+
             this.Log.Debug("Mod loaded");
         }
 
