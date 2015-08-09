@@ -17,14 +17,16 @@ namespace AmbientSoundsTuner.Migration
             {
                 { 0, this.MigrateFromVersion0 },
                 { 1, this.MigrateFromVersion1 },
-                { 2, this.MigrateFromVersion2 }
+                { 2, this.MigrateFromVersion2 },
+                { 3, this.MigrateFromVersion3 }
             };
 
             this.VersionTypes = new Dictionary<uint, Type>()
             {
                 { 0, typeof(ConfigurationV0) },
                 { 1, typeof(ConfigurationV1) },
-                { 2, typeof(ConfigurationV2) }
+                { 2, typeof(ConfigurationV2) },
+                { 3, typeof(ConfigurationV3) }
             };
         }
 
@@ -75,23 +77,43 @@ namespace AmbientSoundsTuner.Migration
             return newConfig;
         }
 
-
         protected object MigrateFromVersion2(object oldConfig)
         {
             ConfigurationV2 config = (ConfigurationV2)oldConfig;
-            Configuration newConfig = new Configuration();
+            ConfigurationV3 newConfig = new ConfigurationV3();
 
             newConfig.ExtraDebugLogging = config.ExtraDebugLogging;
             foreach (var kvp in config.AmbientVolumes)
-                newConfig.AmbientSounds.Add(kvp.Key, new Configuration.Sound() { Volume = kvp.Value });
+                newConfig.AmbientSounds.Add(kvp.Key, new ConfigurationV3.Sound() { Volume = kvp.Value });
             foreach (var kvp in config.AnimalVolumes)
-                newConfig.AnimalSounds.Add(kvp.Key, new Configuration.Sound() { Volume = kvp.Value });
+                newConfig.AnimalSounds.Add(kvp.Key, new ConfigurationV3.Sound() { Volume = kvp.Value });
             foreach (var kvp in config.BuildingVolumes)
-                newConfig.BuildingSounds.Add(kvp.Key, new Configuration.Sound() { Volume = kvp.Value });
+                newConfig.BuildingSounds.Add(kvp.Key, new ConfigurationV3.Sound() { Volume = kvp.Value });
             foreach (var kvp in config.VehicleVolumes)
-                newConfig.VehicleSounds.Add(kvp.Key, new Configuration.Sound() { Volume = kvp.Value });
+                newConfig.VehicleSounds.Add(kvp.Key, new ConfigurationV3.Sound() { Volume = kvp.Value });
             foreach (var kvp in config.MiscVolumes)
-                newConfig.MiscSounds.Add(kvp.Key, new Configuration.Sound() { Volume = kvp.Value });
+                newConfig.MiscSounds.Add(kvp.Key, new ConfigurationV3.Sound() { Volume = kvp.Value });
+
+            return newConfig;
+        }
+
+        protected object MigrateFromVersion3(object oldConfig)
+        {
+            ConfigurationV3 config = (ConfigurationV3)oldConfig;
+            Configuration newConfig = new Configuration();
+
+            newConfig.SoundPackPreset = config.SoundPackPreset;
+            newConfig.ExtraDebugLogging = config.ExtraDebugLogging;
+            foreach (var kvp in config.AmbientSounds)
+                newConfig.AmbientSounds.Add(kvp.Key, new Configuration.Sound() { SoundPack = kvp.Value.Active, Volume = kvp.Value.Volume });
+            foreach (var kvp in config.AnimalSounds)
+                newConfig.AnimalSounds.Add(kvp.Key, new Configuration.Sound() { SoundPack = kvp.Value.Active, Volume = kvp.Value.Volume });
+            foreach (var kvp in config.BuildingSounds)
+                newConfig.BuildingSounds.Add(kvp.Key, new Configuration.Sound() { SoundPack = kvp.Value.Active, Volume = kvp.Value.Volume });
+            foreach (var kvp in config.VehicleSounds)
+                newConfig.VehicleSounds.Add(kvp.Key, new Configuration.Sound() { SoundPack = kvp.Value.Active, Volume = kvp.Value.Volume });
+            foreach (var kvp in config.MiscSounds)
+                newConfig.MiscSounds.Add(kvp.Key, new Configuration.Sound() { SoundPack = kvp.Value.Active, Volume = kvp.Value.Volume });
 
             return newConfig;
         }

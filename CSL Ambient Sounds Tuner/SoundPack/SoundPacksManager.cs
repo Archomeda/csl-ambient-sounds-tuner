@@ -14,7 +14,8 @@ namespace AmbientSoundsTuner.SoundPack
 {
     public class SoundPacksManager : SingletonLite<SoundPacksManager>
     {
-        public const string SOUNDPACKS_FILENAME = "AmbientSoundsTuner.SoundPacks.xml";
+        public const string SOUNDPACKS_FILENAME_XML = "AmbientSoundsTuner.SoundPacks.xml";
+        public const string SOUNDPACKS_FILENAME_YAML = "AmbientSoundsTuner.SoundPacks.yml";
 
         public SoundPacksManager()
         {
@@ -52,7 +53,13 @@ namespace AmbientSoundsTuner.SoundPack
         private void AddSoundPackMod(IPluginInfoInteractor mod)
         {
             string modName = mod.UserModInstance != null ? ((IUserMod)mod.UserModInstance as IUserMod).Name : mod.Name;
-            string path = Path.Combine(mod.ModPath, SOUNDPACKS_FILENAME);
+            string path = Path.Combine(mod.ModPath, SOUNDPACKS_FILENAME_YAML);
+            if (!File.Exists(path))
+            {
+                // Fallback to XML if YAML does not exist
+                path = Path.Combine(mod.ModPath, SOUNDPACKS_FILENAME_XML);
+            }
+
             try
             {
                 SoundPacksFile soundPackFile = SoundPacksFile.LoadConfig<SoundPacksFile>(path);
@@ -149,7 +156,103 @@ namespace AmbientSoundsTuner.SoundPack
 
         private IEnumerable<IPluginInfoInteractor> GetSoundPackMods()
         {
-            return PluginUtils.PluginManagerInteractor.GetPluginsInfo().Where(i => File.Exists(Path.Combine(i.ModPath, SOUNDPACKS_FILENAME)));
+            return PluginUtils.PluginManagerInteractor.GetPluginsInfo().Where(i =>
+                File.Exists(Path.Combine(i.ModPath, SOUNDPACKS_FILENAME_XML)) ||
+                File.Exists(Path.Combine(i.ModPath, SOUNDPACKS_FILENAME_YAML)));
+        }
+
+        public void ExportExampleFiles()
+        {
+            SoundPacksFile file = new SoundPacksFile();
+            file.SoundPacks = new SoundPacksFile.SoundPack[1];
+
+            var soundPack = new SoundPacksFile.SoundPack();
+            file.SoundPacks[0] = soundPack;
+            soundPack.Name = "The name of your sound pack";
+            soundPack.Ambients = new SoundPacksFile.Audio[1];
+            soundPack.Animals = new SoundPacksFile.Audio[1];
+            soundPack.Buildings = new SoundPacksFile.Audio[1];
+            soundPack.Vehicles = new SoundPacksFile.Audio[1];
+            soundPack.Miscs = new SoundPacksFile.Audio[1];
+
+            var ambient = new SoundPacksFile.Audio();
+            var animal = new SoundPacksFile.Audio();
+            var building = new SoundPacksFile.Audio();
+            var vehicle = new SoundPacksFile.Audio();
+            var misc = new SoundPacksFile.Audio();
+            soundPack.Ambients[0] = ambient;
+            soundPack.Animals[0] = animal;
+            soundPack.Buildings[0] = building;
+            soundPack.Vehicles[0] = vehicle;
+            soundPack.Miscs[0] = misc;
+
+            ambient.Name = "Some city sound";
+            ambient.Type = "City";
+            ambient.AudioInfo = new SoundPacksFile.AudioInfo()
+            {
+                Clip = "CityClipFile.ogg",
+                Volume = 1,
+                MaxVolume = 1,
+                Pitch = 1,
+                IsLoop = true,
+                Variations = new SoundPacksFile.Variation[1] { 
+                    new SoundPacksFile.Variation() {
+                        Probability = 50,
+                        AudioInfo = new SoundPacksFile.AudioInfo() {
+                            Clip = "SomeOtherClipFor50PercentChanceVariation.ogg",
+                            Volume = 1,
+                            MaxVolume = 1,
+                            Pitch = 1.5f,
+                            IsLoop = true
+                        }
+                    }
+                }
+            };
+
+            animal.Name = "Some seagull sound";
+            animal.Type = "Seagull";
+            animal.AudioInfo = new SoundPacksFile.AudioInfo()
+            {
+                Clip = "SeagullClipFile.ogg",
+                Volume = 1,
+                MaxVolume = 1,
+                Pitch = 1
+            };
+
+            building.Name = "Some crematory sound";
+            building.Type = "Crematory";
+            building.AudioInfo = new SoundPacksFile.AudioInfo()
+            {
+                Clip = "CrematoryClipFile.ogg",
+                Volume = 1,
+                MaxVolume = 1,
+                Pitch = 1,
+                IsLoop = true
+            };
+
+            vehicle.Name = "Some ambulance siren sound";
+            vehicle.Type = "Ambulance Siren";
+            vehicle.AudioInfo = new SoundPacksFile.AudioInfo()
+            {
+                Clip = "AmbulanceSirenClipFile.ogg",
+                Volume = 1,
+                MaxVolume = 1,
+                Pitch = 1,
+                IsLoop = true
+            };
+
+            misc.Name = "Some bulldoze sound";
+            misc.Type = "Building Bulldoze Sound";
+            misc.AudioInfo = new SoundPacksFile.AudioInfo()
+            {
+                Clip = "BulldozeClipFile.ogg",
+                Volume = 1,
+                MaxVolume = 1,
+                Pitch = 1
+            };
+
+            file.SaveConfig(Path.Combine(FileUtils.GetStorageFolder(Mod.Instance), "Example." + SOUNDPACKS_FILENAME_XML));
+            file.SaveConfig(Path.Combine(FileUtils.GetStorageFolder(Mod.Instance), "Example." + SOUNDPACKS_FILENAME_YAML));
         }
     }
 }

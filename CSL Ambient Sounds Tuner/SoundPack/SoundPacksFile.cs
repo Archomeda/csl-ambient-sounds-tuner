@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml.Serialization;
 using CommonShared.Configuration;
 using UnityEngine;
+using YamlDotNet.Serialization;
 
 namespace AmbientSoundsTuner.SoundPack
 {
@@ -76,6 +77,8 @@ namespace AmbientSoundsTuner.SoundPack
 
             public string Clip { get; set; }
 
+            [XmlIgnore]
+            [YamlIgnore]
             public AudioClip AudioClip { get; set; }
 
             public float Volume { get; set; }

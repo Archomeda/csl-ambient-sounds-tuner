@@ -87,7 +87,7 @@ namespace AmbientSoundsTuner
 
         private void Init()
         {
-            this.SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(this), "AmbientSoundsTuner.xml");
+            this.SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(this), "AmbientSoundsTuner.yml");
             this.Log = new Logger(this.GetType().Assembly);
             Instance = this;
 
@@ -117,9 +117,20 @@ namespace AmbientSoundsTuner
             // Load regular
             this.CheckIncompatibility();
 
-            this.Settings = VersionedConfig.LoadConfig<Configuration>(this.SettingsFilename, new ConfigurationMigrator());
-            this.Log.EnableDebugLogging = this.Settings.ExtraDebugLogging;
+            // We have to properly migrate the outdated XML configuration file
+            string oldXmlSettingsFilename = Path.Combine(Path.GetDirectoryName(this.SettingsFilename), Path.GetFileNameWithoutExtension(this.SettingsFilename)) + ".xml";
+            if (File.Exists(oldXmlSettingsFilename) && !File.Exists(this.SettingsFilename))
+            {
+                this.Settings = VersionedConfig.LoadConfig<Configuration>(oldXmlSettingsFilename, new ConfigurationMigrator());
+                this.Settings.SaveConfig(this.SettingsFilename);
+                File.Delete(oldXmlSettingsFilename);
+            }
+            else
+            {
+                this.Settings = VersionedConfig.LoadConfig<Configuration>(this.SettingsFilename, new ConfigurationMigrator());
+            }
 
+            this.Log.EnableDebugLogging = this.Settings.ExtraDebugLogging;
             if (this.Settings.ExtraDebugLogging)
             {
                 this.Log.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
@@ -140,6 +151,10 @@ namespace AmbientSoundsTuner
                 this.PatchUISounds();
                 this.isLoadedInMainMenu = true;
             }
+
+            // Export example sound pack files (added here to keep it always up-to-date)
+            //TODO: Move this to somewhere else when a better location has been found
+            SoundPacksManager.instance.ExportExampleFiles();
 
             this.Log.Debug("Mod loaded");
         }
@@ -215,9 +230,9 @@ namespace AmbientSoundsTuner
 
             int patchedSounds = patcher.PatchAllSounds(newSounds.ToDictionary(kvp => kvp.Key, kvp =>
             {
-                if (!string.IsNullOrEmpty(kvp.Value.Active))
+                if (!string.IsNullOrEmpty(kvp.Value.SoundPack))
                 {
-                    return patcher.GetAudioByName(kvp.Key.ToString(), kvp.Value.Active);
+                    return patcher.GetAudioByName(kvp.Key.ToString(), kvp.Value.SoundPack);
                 }
                 return null;
             }));
