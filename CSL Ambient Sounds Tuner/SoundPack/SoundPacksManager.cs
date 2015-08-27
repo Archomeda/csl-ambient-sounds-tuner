@@ -84,7 +84,14 @@ namespace AmbientSoundsTuner.SoundPack
                     {
                         for (int i = 0; i < group.Length; i++)
                         {
-                            patchAudioInfoClipPath(group[i].AudioInfo);
+                            try
+                            {
+                                patchAudioInfoClipPath(group[i].AudioInfo);
+                            }
+                            catch (Exception ex)
+                            {
+                                Mod.Instance.Log.Warning("Failed to load audio file {0} from sound pack {1} in mod {2}. Please check if your XML or YAML syntax is correct. Keep in mind that XML and YAML tags are case-sensitive! Inner exception was: {3}", group[i].Name, soundPack.Name, modName, ex);
+                            }
                         }
                     }
 
