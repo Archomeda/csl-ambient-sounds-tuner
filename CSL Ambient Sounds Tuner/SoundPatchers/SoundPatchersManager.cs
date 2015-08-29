@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AmbientSoundsTuner.SoundPack;
 using ColossalFramework;
+using UnityEngine;
 
 namespace AmbientSoundsTuner.SoundPatchers
 {
@@ -84,6 +86,114 @@ namespace AmbientSoundsTuner.SoundPatchers
                 }
             }
             return null;
+        }
+
+
+        public SoundPacksFile GetCurrentSoundSettingsAsSoundPack()
+        {
+            SoundPacksFile file = new SoundPacksFile();
+            file.SoundPacks = new SoundPacksFile.SoundPack[] { new SoundPacksFile.SoundPack() };
+
+            var soundPack = file.SoundPacks[0];
+            soundPack.Name = "Default";
+            soundPack.Ambients = new SoundPacksFile.Audio[this.AmbientsPatcher.Ids.Length];
+            soundPack.Animals = new SoundPacksFile.Audio[this.AnimalsPatcher.Ids.Length];
+            soundPack.Buildings = new SoundPacksFile.Audio[this.BuildingsPatcher.Ids.Length];
+            soundPack.Vehicles = new SoundPacksFile.Audio[this.VehiclesPatcher.Ids.Length];
+            soundPack.Miscs = new SoundPacksFile.Audio[this.MiscPatcher.Ids.Length];
+
+            Func<AudioInfo, SoundPacksFile.AudioInfo> convertAudioInfo = null;
+            convertAudioInfo = new Func<AudioInfo, SoundPacksFile.AudioInfo>(ai =>
+            {
+                var audioInfo = new SoundPacksFile.AudioInfo()
+                {
+                    Clip = "NOFILE",
+                    Volume = ai.m_volume,
+                    MaxVolume = Mathf.Max(ai.m_volume, 1),
+                    Pitch = ai.m_pitch,
+                    FadeLength = ai.m_fadeLength,
+                    IsLoop = ai.m_loop,
+                    Is3D = ai.m_is3D,
+                    IsRandomTime = ai.m_randomTime,
+                };
+
+                if (ai.m_variations.Length > 0)
+                {
+                    audioInfo.Variations = new SoundPacksFile.Variation[ai.m_variations.Length];
+                    for (int i = 0; i < audioInfo.Variations.Length; i++)
+                    {
+                        audioInfo.Variations[i] = new SoundPacksFile.Variation()
+                        {
+                            Probability = ai.m_variations[i].m_probability,
+                            AudioInfo = convertAudioInfo(ai.m_variations[i].m_sound)
+                        };
+                    }
+                }
+
+                return audioInfo;
+            });
+
+            var convertToFile = new Func<string, AudioInfo, SoundPacksFile.Audio>((type, ai) =>
+            {
+                return new SoundPacksFile.Audio()
+                {
+                    Name = ai.name,
+                    Type = type,
+                    AudioInfo = convertAudioInfo(ai)
+                };
+            });
+
+            // Ambients
+            for (int i = 0; i < soundPack.Ambients.Length; i++)
+            {
+                var sound = this.AmbientsPatcher.GetSoundInstance(this.AmbientsPatcher.Ids[i]);
+                if (sound != null && sound.HasSound)
+                {
+                    soundPack.Ambients[i] = convertToFile(this.AmbientsPatcher.Ids[i].ToString(), sound.AudioInfo);
+                }
+            }
+
+            // Animals
+            for (int i = 0; i < soundPack.Animals.Length; i++)
+            {
+                var sound = this.AnimalsPatcher.GetSoundInstance(this.AnimalsPatcher.Ids[i]);
+                if (sound != null && sound.HasSound)
+                {
+                    soundPack.Animals[i] = convertToFile(this.AnimalsPatcher.Ids[i].ToString(), sound.AudioInfo);
+                }
+            }
+
+            // Buildings
+            for (int i = 0; i < soundPack.Buildings.Length; i++)
+            {
+                var sound = this.BuildingsPatcher.GetSoundInstance(this.BuildingsPatcher.Ids[i]);
+                if (sound != null && sound.HasSound)
+                {
+                    soundPack.Buildings[i] = convertToFile(this.BuildingsPatcher.Ids[i].ToString(), sound.AudioInfo);
+                }
+            }
+
+            // Vehicles
+            for (int i = 0; i < soundPack.Vehicles.Length; i++)
+            {
+                var sound = this.VehiclesPatcher.GetSoundInstance(this.VehiclesPatcher.Ids[i]);
+                if (sound != null && sound.HasSound)
+                {
+                    soundPack.Vehicles[i] = convertToFile(this.VehiclesPatcher.Ids[i].ToString(), sound.AudioInfo);
+                }
+            }
+
+            // Miscs
+            for (int i = 0; i < soundPack.Miscs.Length; i++)
+            {
+                var sound = this.MiscPatcher.GetSoundInstance(this.MiscPatcher.Ids[i]);
+                if (sound != null && sound.HasSound)
+                {
+                    soundPack.Miscs[i] = convertToFile(this.MiscPatcher.Ids[i].ToString(), sound.AudioInfo);
+                }
+            }
+
+            return file;
         }
     }
 }
