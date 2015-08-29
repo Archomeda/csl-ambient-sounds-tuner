@@ -73,6 +73,11 @@ namespace AmbientSoundsTuner.SoundPack
             public AudioInfo()
             {
                 this.Variations = new Variation[0];
+
+                // Set some default values that make sense
+                this.Volume = 1;
+                this.MaxVolume = 1;
+                this.Pitch = 1;
             }
 
             public string Clip { get; set; }
