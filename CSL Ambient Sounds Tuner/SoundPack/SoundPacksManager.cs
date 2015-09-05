@@ -147,7 +147,7 @@ namespace AmbientSoundsTuner.SoundPack
                         string uniqueName = group.Key + "." + audio.Type.ToString() + "." + audio.Name;
                         if (this.AudioFiles.Remove(uniqueName))
                         {
-                            Mod.Instance.Log.Warning("Unloaded audio file {0} loaded from sound pack {1}", uniqueName, soundPackFile.Name);
+                            Mod.Instance.Log.Debug("Unloaded audio file {0} loaded from sound pack {1}", uniqueName, soundPackFile.Name);
                         }
                         else
                         {
