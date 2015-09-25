@@ -30,20 +30,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\packages\CitiesSkylines.Assembly-CSharp.1.1.1\lib\net35\Assembly-CSharp.dll</HintPath>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CitiesSkylines.Assembly-CSharp.1.2.0\lib\net35\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ColossalManaged">
-      <HintPath>..\packages\CitiesSkylines.ColossalManaged.1.1.1\lib\net35\ColossalManaged.dll</HintPath>
+    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CitiesSkylines.Assembly-CSharp-firstpass.1.2.0\lib\net35\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ColossalManaged, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CitiesSkylines.ColossalManaged.1.2.0\lib\net35\ColossalManaged.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CommonShared, Version=1.2.1.58, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CslCommonShared.1.2.1.58\lib\net35\CommonShared.dll</HintPath>
     </Reference>
-    <Reference Include="ICities">
-      <HintPath>..\packages\CitiesSkylines.ICities.1.1.1\lib\net35\ICities.dll</HintPath>
+    <Reference Include="ICities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CitiesSkylines.ICities.1.2.0\lib\net35\ICities.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
@@ -56,8 +60,8 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\packages\CitiesSkylines.UnityEngine.1.1.1\lib\net35\UnityEngine.dll</HintPath>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CitiesSkylines.UnityEngine.1.2.0\lib\net35\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="YamlDotNet, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
