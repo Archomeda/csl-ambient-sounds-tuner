@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.SoundPack;
+using AmbientSoundsTuner.SoundPack.Migration;
 using UnityEngine;
 
 namespace AmbientSoundsTuner.SoundPatchers
@@ -110,7 +111,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// </summary>
         /// <param name="sound">The sound.</param>
         /// <returns>The sound pack file audio.</returns>
-        public static SoundPacksFile.Audio GetAudioInfo(SoundContainer sound)
+        public static SoundPacksFileV1.Audio GetAudioInfo(SoundContainer sound)
         {
             if (sound.HasSound)
             {
@@ -124,18 +125,18 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// </summary>
         /// <param name="audioInfo">The original audio info.</param>
         /// <returns>The sound pack file audio.</returns>
-        public static SoundPacksFile.Audio GetAudioInfo(AudioInfo audioInfo)
+        public static SoundPacksFileV1.Audio GetAudioInfo(AudioInfo audioInfo)
         {
             if (audioInfo != null)
             {
-                SoundPacksFile.Audio spfAudio = new SoundPacksFile.Audio()
+                var spfAudio = new SoundPacksFileV1.Audio()
                 {
                     Name = audioInfo.name,
-                    AudioInfo = new SoundPacksFile.AudioInfo()
+                    AudioInfo = new SoundPacksFileV1.AudioInfo()
                 };
 
-                Action<AudioInfo, SoundPacksFile.AudioInfo> backupAudioInfo = null;
-                backupAudioInfo = new Action<AudioInfo, SoundPacksFile.AudioInfo>((ai, spf) =>
+                Action<AudioInfo, SoundPacksFileV1.AudioInfo> backupAudioInfo = null;
+                backupAudioInfo = new Action<AudioInfo, SoundPacksFileV1.AudioInfo>((ai, spf) =>
                 {
                     spf.AudioClip = ai.m_clip;
                     spf.Volume = ai.m_volume;
@@ -148,13 +149,13 @@ namespace AmbientSoundsTuner.SoundPatchers
 
                     if (ai.m_variations != null)
                     {
-                        spf.Variations = new SoundPacksFile.Variation[ai.m_variations.Length];
+                        spf.Variations = new SoundPacksFileV1.Variation[ai.m_variations.Length];
                         for (int i = 0; i < ai.m_variations.Length; i++)
                         {
-                            spf.Variations[i] = new SoundPacksFile.Variation()
+                            spf.Variations[i] = new SoundPacksFileV1.Variation()
                             {
                                 Probability = ai.m_variations[i].m_probability,
-                                AudioInfo = new SoundPacksFile.AudioInfo()
+                                AudioInfo = new SoundPacksFileV1.AudioInfo()
                             };
                             backupAudioInfo(ai.m_variations[i].m_sound, spf.Variations[i].AudioInfo);
                         }
@@ -172,7 +173,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// <param name="sound">The sound.</param>
         /// <param name="spfAudio">The sound pack file audio.</param>
         /// <returns>True if successful; false otherwise.</returns>
-        public static bool SetAudioInfo(SoundContainer sound, SoundPacksFile.Audio spfAudio)
+        public static bool SetAudioInfo(SoundContainer sound, SoundPacksFileV1.Audio spfAudio)
         {
             if (sound.HasSound)
             {
@@ -187,13 +188,13 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// <param name="audioInfo">The audio info to set.</param>
         /// <param name="spfAudio">The sound pack file audio.</param>
         /// <returns>True if successful; false otherwise.</returns>
-        public static bool SetAudioInfo(AudioInfo audioInfo, SoundPacksFile.Audio spfAudio)
+        public static bool SetAudioInfo(AudioInfo audioInfo, SoundPacksFileV1.Audio spfAudio)
         {
             if (audioInfo != null && spfAudio != null)
             {
-                Action<AudioInfo, SoundPacksFile.AudioInfo> patchAudioInfo = null;
+                Action<AudioInfo, SoundPacksFileV1.AudioInfo> patchAudioInfo = null;
                 int variation = 0;
-                patchAudioInfo = new Action<AudioInfo, SoundPacksFile.AudioInfo>((ai, spf) =>
+                patchAudioInfo = new Action<AudioInfo, SoundPacksFileV1.AudioInfo>((ai, spf) =>
                 {
                     if (spf.AudioClip != null)
                         ai.m_clip = spf.AudioClip;
@@ -218,7 +219,7 @@ namespace AmbientSoundsTuner.SoundPatchers
                             ai.m_variations[i] = new AudioInfo.Variation()
                             {
                                 m_probability = spf.Variations[i].Probability,
-                                m_sound = new AudioInfo()
+                                m_sound = ScriptableObject.CreateInstance<AudioInfo>()
                             };
                             patchAudioInfo(ai.m_variations[i].m_sound, spf.Variations[i].AudioInfo);
                         }

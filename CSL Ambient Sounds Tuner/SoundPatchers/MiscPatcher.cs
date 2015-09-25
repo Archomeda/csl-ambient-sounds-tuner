@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.SoundPack;
+using AmbientSoundsTuner.SoundPack.Migration;
 
 namespace AmbientSoundsTuner.SoundPatchers
 {
@@ -115,57 +116,61 @@ namespace AmbientSoundsTuner.SoundPatchers
         }
 
 
-        public override bool BackupVolume(string id)
+        public override void BackupVolume(string id)
         {
             switch (id)
             {
                 case ID_CLICK_SOUND:
                 case ID_DISABLED_CLICK_SOUND:
                     // Do nothing, since there is nothing to back up
-                    return false;
+                    break;
                 default:
-                    return base.BackupVolume(id);
+                    base.BackupVolume(id);
+                    break;
             }
         }
 
-        public override bool PatchVolume(string id, float newVolume)
+        public override void PatchVolume(string id, float newVolume)
         {
             switch (id)
             {
                 case ID_CLICK_SOUND:
                     this.UIClickSoundVolume = newVolume;
-                    return true;
+                    break;
                 case ID_DISABLED_CLICK_SOUND:
                     this.UIDisabledClickSoundVolume = newVolume;
-                    return true;
+                    break;
                 default:
-                    return base.PatchVolume(id, newVolume);
+                    base.PatchVolume(id, newVolume);
+                    break;
             }
         }
 
-        public override bool BackupSound(string id)
+        public override void BackupSound(string id)
         {
             switch (id)
             {
                 case ID_CLICK_SOUND:
                 case ID_DISABLED_CLICK_SOUND:
                     // Do nothing, since there is nothing to back up
-                    return false;
+                    break;
                 default:
-                    return base.BackupSound(id);
+                    base.BackupSound(id);
+                    break;
             }
         }
 
-        public override bool PatchSound(string id, SoundPacksFile.Audio newSound)
+        public override void PatchSound(string id, SoundPacksFileV1.Audio newSound)
         {
             switch (id)
             {
                 case ID_CLICK_SOUND:
                 case ID_DISABLED_CLICK_SOUND:
                     // Do nothing, since there is nothing to patch
-                    return false;
+                    break;
                 default:
-                    return base.PatchSound(id, newSound);
+                    base.PatchSound(id, newSound);
+                    break;
             }
         }
     }

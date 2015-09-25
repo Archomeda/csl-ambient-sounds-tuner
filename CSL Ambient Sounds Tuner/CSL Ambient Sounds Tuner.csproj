@@ -72,16 +72,21 @@
   <ItemGroup>
     <Compile Include="Defs\UITemplateDefs.cs" />
     <Compile Include="Detour\CustomPlayClickSound.cs" />
+    <Compile Include="Migration\ConfigurationV4.cs" />
     <Compile Include="Migration\ConfigurationV3.cs" />
     <Compile Include="Migration\ConfigurationV2.cs" />
     <Compile Include="Migration\ConfigurationV1.cs" />
     <Compile Include="Migration\ConfigurationMigrator.cs" />
     <Compile Include="Migration\ConfigurationV0.cs" />
+    <Compile Include="SoundPack\Migration\SoundPacksFileV1.cs" />
+    <Compile Include="SoundPack\Migration\SoundPacksFileMigrator.cs" />
     <Compile Include="SoundPack\SoundPacksFile.cs" />
     <Compile Include="SoundPack\SoundPacksManager.cs" />
     <Compile Include="SoundPatchers\MiscPatcher.cs" />
     <Compile Include="SoundPatchers\SoundContainer.cs" />
     <Compile Include="SoundPatchers\SoundPatchersManager.cs" />
+    <Compile Include="SoundPatchers\SoundBackupException.cs" />
+    <Compile Include="SoundPatchers\SoundPatchException.cs" />
     <Compile Include="SoundPatchers\VehiclesPatcher.cs" />
     <Compile Include="SoundPatchers\AmbientsPatcher.cs" />
     <Compile Include="Compatibility\SoundDuplicator.cs" />

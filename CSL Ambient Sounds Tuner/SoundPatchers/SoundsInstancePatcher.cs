@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.SoundPack;
+using AmbientSoundsTuner.SoundPack.Migration;
 
 namespace AmbientSoundsTuner.SoundPatchers
 {
@@ -47,12 +48,12 @@ namespace AmbientSoundsTuner.SoundPatchers
             get { return this.oldVolumes; }
         }
 
-        private Dictionary<T, SoundPacksFile.Audio> oldSounds = new Dictionary<T, SoundPacksFile.Audio>();
+        private Dictionary<T, SoundPacksFileV1.Audio> oldSounds = new Dictionary<T, SoundPacksFileV1.Audio>();
 
         /// <summary>
         /// Gets the backed up sounds.
         /// </summary>
-        public Dictionary<T, SoundPacksFile.Audio> OldSounds
+        public Dictionary<T, SoundPacksFileV1.Audio> OldSounds
         {
             get { return this.oldSounds; }
         }
@@ -67,7 +68,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// </summary>
         /// <param name="audioType">The audio type.</param>
         /// <returns>The available audios.</returns>
-        public virtual IDictionary<string, SoundPacksFile.Audio> GetAvailableAudiosForType(string audioType)
+        public virtual IDictionary<string, SoundPacksFileV1.Audio> GetAvailableAudiosForType(string audioType)
         {
             return SoundPacksManager.instance.AudioFiles.Where(kvp => kvp.Key.StartsWith(this.AudioPrefixId + "." + audioType)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
@@ -78,7 +79,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// <param name="audioType">The audio type.</param>
         /// <param name="audioName">The name of the audio.</param>
         /// <returns>The audio if it exists; null otherwise.</returns>
-        public virtual SoundPacksFile.Audio GetAudioByName(string audioType, string audioName)
+        public virtual SoundPacksFileV1.Audio GetAudioByName(string audioType, string audioName)
         {
             string id = this.AudioPrefixId + "." + audioType + "." + audioName;
             if (SoundPacksManager.instance.AudioFiles.ContainsKey(id))
@@ -97,37 +98,39 @@ namespace AmbientSoundsTuner.SoundPatchers
         public abstract SoundContainer GetSoundInstance(T id);
 
 
-        private int BackupAll(Func<T, bool> backupFunc)
+        private int BackupAll(Action<T> backupFunc, Action<string, SoundBackupException> feedbackFunc)
         {
             int counter = 0;
             foreach (T key in this.Ids)
             {
-                if (backupFunc(key))
+                try
                 {
-                    Mod.Instance.Log.Debug("Sound instance of '{0}' has been backed up", key);
+                    backupFunc(key);
+                    feedbackFunc(key.ToString(), null);
                     counter++;
                 }
-                else
+                catch (SoundBackupException ex)
                 {
-                    Mod.Instance.Log.Debug("Sound instance of '{0}' has not been backed up", key);
+                    feedbackFunc(key.ToString(), ex);
                 }
             }
             return counter;
         }
 
-        private int PatchAll<V>(Func<T, V, bool> patchFunc, IDictionary<T, V> newItems)
+        private int PatchAll<V>(Action<T, V> patchFunc, IDictionary<T, V> newItems, Action<string, SoundPatchException> feedbackFunc)
         {
             int counter = 0;
             foreach (var newItem in newItems)
             {
-                if (patchFunc(newItem.Key, newItem.Value))
+                try
                 {
-                    Mod.Instance.Log.Debug("Sound instance of '{0}' has been patched", newItem.Key);
+                    patchFunc(newItem.Key, newItem.Value);
+                    feedbackFunc(newItem.Key.ToString(), null);
                     counter++;
                 }
-                else
+                catch (SoundPatchException ex)
                 {
-                    Mod.Instance.Log.Debug("Sound instance of '{0}' has not been patched", newItem.Key);
+                    feedbackFunc(newItem.Key.ToString(), ex);
                 }
             }
             return counter;
@@ -140,7 +143,19 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// <returns>The number of succeeded operations.</returns>
         public virtual int BackupAllVolumes()
         {
-            return this.BackupAll(this.BackupVolume);
+            return this.BackupAll(this.BackupVolume, (id, ex) =>
+            {
+                if (ex == null)
+                {
+                    // Successfully backed up
+                    Mod.Instance.Log.Debug("Sound volume of '{0}' has been successfully backed up", id);
+                }
+                else
+                {
+                    // Failed to back up
+                    Mod.Instance.Log.Warning("Failed to back up the sound volume of '{0}'\r\n{1}", id, ex.InnerException != null ? ex.InnerException.ToString() : ex.Message);
+                }
+            });
         }
 
         /// <summary>
@@ -148,19 +163,30 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// </summary>
         /// <param name="id">The id of the volume to back up.</param>
         /// <returns>True if successful; false otherwise.</returns>
-        public virtual bool BackupVolume(T id)
+        public virtual void BackupVolume(T id)
         {
-            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
+            try
             {
-                SoundContainer sound = this.GetSoundInstance(id);
-                float? volume = SoundsPatcher.GetVolume(sound);
-                if (volume.HasValue)
+                if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
                 {
+                    SoundContainer sound = this.GetSoundInstance(id);
+                    float? volume = SoundsPatcher.GetVolume(sound);
+
+                    if (!volume.HasValue)
+                        throw new SoundBackupException(id.ToString(), "Sound has no volume set");
+
                     this.OldVolumes[id] = volume.Value;
-                    return true;
+                }
+                else
+                {
+                    throw new SoundBackupException(id.ToString(), "Unknown error");
                 }
             }
-            return false;
+            catch (Exception ex)
+            {
+                if (ex is SoundBackupException) throw ex;
+                else throw new SoundBackupException(id.ToString(), ex);
+            }
         }
 
         /// <summary>
@@ -170,7 +196,19 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// <returns>The number of succeeded operations.</returns>
         public virtual int PatchAllVolumes(IDictionary<T, float> newVolumes)
         {
-            return this.PatchAll(this.PatchVolume, newVolumes);
+            return this.PatchAll(this.PatchVolume, newVolumes, (id, ex) =>
+            {
+                if (ex == null)
+                {
+                    // Successfully backed up
+                    Mod.Instance.Log.Debug("Sound volume of '{0}' has been successfully patched", id);
+                }
+                else
+                {
+                    // Failed to back up
+                    Mod.Instance.Log.Warning("Failed to patch the sound volume of '{0}'\r\n{1}", id, ex.InnerException != null ? ex.InnerException.ToString() : ex.Message);
+                }
+            });
         }
 
         /// <summary>
@@ -179,14 +217,27 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// <param name="id">The id of the volume to patch.</param>
         /// <param name="newVolume">The new volume.</param>
         /// <returns>True if successful; false otherwise.</returns>
-        public virtual bool PatchVolume(T id, float newVolume)
+        public virtual void PatchVolume(T id, float newVolume)
         {
-            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
+            try
             {
-                SoundContainer sound = this.GetSoundInstance(id);
-                return SoundsPatcher.SetVolume(sound, newVolume);
+                if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
+                {
+                    SoundContainer sound = this.GetSoundInstance(id);
+
+                    if (!SoundsPatcher.SetVolume(sound, newVolume))
+                        throw new Exception("Failed to set volume");
+                }
+                else
+                {
+                    throw new SoundPatchException(id.ToString(), "Unknown error");
+                }
             }
-            return false;
+            catch (Exception ex)
+            {
+                if (ex is SoundPatchException) throw ex;
+                else throw new SoundPatchException(id.ToString(), ex);
+            }
         }
 
         /// <summary>
@@ -203,11 +254,10 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// </summary>
         /// <param name="id">The id of the volume to revert.</param>
         /// <returns>True if successful; false otherwise.</returns>
-        public virtual bool RevertVolume(T id)
+        public virtual void RevertVolume(T id)
         {
             if (this.OldVolumes.ContainsKey(id))
-                return this.PatchVolume(id, this.OldVolumes[id]);
-            return false;
+                this.PatchVolume(id, this.OldVolumes[id]);
         }
 
 
@@ -217,7 +267,19 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// <returns>The number of succeeded operations.</returns>
         public virtual int BackupAllSounds()
         {
-            return this.BackupAll(this.BackupSound);
+            return this.BackupAll(this.BackupSound, (id, ex) =>
+            {
+                if (ex == null)
+                {
+                    // Successfully backed up
+                    Mod.Instance.Log.Debug("Sound instance of '{0}' has been successfully backed up", id);
+                }
+                else
+                {
+                    // Failed to back up
+                    Mod.Instance.Log.Warning("Failed to back up the sound instance of '{0}'\r\n{1}", id, ex.InnerException != null ? ex.InnerException.ToString() : ex.Message);
+                }
+            });
         }
 
         /// <summary>
@@ -225,15 +287,28 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// </summary>
         /// <param name="id">The id of the sound to back up.</param>
         /// <returns>True if successful; false otherwise.</returns>
-        public virtual bool BackupSound(T id)
+        public virtual void BackupSound(T id)
         {
-            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
+            try
             {
-                SoundContainer sound = this.GetSoundInstance(id);
-                this.OldSounds[id] = SoundsPatcher.GetAudioInfo(sound);
-                return this.OldSounds[id] != null;
+                if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
+                {
+                    SoundContainer sound = this.GetSoundInstance(id);
+                    this.OldSounds[id] = SoundsPatcher.GetAudioInfo(sound);
+
+                    if (this.OldSounds[id] == null)
+                        throw new SoundBackupException(id.ToString(), "AudioInfo is null");
+                }
+                else
+                {
+                    throw new SoundBackupException(id.ToString(), "Unknown error");
+                }
             }
-            return false;
+            catch (Exception ex)
+            {
+                if (ex is SoundBackupException) throw ex;
+                else throw new SoundBackupException(id.ToString(), ex);
+            }
         }
 
         /// <summary>
@@ -241,9 +316,21 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// </summary>
         /// <param name="newSounds">The new sounds.</param>
         /// <returns>The number of succeeded operations.</returns>
-        public virtual int PatchAllSounds(IDictionary<T, SoundPacksFile.Audio> newSounds)
+        public virtual int PatchAllSounds(IDictionary<T, SoundPacksFileV1.Audio> newSounds)
         {
-            return this.PatchAll(this.PatchSound, newSounds);
+            return this.PatchAll(this.PatchSound, newSounds, (id, ex) =>
+            {
+                if (ex == null)
+                {
+                    // Successfully backed up
+                    Mod.Instance.Log.Debug("Sound instance of '{0}' has been successfully backed up", id);
+                }
+                else
+                {
+                    // Failed to back up
+                    Mod.Instance.Log.Warning("Failed to patch the sound instance of '{0}'\r\n{1}", id, ex.InnerException != null ? ex.InnerException.ToString() : ex.Message);
+                }
+            });
         }
 
         /// <summary>
@@ -252,14 +339,27 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// <param name="id">The id of the sound to patch.</param>
         /// <param name="newSound">The new sound.</param>
         /// <returns>True if successful; false otherwise.</returns>
-        public virtual bool PatchSound(T id, SoundPacksFile.Audio newSound)
+        public virtual void PatchSound(T id, SoundPacksFileV1.Audio newSound)
         {
-            if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
+            try
             {
-                SoundContainer sound = this.GetSoundInstance(id);
-                return SoundsPatcher.SetAudioInfo(sound, newSound);
+                if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
+                {
+                    SoundContainer sound = this.GetSoundInstance(id);
+
+                    if (!SoundsPatcher.SetAudioInfo(sound, newSound))
+                        throw new SoundPatchException(id.ToString(), "Failed to set AudioInfo");
+                }
+                else
+                {
+                    throw new SoundPatchException(id.ToString(), "Unknown error");
+                }
             }
-            return false;
+            catch (Exception ex)
+            {
+                if (ex is SoundPatchException) throw ex;
+                else throw new SoundPatchException(id.ToString(), ex);
+            }
         }
 
         /// <summary>
@@ -276,11 +376,10 @@ namespace AmbientSoundsTuner.SoundPatchers
         /// </summary>
         /// <param name="id">The id of the sound to revert.</param>
         /// <returns>True if successful; false otherwise.</returns>
-        public virtual bool RevertSound(T id)
+        public virtual void RevertSound(T id)
         {
             if (this.OldSounds.ContainsKey(id))
-                return this.PatchSound(id, this.OldSounds[id]);
-            return false;
+                this.PatchSound(id, this.OldSounds[id]);
         }
     }
 }

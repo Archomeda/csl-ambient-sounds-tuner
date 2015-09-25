@@ -4,7 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using AmbientSoundsTuner.Defs;
+using AmbientSoundsTuner.Migration;
 using AmbientSoundsTuner.SoundPack;
+using AmbientSoundsTuner.SoundPack.Migration;
 using AmbientSoundsTuner.SoundPatchers;
 using ColossalFramework;
 using ColossalFramework.DataBinding;
@@ -111,7 +113,7 @@ namespace AmbientSoundsTuner.UI
         {
             { "Engines", new[]
                 {
-                    new SliderDef<string>(VehiclesPatcher.ID_AIRCRAFT_MOVEMENT, "Vehicle", "Aircrafts"),
+                    new SliderDef<string>(VehiclesPatcher.ID_AIRCRAFT_SOUND, "Vehicle", "Aircrafts"),
                     new SliderDef<string>(VehiclesPatcher.ID_LARGE_CAR_SOUND, "Vehicle", "Large Cars", 1.5f),
                     new SliderDef<string>(VehiclesPatcher.ID_METRO_MOVEMENT, "Vehicle", "Metros"),
                     new SliderDef<string>(VehiclesPatcher.ID_SMALL_CAR_SOUND, "Vehicle", "Small Cars", 1.5f),
@@ -305,7 +307,7 @@ namespace AmbientSoundsTuner.UI
             var configuration = Mod.Instance.Settings.GetSoundsByCategoryId<T>(categoryId);
 
             if (!configuration.ContainsKey(soundId))
-                configuration.Add(soundId, new Configuration.Sound());
+                configuration.Add(soundId, new ConfigurationV4.Sound());
 
             configuration[soundId].Volume = value;
             patcher.PatchVolume(soundId, value);
@@ -318,7 +320,7 @@ namespace AmbientSoundsTuner.UI
 
             // Selected audio changed
             if (!configuration.ContainsKey(soundId))
-                configuration.Add(soundId, new Configuration.Sound());
+                configuration.Add(soundId, new ConfigurationV4.Sound());
 
             // Set preset to custom
             if (!this.isChangingSoundPackPreset)
@@ -328,7 +330,7 @@ namespace AmbientSoundsTuner.UI
             {
                 // Chosen audio is a custom audio
                 configuration[soundId].SoundPack = name;
-                SoundPacksFile.Audio audioFile = patcher.GetAudioByName(soundId.ToString(), name);
+                var audioFile = patcher.GetAudioByName(soundId.ToString(), name);
                 patcher.PatchSound(soundId, audioFile);
                 uiSlider.maxValue = Mathf.Max(audioFile.AudioInfo.MaxVolume, audioFile.AudioInfo.Volume);
                 uiSlider.value = audioFile.AudioInfo.Volume;
@@ -370,7 +372,7 @@ namespace AmbientSoundsTuner.UI
             {
                 // Sound pack
                 string soundPackName = this.soundPacks[value];
-                SoundPacksFile.SoundPack soundPack = null;
+                SoundPacksFileV1.SoundPack soundPack = null;
                 Mod.Instance.Log.Debug("Setting sound pack to {0}", soundPackName);
 
                 if (SoundPacksManager.instance.SoundPacks.TryGetValue(soundPackName, out soundPack))
@@ -379,7 +381,7 @@ namespace AmbientSoundsTuner.UI
                     {
                         var prefix = dropDown.Key.Substring(0, dropDown.Key.IndexOf('.'));
                         var id = dropDown.Key.Substring(dropDown.Key.IndexOf('.') + 1);
-                        SoundPacksFile.Audio[] audios = null;
+                        SoundPacksFileV1.Audio[] audios = null;
                         switch (prefix)
                         {
                             case "Ambient":
@@ -400,7 +402,7 @@ namespace AmbientSoundsTuner.UI
                         }
                         if (audios != null)
                         {
-                            SoundPacksFile.Audio audio = audios.FirstOrDefault(a => a.Type == id);
+                            SoundPacksFileV1.Audio audio = audios.FirstOrDefault(a => a.Type == id);
                             if (audio != null)
                             {
                                 Mod.Instance.Log.Debug("Setting sound {0} to {1}", audio.Type, audio.Name);

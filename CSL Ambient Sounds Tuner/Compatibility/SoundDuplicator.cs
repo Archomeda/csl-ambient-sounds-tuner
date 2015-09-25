@@ -44,7 +44,6 @@ namespace AmbientSoundsTuner.Compatibility
     public static class SoundDuplicator
     {
         public const string EFFECT_POLICE_CAR_SIREN = "Police Car Siren";
-        public const string EFFECT_SCOOTER_MOVEMENT = "Scooter Movement";
         public const string EFFECT_SCOOTER_SOUND = "Scooter Sound";
         public const string BUILDING_OIL_POWER_PLANT = "Oil Power Plant";
         public const string BUILDING_WATER_TREATMENT_PLANT = "Water Treatment Plant";
@@ -81,13 +80,7 @@ namespace AmbientSoundsTuner.Compatibility
         /// </summary>
         public static PatchResult PatchScooterSound()
         {
-            MultiEffect scooterMovementEffect = EffectCollection.FindEffect(EFFECT_SCOOTER_MOVEMENT) as MultiEffect;
-            if (scooterMovementEffect == null || scooterMovementEffect.m_effects == null)
-            {
-                return PatchResult.NotFound;
-            }
-
-            return DuplicateEffectAudioInfo(EFFECT_SCOOTER_SOUND, AUDIOINFO_SCOOTER_ENGINE, scooterMovementEffect);
+            return DuplicateEffectAudioInfo(EFFECT_SCOOTER_SOUND, AUDIOINFO_SCOOTER_ENGINE);
         }
 
         /// <summary>

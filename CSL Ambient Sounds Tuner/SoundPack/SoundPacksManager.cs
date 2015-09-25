@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using AmbientSoundsTuner.SoundPack.Migration;
 using ColossalFramework;
 using ColossalFramework.Plugins;
 using CommonShared.Proxies.Plugins;
@@ -20,15 +21,15 @@ namespace AmbientSoundsTuner.SoundPack
         public SoundPacksManager()
         {
             this.SoundPackMods = new Dictionary<IPluginInfoInteractor, SoundPacksFile>();
-            this.SoundPacks = new Dictionary<string, SoundPacksFile.SoundPack>();
-            this.AudioFiles = new Dictionary<string, SoundPacksFile.Audio>();
+            this.SoundPacks = new Dictionary<string, SoundPacksFileV1.SoundPack>();
+            this.AudioFiles = new Dictionary<string, SoundPacksFileV1.Audio>();
         }
 
         public IDictionary<IPluginInfoInteractor, SoundPacksFile> SoundPackMods { get; private set; }
 
-        public IDictionary<string, SoundPacksFile.SoundPack> SoundPacks { get; private set; }
+        public IDictionary<string, SoundPacksFileV1.SoundPack> SoundPacks { get; private set; }
 
-        public IDictionary<string, SoundPacksFile.Audio> AudioFiles { get; private set; }
+        public IDictionary<string, SoundPacksFileV1.Audio> AudioFiles { get; private set; }
 
         public void InitSoundPacks()
         {
@@ -62,14 +63,14 @@ namespace AmbientSoundsTuner.SoundPack
 
             try
             {
-                SoundPacksFile soundPackFile = SoundPacksFile.LoadConfig<SoundPacksFile>(path);
+                SoundPacksFile soundPackFile = SoundPacksFile.LoadConfig(path, new SoundPacksFileMigrator());
                 this.SoundPackMods[mod] = soundPackFile;
 
                 foreach (var soundPack in soundPackFile.SoundPacks)
                 {
                     // Patch the paths
-                    Action<SoundPacksFile.AudioInfo> patchAudioInfoClipPath = null;
-                    patchAudioInfoClipPath = new Action<SoundPacksFile.AudioInfo>(a =>
+                    Action<SoundPacksFileV1.AudioInfo> patchAudioInfoClipPath = null;
+                    patchAudioInfoClipPath = new Action<SoundPacksFileV1.AudioInfo>(a =>
                     {
                         a.Clip = Path.Combine(mod.ModPath, a.Clip);
                         if (a.Variations != null)
@@ -96,8 +97,8 @@ namespace AmbientSoundsTuner.SoundPack
                     }
 
                     // Get every audio
-                    var audioFiles = new Dictionary<string, SoundPacksFile.Audio>();
-                    foreach (var group in new Dictionary<string, SoundPacksFile.Audio[]>() { 
+                    var audioFiles = new Dictionary<string, SoundPacksFileV1.Audio>();
+                    foreach (var group in new Dictionary<string, SoundPacksFileV1.Audio[]>() { 
                         { "Ambient", soundPack.Ambients }, 
                         { "Animal", soundPack.Animals }, 
                         { "Building", soundPack.Buildings },
@@ -135,7 +136,7 @@ namespace AmbientSoundsTuner.SoundPack
         {
             foreach (var soundPackFile in this.SoundPackMods[mod].SoundPacks)
             {
-                foreach (var group in new Dictionary<string, SoundPacksFile.Audio[]>() { 
+                foreach (var group in new Dictionary<string, SoundPacksFileV1.Audio[]>() { 
                         { "Ambient", soundPackFile.Ambients }, 
                         { "Animal", soundPackFile.Animals }, 
                         { "Building", soundPackFile.Buildings },

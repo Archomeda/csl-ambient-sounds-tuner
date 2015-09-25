@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.SoundPack;
+using AmbientSoundsTuner.SoundPack.Migration;
 using ColossalFramework;
 using UnityEngine;
 
@@ -92,20 +93,20 @@ namespace AmbientSoundsTuner.SoundPatchers
         public SoundPacksFile GetCurrentSoundSettingsAsSoundPack()
         {
             SoundPacksFile file = new SoundPacksFile();
-            file.SoundPacks = new SoundPacksFile.SoundPack[] { new SoundPacksFile.SoundPack() };
+            file.SoundPacks = new SoundPacksFileV1.SoundPack[] { new SoundPacksFileV1.SoundPack() };
 
             var soundPack = file.SoundPacks[0];
             soundPack.Name = "Default";
-            soundPack.Ambients = new SoundPacksFile.Audio[this.AmbientsPatcher.Ids.Length];
-            soundPack.Animals = new SoundPacksFile.Audio[this.AnimalsPatcher.Ids.Length];
-            soundPack.Buildings = new SoundPacksFile.Audio[this.BuildingsPatcher.Ids.Length];
-            soundPack.Vehicles = new SoundPacksFile.Audio[this.VehiclesPatcher.Ids.Length];
-            soundPack.Miscs = new SoundPacksFile.Audio[this.MiscPatcher.Ids.Length];
+            soundPack.Ambients = new SoundPacksFileV1.Audio[this.AmbientsPatcher.Ids.Length];
+            soundPack.Animals = new SoundPacksFileV1.Audio[this.AnimalsPatcher.Ids.Length];
+            soundPack.Buildings = new SoundPacksFileV1.Audio[this.BuildingsPatcher.Ids.Length];
+            soundPack.Vehicles = new SoundPacksFileV1.Audio[this.VehiclesPatcher.Ids.Length];
+            soundPack.Miscs = new SoundPacksFileV1.Audio[this.MiscPatcher.Ids.Length];
 
-            Func<AudioInfo, SoundPacksFile.AudioInfo> convertAudioInfo = null;
-            convertAudioInfo = new Func<AudioInfo, SoundPacksFile.AudioInfo>(ai =>
+            Func<AudioInfo, SoundPacksFileV1.AudioInfo> convertAudioInfo = null;
+            convertAudioInfo = new Func<AudioInfo, SoundPacksFileV1.AudioInfo>(ai =>
             {
-                var audioInfo = new SoundPacksFile.AudioInfo()
+                var audioInfo = new SoundPacksFileV1.AudioInfo()
                 {
                     Clip = "NOFILE",
                     Volume = ai.m_volume,
@@ -119,10 +120,10 @@ namespace AmbientSoundsTuner.SoundPatchers
 
                 if (ai.m_variations.Length > 0)
                 {
-                    audioInfo.Variations = new SoundPacksFile.Variation[ai.m_variations.Length];
+                    audioInfo.Variations = new SoundPacksFileV1.Variation[ai.m_variations.Length];
                     for (int i = 0; i < audioInfo.Variations.Length; i++)
                     {
-                        audioInfo.Variations[i] = new SoundPacksFile.Variation()
+                        audioInfo.Variations[i] = new SoundPacksFileV1.Variation()
                         {
                             Probability = ai.m_variations[i].m_probability,
                             AudioInfo = convertAudioInfo(ai.m_variations[i].m_sound)
@@ -133,9 +134,9 @@ namespace AmbientSoundsTuner.SoundPatchers
                 return audioInfo;
             });
 
-            var convertToFile = new Func<string, AudioInfo, SoundPacksFile.Audio>((type, ai) =>
+            var convertToFile = new Func<string, AudioInfo, SoundPacksFileV1.Audio>((type, ai) =>
             {
-                return new SoundPacksFile.Audio()
+                return new SoundPacksFileV1.Audio()
                 {
                     Name = ai.name,
                     Type = type,

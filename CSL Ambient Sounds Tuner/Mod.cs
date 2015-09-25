@@ -121,13 +121,13 @@ namespace AmbientSoundsTuner
             string oldXmlSettingsFilename = Path.Combine(Path.GetDirectoryName(this.SettingsFilename), Path.GetFileNameWithoutExtension(this.SettingsFilename)) + ".xml";
             if (File.Exists(oldXmlSettingsFilename) && !File.Exists(this.SettingsFilename))
             {
-                this.Settings = VersionedConfig.LoadConfig<Configuration>(oldXmlSettingsFilename, new ConfigurationMigrator());
+                this.Settings = Configuration.LoadConfig(oldXmlSettingsFilename, new ConfigurationMigrator());
                 this.Settings.SaveConfig(this.SettingsFilename);
                 File.Delete(oldXmlSettingsFilename);
             }
             else
             {
-                this.Settings = VersionedConfig.LoadConfig<Configuration>(this.SettingsFilename, new ConfigurationMigrator());
+                this.Settings = Configuration.LoadConfig(this.SettingsFilename, new ConfigurationMigrator());
             }
 
             this.Log.EnableDebugLogging = this.Settings.ExtraDebugLogging;
@@ -221,7 +221,7 @@ namespace AmbientSoundsTuner
         #endregion
 
 
-        private void PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, Configuration.Sound> newSounds)
+        private void PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, ConfigurationV4.Sound> newSounds)
         {
             int backedUpSounds = patcher.BackupAllSounds();
             this.Log.Debug("{0} sounds have been backed up through {1}", backedUpSounds, patcher.GetType().Name);
@@ -229,14 +229,14 @@ namespace AmbientSoundsTuner
             int backedUpVolumes = patcher.BackupAllVolumes();
             this.Log.Debug("{0} volumes have been backed up through {1}", backedUpVolumes, patcher.GetType().Name);
 
-            int patchedSounds = patcher.PatchAllSounds(newSounds.ToDictionary(kvp => kvp.Key, kvp =>
-            {
-                if (!string.IsNullOrEmpty(kvp.Value.SoundPack))
-                {
-                    return patcher.GetAudioByName(kvp.Key.ToString(), kvp.Value.SoundPack);
-                }
-                return null;
-            }));
+            int patchedSounds = patcher.PatchAllSounds(
+                newSounds
+                    .Where(kvp => !string.IsNullOrEmpty(kvp.Value.SoundPack) && kvp.Value.SoundPack != "Default")
+                    .ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => patcher.GetAudioByName(kvp.Key.ToString(), kvp.Value.SoundPack)
+                    )
+                );
             this.Log.Debug("{0} sounds have been patched through {1}", patchedSounds, patcher.GetType().Name);
 
             int patchedVolumes = patcher.PatchAllVolumes(newSounds.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Volume));
