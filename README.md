@@ -34,9 +34,9 @@ Alternatively, download an artifact from
 [AppVeyor](https://ci.appveyor.com/project/Archomeda/csl-ambient-sounds-tuner/branch/master).
 
 ## Compatibility
-This mod is based on version 1.1.1 of Cities Skylines, and it is not guaranteed
-that it will work on later versions. I'll try to keep it updated when newer
-versions are released however.
+This mod is based on version 1.2.0-f3 of Cities Skylines, and it is not
+guaranteed that it will work on later versions. I'll try to keep it updated when
+newer versions are released however.
 
 If a newer version of Cities Skylines breaks your game, don't worry. This mod
 should not break your saves (as far as I know). Just disable the mod for the
