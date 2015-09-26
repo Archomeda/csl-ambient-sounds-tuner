@@ -310,7 +310,11 @@ namespace AmbientSoundsTuner.UI
                 configuration.Add(soundId, new ConfigurationV4.Sound());
 
             configuration[soundId].Volume = value;
-            patcher.PatchVolume(soundId, value);
+
+            if (LoadingManager.instance.m_loadingComplete)
+                patcher.PatchVolume(soundId, value);
+            else
+                Mod.Instance.Log.Debug("Skip patching volume of {0} as there isn't a game active", soundId.ToString());
         }
 
         private void SoundPackChanged<T>(string categoryId, T soundId, string name, UISlider uiSlider)
@@ -331,7 +335,12 @@ namespace AmbientSoundsTuner.UI
                 // Chosen audio is a custom audio
                 configuration[soundId].SoundPack = name;
                 var audioFile = patcher.GetAudioByName(soundId.ToString(), name);
-                patcher.PatchSound(soundId, audioFile);
+
+                if (LoadingManager.instance.m_loadingComplete)
+                    patcher.PatchSound(soundId, audioFile);
+                else
+                    Mod.Instance.Log.Debug("Skip patching sound of {0} as there isn't a game active", soundId.ToString());
+
                 uiSlider.maxValue = Mathf.Max(audioFile.AudioInfo.MaxVolume, audioFile.AudioInfo.Volume);
                 uiSlider.value = audioFile.AudioInfo.Volume;
             }
@@ -339,7 +348,12 @@ namespace AmbientSoundsTuner.UI
             {
                 // Chosen audio is the default one
                 configuration[soundId].SoundPack = "";
-                patcher.RevertSound(soundId);
+
+                if (LoadingManager.instance.m_loadingComplete)
+                    patcher.RevertSound(soundId);
+                else
+                    Mod.Instance.Log.Debug("Skip reverting sound of {0} as there isn't a game active", soundId.ToString());
+
                 if (patcher.OldSounds.ContainsKey(soundId))
                 {
                     uiSlider.maxValue = patcher.OldSounds[soundId].AudioInfo.MaxVolume;

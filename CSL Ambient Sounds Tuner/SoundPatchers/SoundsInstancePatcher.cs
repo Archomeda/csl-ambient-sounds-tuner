@@ -167,20 +167,13 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             try
             {
-                if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
-                {
-                    SoundContainer sound = this.GetSoundInstance(id);
-                    float? volume = SoundsPatcher.GetVolume(sound);
+                SoundContainer sound = this.GetSoundInstance(id);
+                float? volume = SoundsPatcher.GetVolume(sound);
 
-                    if (!volume.HasValue)
-                        throw new SoundBackupException(id.ToString(), "Sound has no volume set");
+                if (!volume.HasValue)
+                    throw new SoundBackupException(id.ToString(), "Sound has no volume set");
 
-                    this.OldVolumes[id] = volume.Value;
-                }
-                else
-                {
-                    throw new SoundBackupException(id.ToString(), "Unknown error");
-                }
+                this.OldVolumes[id] = volume.Value;
             }
             catch (Exception ex)
             {
@@ -221,17 +214,10 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             try
             {
-                if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
-                {
-                    SoundContainer sound = this.GetSoundInstance(id);
+                SoundContainer sound = this.GetSoundInstance(id);
 
-                    if (!SoundsPatcher.SetVolume(sound, newVolume))
-                        throw new Exception("Failed to set volume");
-                }
-                else
-                {
-                    throw new SoundPatchException(id.ToString(), "Unknown error");
-                }
+                if (!SoundsPatcher.SetVolume(sound, newVolume))
+                    throw new Exception("Failed to set volume");
             }
             catch (Exception ex)
             {
@@ -291,18 +277,11 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             try
             {
-                if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
-                {
-                    SoundContainer sound = this.GetSoundInstance(id);
-                    this.OldSounds[id] = SoundsPatcher.GetAudioInfo(sound);
+                SoundContainer sound = this.GetSoundInstance(id);
+                this.OldSounds[id] = SoundsPatcher.GetAudioInfo(sound);
 
-                    if (this.OldSounds[id] == null)
-                        throw new SoundBackupException(id.ToString(), "AudioInfo is null");
-                }
-                else
-                {
-                    throw new SoundBackupException(id.ToString(), "Unknown error");
-                }
+                if (this.OldSounds[id] == null)
+                    throw new SoundBackupException(id.ToString(), "AudioInfo is null");
             }
             catch (Exception ex)
             {
@@ -343,17 +322,10 @@ namespace AmbientSoundsTuner.SoundPatchers
         {
             try
             {
-                if (SimulationManager.instance.m_metaData != null && SimulationManager.instance.m_metaData.m_updateMode != SimulationManager.UpdateMode.Undefined)
-                {
-                    SoundContainer sound = this.GetSoundInstance(id);
+                SoundContainer sound = this.GetSoundInstance(id);
 
-                    if (!SoundsPatcher.SetAudioInfo(sound, newSound))
-                        throw new SoundPatchException(id.ToString(), "Failed to set AudioInfo");
-                }
-                else
-                {
-                    throw new SoundPatchException(id.ToString(), "Unknown error");
-                }
+                if (!SoundsPatcher.SetAudioInfo(sound, newSound))
+                    throw new SoundPatchException(id.ToString(), "Failed to set AudioInfo");
             }
             catch (Exception ex)
             {
