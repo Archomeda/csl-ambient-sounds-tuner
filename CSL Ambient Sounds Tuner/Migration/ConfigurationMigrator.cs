@@ -158,7 +158,7 @@ namespace AmbientSoundsTuner.Migration
                 switch (kvp.Key)
                 {
                     case "Small Car Sound":
-                        newConfig.BuildingSounds.Add("Scooter Sound", new ConfigurationV4.Sound() { SoundPack = kvp.Value.SoundPack, Volume = kvp.Value.Volume });
+                        newConfig.VehicleSounds.Add("Scooter Sound", new ConfigurationV4.Sound() { SoundPack = kvp.Value.SoundPack, Volume = kvp.Value.Volume });
                         break;
                 }
 
