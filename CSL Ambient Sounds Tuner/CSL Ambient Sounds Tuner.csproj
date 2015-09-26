@@ -42,9 +42,9 @@
       <HintPath>..\packages\CitiesSkylines.ColossalManaged.1.2.0\lib\net35\ColossalManaged.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CommonShared, Version=1.2.1.58, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CommonShared, Version=1.2.2.62, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CslCommonShared.1.2.1.58\lib\net35\CommonShared.dll</HintPath>
+      <HintPath>..\packages\CslCommonShared.1.2.2.62\lib\net35\CommonShared.dll</HintPath>
     </Reference>
     <Reference Include="ICities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CitiesSkylines.ICities.1.2.0\lib\net35\ICities.dll</HintPath>
