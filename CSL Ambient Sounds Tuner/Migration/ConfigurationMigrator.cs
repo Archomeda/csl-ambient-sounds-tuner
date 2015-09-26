@@ -129,7 +129,19 @@ namespace AmbientSoundsTuner.Migration
             newConfig.ExtraDebugLogging = config.ExtraDebugLogging;
             newConfig.AmbientSounds = config.AmbientSounds;
             newConfig.AnimalSounds = config.AnimalSounds;
-            newConfig.BuildingSounds = config.BuildingSounds;
+            foreach (var kvp in config.BuildingSounds)
+            {
+                switch (kvp.Key)
+                {
+                    case "Coal Power Plant":
+                        newConfig.BuildingSounds.Add("Oil Power Plant", new ConfigurationV4.Sound() { SoundPack = kvp.Value.SoundPack, Volume = kvp.Value.Volume });
+                        break;
+                    case "Water Outlet":
+                        newConfig.BuildingSounds.Add("Water Treatment Plant", new ConfigurationV4.Sound() { SoundPack = kvp.Value.SoundPack, Volume = kvp.Value.Volume });
+                        break;
+                }
+                newConfig.BuildingSounds.Add(kvp.Key, kvp.Value);
+            }
             foreach (var kvp in config.VehicleSounds)
             {
                 string key;
@@ -142,6 +154,14 @@ namespace AmbientSoundsTuner.Migration
                         key = kvp.Key;
                         break;
                 }
+
+                switch (kvp.Key)
+                {
+                    case "Small Car Sound":
+                        newConfig.BuildingSounds.Add("Scooter Sound", new ConfigurationV4.Sound() { SoundPack = kvp.Value.SoundPack, Volume = kvp.Value.Volume });
+                        break;
+                }
+
                 newConfig.VehicleSounds.Add(key, kvp.Value);
             }
             newConfig.MiscSounds = config.MiscSounds;
