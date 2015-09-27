@@ -19,49 +19,87 @@ using UnityEngine;
 
 namespace AmbientSoundsTuner
 {
-    public class Mod : LoadingExtensionBase, IUserMod
+    public class Mod : UserModBase<Mod>, IUserModSettingsUI
     {
-        internal static Mod Instance { get; private set; }
+        protected override ulong WorkshopId { get { return 455958878; } }
+
+        protected override IEnumerable<ulong> IncompatibleMods
+        {
+            get
+            {
+                return new HashSet<ulong>()
+                {
+                    //421050717, // [ARIS] Remove Cows
+                    //421052798, // [ARIS] Remove Pigs
+                    //421041154, // [ARIS] Remove Seagulls
+                    421527612, // SilenceObnoxiousSirens
+                };
+            }
+        }
 
         internal Configuration Settings { get; private set; }
+
         internal string SettingsFilename { get; private set; }
-        internal Logger Log { get; private set; }
 
         internal ModOptionsPanel OptionsPanel { get; private set; }
 
-        internal static HashSet<ulong> IncompatibleMods = new HashSet<ulong>()
-        {
-            //421050717, // [ARIS] Remove Cows
-            //421052798, // [ARIS] Remove Pigs
-            //421041154, // [ARIS] Remove Seagulls
-            421527612, // SilenceObnoxiousSirens
-        };
 
-        private bool isLoadedInMainMenu = false;
+        #region UserModBase members
 
-
-        #region IUserMod members
-
-        public string Name
+        public override string ModName
         {
             get { return "Ambient Sounds Tuner"; }
         }
 
-        public string Description
+        public override string ModDescription
         {
             get { return "Tune your ambient sounds volumes individually"; }
         }
 
+        public override void OnModInitializing(bool enabled)
+        {
+            this.SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(this), "AmbientSoundsTuner.yml");
+            this.Log.Debug("Mod initialized");
+        }
+
+        public override void OnMainMenuLoading()
+        {
+            this.Load();
+
+            this.PatchUISounds();
+            this.Log.Debug("Mod loaded in-menu");
+        }
+
+        public override void OnModDeactivated()
+        {
+            this.Unload();
+        }
+
+        public override void OnGameLoaded(LoadMode mode)
+        {
+            this.Load();
+
+            // Before we patch, we export the current game sounds as an example file
+            var exampleFile = SoundPatchersManager.instance.GetCurrentSoundSettingsAsSoundPack();
+            exampleFile.SaveConfig(Path.Combine(FileUtils.GetStorageFolder(Mod.Instance), "Example." + SoundPacksManager.SOUNDPACKS_FILENAME_XML));
+            exampleFile.SaveConfig(Path.Combine(FileUtils.GetStorageFolder(Mod.Instance), "Example." + SoundPacksManager.SOUNDPACKS_FILENAME_YAML));
+
+            this.PatchSounds();
+            this.Log.Debug("Mod loaded in-game");
+        }
+
+        public override void OnGameUnloading()
+        {
+            this.Unload();
+        }
+
+        #endregion
+
+
+        #region IUserModSettingsUI
+
         public void OnSettingsUI(UIHelperBase helper)
         {
-            // Since this method gets called on the main menu when this mod is enabled, we will also hook some of our loading here
-            if (SimulationManager.instance.m_metaData == null || SimulationManager.instance.m_metaData.m_updateMode == SimulationManager.UpdateMode.Undefined)
-            {
-                // Here we ensure this gets only loaded on main menu, and not in-game
-                this.Init();
-                this.Load(GameState.MainMenu);
-            }
-
             // Do regular settings UI stuff
             UIHelper uiHelper = helper as UIHelper;
             if (uiHelper != null)
@@ -78,45 +116,17 @@ namespace AmbientSoundsTuner
 
         #endregion
 
+
         public string BuildVersion
         {
             get { return "dev version"; }
         }
 
+
         #region Loading / Unloading
 
-        private void Init()
+        private void Load()
         {
-            this.SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(this), "AmbientSoundsTuner.yml");
-            this.Log = new Logger(this.GetType().Assembly);
-            Instance = this;
-
-            this.Log.Debug("Mod initialized");
-        }
-
-        private void Load(GameState state)
-        {
-            // Pre-load in main menu
-            if (state == GameState.MainMenu)
-            {
-                if (this.isLoadedInMainMenu) { return; }
-
-                Action<bool> pluginStateChangeCallback = null;
-                pluginStateChangeCallback = new Action<bool>(isEnabled =>
-                {
-                    if (!isEnabled)
-                    {
-                        this.Unload();
-                        PluginUtils.UnsubscribePluginStateChange(this, pluginStateChangeCallback);
-                    }
-                });
-                PluginUtils.SubscribePluginStateChange(this, pluginStateChangeCallback);
-                this.isLoadedInMainMenu = true;
-            }
-
-            // Load regular
-            this.CheckIncompatibility();
-
             // We have to properly migrate the outdated XML configuration file
             string oldXmlSettingsFilename = Path.Combine(Path.GetDirectoryName(this.SettingsFilename), Path.GetFileNameWithoutExtension(this.SettingsFilename)) + ".xml";
             if (File.Exists(oldXmlSettingsFilename) && !File.Exists(this.SettingsFilename))
@@ -139,25 +149,8 @@ namespace AmbientSoundsTuner
             // Load sound packs
             SoundPacksManager.instance.InitSoundPacks();
 
-            // Patch sounds based on game state
+            // Detour UI click sounds
             CustomPlayClickSound.Detour();
-
-            if (state == GameState.InGame)
-            {
-                // Before we patch, we export the current game sounds as an example file
-                var exampleFile = SoundPatchersManager.instance.GetCurrentSoundSettingsAsSoundPack();
-                exampleFile.SaveConfig(Path.Combine(FileUtils.GetStorageFolder(Mod.Instance), "Example." + SoundPacksManager.SOUNDPACKS_FILENAME_XML));
-                exampleFile.SaveConfig(Path.Combine(FileUtils.GetStorageFolder(Mod.Instance), "Example." + SoundPacksManager.SOUNDPACKS_FILENAME_YAML));
-
-                this.PatchSounds();
-            }
-            else if (state == GameState.MainMenu)
-            {
-                this.PatchUISounds();
-                this.isLoadedInMainMenu = true;
-            }
-
-            this.Log.Debug("Mod loaded");
         }
 
         private void Unload()
@@ -169,53 +162,7 @@ namespace AmbientSoundsTuner
             // But since that sounds are only patched in-game, and closing that game conveniently resets the other sounds, it's not really needed.
             // If it's needed at some point in the future, we can add that logic here.
 
-            this.isLoadedInMainMenu = false;
             this.Log.Debug("Mod unloaded");
-        }
-
-        private void CheckIncompatibility()
-        {
-            var list = PluginUtils.GetPluginInfosOf(IncompatibleMods);
-            if (list.Count > 0)
-            {
-                string text = string.Join(", ",
-                    list.Where(kvp => kvp.Value.IsEnabled)
-                        .Select(kvp => string.Format("{0} ({1})", kvp.Value.GetInstances<IUserMod>()[0].Name, kvp.Value.PublishedFileID.AsUInt64.ToString()))
-                        .OrderBy(s => s)
-                        .ToArray());
-
-                if (text != "")
-                {
-                    this.Log.Warning("You've got some known incompatible mods enabled! It's possible that this mod doesn't work as expected.\nThe following incompatible mods are enabled: {0}.", text);
-                }
-            }
-
-            this.Log.Debug("Incompatibility check completed");
-        }
-
-        #endregion
-
-
-        #region LoadingExtensionBase members
-
-        /// <summary>
-        /// Our entry point. Here we load the mod.
-        /// </summary>
-        /// <param name="mode">The game mode.</param>
-        public override void OnLevelLoaded(LoadMode mode)
-        {
-            base.OnLevelLoaded(mode);
-            this.Init();
-            this.Load(GameState.InGame);
-        }
-
-        /// <summary>
-        /// Our exit point. Here we unload everything we have loaded.
-        /// </summary>
-        public override void OnLevelUnloading()
-        {
-            base.OnLevelUnloading();
-            this.Unload();
         }
 
         #endregion
@@ -319,13 +266,6 @@ namespace AmbientSoundsTuner
                     SoundPatchersManager.instance.MiscPatcher.PatchVolume(id, this.Settings.MiscSounds[id].Volume);
                 }
             }
-        }
-
-
-        public enum GameState
-        {
-            MainMenu,
-            InGame
         }
     }
 }
