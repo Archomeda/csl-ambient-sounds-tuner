@@ -42,6 +42,9 @@ namespace AmbientSoundsTuner.SoundPatchers
         public const string ID_WATER_TREATMENT_PLANT = Compatibility.SoundDuplicator.BUILDING_WATER_TREATMENT_PLANT;
         public const string ID_WIND_TURBINE = "Wind Turbine";
 
+        public const string ID_CASINO = "Building Casino";
+        public const string ID_ZOO = "Building Zoo";
+
         public const string ID_ON_FIRE = "On Fire";
         public const string ID_ON_UPGRADE = "On Upgrade";
         private const string ID_ON_UPGRADE_SOUND = "Levelup Sound";
@@ -92,6 +95,9 @@ namespace AmbientSoundsTuner.SoundPatchers
                     ID_WATER_PUMPING_STATION,
                     ID_WATER_TREATMENT_PLANT,
                     ID_WIND_TURBINE,
+
+                    ID_CASINO,
+                    ID_ZOO,
 
                     ID_ON_FIRE,
                     ID_ON_UPGRADE

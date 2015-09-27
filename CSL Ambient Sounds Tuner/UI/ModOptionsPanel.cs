@@ -105,6 +105,12 @@ namespace AmbientSoundsTuner.UI
                     new SliderDef<string>(BuildingsPatcher.ID_TRAIN_STATION, "Building", "Train Station")
                 }
             },
+            { "After Dark DLC", new[]
+                {
+                    new SliderDef<string>(BuildingsPatcher.ID_CASINO, "Building", "Casino"),
+                    new SliderDef<string>(BuildingsPatcher.ID_ZOO, "Building", "Zoo")
+                }
+            },
             { "Other", new[]
                 {
                     new SliderDef<string>(BuildingsPatcher.ID_COMMERCIAL, "Building", "Commercial"),
