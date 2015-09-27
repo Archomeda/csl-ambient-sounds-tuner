@@ -82,6 +82,7 @@
     <Compile Include="SoundPack\Migration\SoundPacksFileMigrator.cs" />
     <Compile Include="SoundPack\SoundPacksFile.cs" />
     <Compile Include="SoundPack\SoundPacksManager.cs" />
+    <Compile Include="SoundPatchers\AmbientsNightPatcher.cs" />
     <Compile Include="SoundPatchers\MiscPatcher.cs" />
     <Compile Include="SoundPatchers\SoundContainer.cs" />
     <Compile Include="SoundPatchers\SoundPatchersManager.cs" />

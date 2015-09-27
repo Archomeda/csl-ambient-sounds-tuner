@@ -14,6 +14,7 @@ namespace AmbientSoundsTuner.SoundPatchers
         public SoundPatchersManager()
         {
             this.AmbientsPatcher = new AmbientsPatcher();
+            this.AmbientsNightPatcher = new AmbientsNightPatcher();
             this.AnimalsPatcher = new AnimalsPatcher();
             this.BuildingsPatcher = new BuildingsPatcher();
             this.VehiclesPatcher = new VehiclesPatcher();
@@ -21,6 +22,8 @@ namespace AmbientSoundsTuner.SoundPatchers
         }
 
         public AmbientsPatcher AmbientsPatcher { get; private set; }
+
+        public AmbientsNightPatcher AmbientsNightPatcher { get; private set; }
 
         public AnimalsPatcher AnimalsPatcher { get; private set; }
 
@@ -35,6 +38,7 @@ namespace AmbientSoundsTuner.SoundPatchers
             switch (id)
             {
                 case "Ambient": return this.AmbientsPatcher as SoundsInstancePatcher<T>;
+                case "AmbientNight": return this.AmbientsNightPatcher as SoundsInstancePatcher<T>;
                 case "Animal": return this.AnimalsPatcher as SoundsInstancePatcher<T>;
                 case "Building": return this.BuildingsPatcher as SoundsInstancePatcher<T>;
                 case "Vehicle": return this.VehiclesPatcher as SoundsInstancePatcher<T>;
@@ -98,6 +102,7 @@ namespace AmbientSoundsTuner.SoundPatchers
             var soundPack = file.SoundPacks[0];
             soundPack.Name = "Default";
             soundPack.Ambients = new SoundPacksFileV1.Audio[this.AmbientsPatcher.Ids.Length];
+            soundPack.AmbientsNight = new SoundPacksFileV1.Audio[this.AmbientsNightPatcher.Ids.Length];
             soundPack.Animals = new SoundPacksFileV1.Audio[this.AnimalsPatcher.Ids.Length];
             soundPack.Buildings = new SoundPacksFileV1.Audio[this.BuildingsPatcher.Ids.Length];
             soundPack.Vehicles = new SoundPacksFileV1.Audio[this.VehiclesPatcher.Ids.Length];
@@ -151,6 +156,16 @@ namespace AmbientSoundsTuner.SoundPatchers
                 if (sound != null && sound.HasSound)
                 {
                     soundPack.Ambients[i] = convertToFile(this.AmbientsPatcher.Ids[i].ToString(), sound.AudioInfo);
+                }
+            }
+
+            // Ambients Night
+            for (int i = 0; i < soundPack.AmbientsNight.Length; i++)
+            {
+                var sound = this.AmbientsNightPatcher.GetSoundInstance(this.AmbientsNightPatcher.Ids[i]);
+                if (sound != null && sound.HasSound)
+                {
+                    soundPack.AmbientsNight[i] = convertToFile(this.AmbientsNightPatcher.Ids[i].ToString(), sound.AudioInfo);
                 }
             }
 

@@ -299,6 +299,7 @@ namespace AmbientSoundsTuner
             try
             {
                 this.PatchSounds(SoundPatchersManager.instance.AmbientsPatcher, Settings.AmbientSounds);
+                this.PatchSounds(SoundPatchersManager.instance.AmbientsNightPatcher, Settings.AmbientNightSounds);
                 this.PatchSounds(SoundPatchersManager.instance.AnimalsPatcher, Settings.AnimalSounds);
                 this.PatchSounds(SoundPatchersManager.instance.BuildingsPatcher, Settings.BuildingSounds);
                 this.PatchSounds(SoundPatchersManager.instance.VehiclesPatcher, Settings.VehicleSounds);

@@ -29,7 +29,7 @@ namespace AmbientSoundsTuner.UI
 
         protected readonly IDictionary<string, SliderDef<AudioManager.AmbientType>[]> AmbientsDef = new Dictionary<string, SliderDef<AudioManager.AmbientType>[]>()
         {
-            { "Ambients", new[]
+            { "Day", new[]
                 {
                     new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Agricultural, "Ambient", "Agricultural"),
                     new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.City, "Ambient", "City"),
@@ -40,6 +40,16 @@ namespace AmbientSoundsTuner.UI
                     new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Stream, "Ambient", "Stream"),
                     new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Suburban, "Ambient", "Suburban"),
                     new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.World, "Ambient", "World")
+                }
+            },
+            { "Night", new[]
+                {
+                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Agricultural, "AmbientNight", "Agricultural"),
+                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.City, "AmbientNight", "City"),
+                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Forest, "AmbientNight", "Forest"),
+                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Leisure, "AmbientNight", "Leisure"),
+                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Suburban, "AmbientNight", "Suburban"),
+                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Tourist, "AmbientNight", "Tourist")
                 }
             }
         };
@@ -400,6 +410,9 @@ namespace AmbientSoundsTuner.UI
                         {
                             case "Ambient":
                                 audios = soundPack.Ambients;
+                                break;
+                            case "AmbientNight":
+                                audios = soundPack.AmbientsNight;
                                 break;
                             case "Animal":
                                 audios = soundPack.Animals;
