@@ -31,6 +31,15 @@ namespace AmbientSoundsTuner.SoundPack
 
         public IDictionary<string, SoundPacksFileV1.Audio> AudioFiles { get; private set; }
 
+        public SoundPacksFileV1.Audio GetAudioFileByName(string categoryId, string soundId, string audioName)
+        {
+            string id = string.Format("{0}.{1}.{2}", categoryId, soundId, audioName);
+            if (this.AudioFiles.ContainsKey(id))
+                return this.AudioFiles[id];
+            return null;
+        }
+
+
         public void InitSoundPacks()
         {
             this.SoundPackMods.Clear();

@@ -127,7 +127,8 @@ namespace AmbientSoundsTuner.Migration
 
             newConfig.SoundPackPreset = config.SoundPackPreset;
             newConfig.ExtraDebugLogging = config.ExtraDebugLogging;
-            newConfig.AmbientSounds = config.AmbientSounds;
+            foreach (var kvp in config.AmbientSounds)
+                newConfig.AmbientSounds.Add(kvp.Key.ToString(), kvp.Value);
             newConfig.AnimalSounds = config.AnimalSounds;
             foreach (var kvp in config.BuildingSounds)
             {

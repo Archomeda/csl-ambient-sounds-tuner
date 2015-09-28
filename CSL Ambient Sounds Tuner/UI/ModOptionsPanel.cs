@@ -8,6 +8,7 @@ using AmbientSoundsTuner.Migration;
 using AmbientSoundsTuner.SoundPack;
 using AmbientSoundsTuner.SoundPack.Migration;
 using AmbientSoundsTuner.SoundPatchers;
+using AmbientSoundsTuner.SoundPatchers.Sounds;
 using ColossalFramework;
 using ColossalFramework.DataBinding;
 using ColossalFramework.UI;
@@ -25,166 +26,6 @@ namespace AmbientSoundsTuner.UI
     /// </summary>
     public class ModOptionsPanel : ConfigPanelBase
     {
-        #region Slider definitions
-
-        protected readonly IDictionary<string, SliderDef<AudioManager.AmbientType>[]> AmbientsDef = new Dictionary<string, SliderDef<AudioManager.AmbientType>[]>()
-        {
-            { "Day", new[]
-                {
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Agricultural, "Ambient", "Agricultural"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.City, "Ambient", "City"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Forest, "Ambient", "Forest"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Industrial, "Ambient", "Industrial"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Plaza, "Ambient", "Plaza"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Sea, "Ambient", "Sea"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Stream, "Ambient", "Stream"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Suburban, "Ambient", "Suburban"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.World, "Ambient", "World")
-                }
-            },
-            { "Night", new[]
-                {
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Agricultural, "AmbientNight", "Agricultural"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.City, "AmbientNight", "City"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Forest, "AmbientNight", "Forest"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Leisure, "AmbientNight", "Leisure"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Suburban, "AmbientNight", "Suburban"),
-                    new SliderDef<AudioManager.AmbientType>(AudioManager.AmbientType.Tourist, "AmbientNight", "Tourist")
-                }
-            }
-        };
-
-        protected readonly IDictionary<string, SliderDef<string>[]> AnimalsDef = new Dictionary<string, SliderDef<string>[]>()
-        {
-            { "Animals", new[]
-                {
-                    new SliderDef<string>(AnimalsPatcher.ID_COW, "Animal", "Cows"),
-                    new SliderDef<string>(AnimalsPatcher.ID_PIG, "Animal", "Pigs"),
-                    new SliderDef<string>(AnimalsPatcher.ID_SEAGULL, "Animal", "Seagulls")
-                }
-            }
-        };
-
-        protected readonly IDictionary<string, SliderDef<string>[]> BuildingsDef = new Dictionary<string, SliderDef<string>[]>()
-        {
-            { "Electricity and Water", new[]
-                {
-                    new SliderDef<string>(BuildingsPatcher.ID_ADVANCED_WIND_TURBINE, "Building", "Advanced Wind Turbine"),
-                    new SliderDef<string>(BuildingsPatcher.ID_COAL_POWER_PLANT, "Building", "Coal Power Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_FUSION_POWER_PLANT, "Building", "Fusion Power Plant", 4),
-                    new SliderDef<string>(BuildingsPatcher.ID_HYDRO_POWER_PLANT, "Building", "Hydro Power Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_INCINERATION_PLANT, "Building", "Incineration Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_NUCLEAR_POWER_PLANT, "Building", "Nuclear Power Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_OIL_POWER_PLANT, "Building", "Oil Power Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_POWER_PLANT_SMALL, "Building", "Small Power Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_SOLAR_POWER_PLANT, "Building", "Solar Power Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_WATER_DRAIN_PIPE, "Building", "Water Drain Pipe"),
-                    new SliderDef<string>(BuildingsPatcher.ID_WATER_PUMPING_STATION, "Building", "Water Pumping Station"),
-                    new SliderDef<string>(BuildingsPatcher.ID_WATER_TREATMENT_PLANT, "Building", "Water Treatment Plant"),
-                    new SliderDef<string>(BuildingsPatcher.ID_WIND_TURBINE, "Building", "Wind Turbine")
-                }
-            },
-            { "Services", new[]
-                {
-                    new SliderDef<string>(BuildingsPatcher.ID_CEMETERY, "Building", "Cemetery"),
-                    new SliderDef<string>(BuildingsPatcher.ID_CREMATORY, "Building", "Crematory"),
-                    new SliderDef<string>(BuildingsPatcher.ID_ELEMENTARY_SCHOOL, "Building", "Elementary School"),
-                    new SliderDef<string>(BuildingsPatcher.ID_FIRE_STATION, "Building", "Fire Station"),
-                    new SliderDef<string>(BuildingsPatcher.ID_HIGH_SCHOOL, "Building", "High School"),
-                    new SliderDef<string>(BuildingsPatcher.ID_HOSPITAL, "Building", "Hospital"),
-                    new SliderDef<string>(BuildingsPatcher.ID_POLICE_STATION, "Building", "Police Station"),
-                    new SliderDef<string>(BuildingsPatcher.ID_UNIVERSITY, "Building", "University")
-                }
-            },
-            { "Public Transport", new[]
-                {
-                    new SliderDef<string>(BuildingsPatcher.ID_AIRPORT, "Building", "Airport"),
-                    new SliderDef<string>(BuildingsPatcher.ID_BUS_DEPOT, "Building", "Bus Depot"),
-                    new SliderDef<string>(BuildingsPatcher.ID_HARBOR, "Building", "Harbor"),
-                    new SliderDef<string>(BuildingsPatcher.ID_METRO_STATION, "Building", "Metro Station"),
-                    new SliderDef<string>(BuildingsPatcher.ID_TRAIN_STATION, "Building", "Train Station")
-                }
-            },
-            { "After Dark DLC", new[]
-                {
-                    new SliderDef<string>(BuildingsPatcher.ID_CASINO, "Building", "Casino"),
-                    new SliderDef<string>(BuildingsPatcher.ID_ZOO, "Building", "Zoo")
-                }
-            },
-            { "Other", new[]
-                {
-                    new SliderDef<string>(BuildingsPatcher.ID_COMMERCIAL, "Building", "Commercial"),
-                    new SliderDef<string>(BuildingsPatcher.ID_INDUSTRIAL, "Building", "Industrial", 0.5f)
-                }
-            },
-            { "Miscellaneous", new[]
-                {
-                    new SliderDef<string>(BuildingsPatcher.ID_ON_FIRE, "Building", "On Fire"),
-                    new SliderDef<string>(BuildingsPatcher.ID_ON_UPGRADE, "Building", "On Upgrade", 0.25f)
-                }
-            }
-        };
-
-        protected readonly IDictionary<string, SliderDef<string>[]> VehiclesDef = new Dictionary<string, SliderDef<string>[]>()
-        {
-            { "Engines", new[]
-                {
-                    new SliderDef<string>(VehiclesPatcher.ID_AIRCRAFT_SOUND, "Vehicle", "Aircrafts"),
-                    new SliderDef<string>(VehiclesPatcher.ID_LARGE_CAR_SOUND, "Vehicle", "Large Cars", 1.5f),
-                    new SliderDef<string>(VehiclesPatcher.ID_METRO_MOVEMENT, "Vehicle", "Metros"),
-                    new SliderDef<string>(VehiclesPatcher.ID_SMALL_CAR_SOUND, "Vehicle", "Small Cars", 1.5f),
-                    new SliderDef<string>(VehiclesPatcher.ID_SCOOTER_SOUND, "Vehicle", "Scooters", 1.5f),
-                    new SliderDef<string>(VehiclesPatcher.ID_TRAIN_MOVEMENT, "Vehicle", "Trains")
-                }
-            },
-            { "Sirens", new[]
-                {
-                    new SliderDef<string>(VehiclesPatcher.ID_AMBULANCE_SIREN, "Vehicle", "Ambulances"),
-                    new SliderDef<string>(VehiclesPatcher.ID_FIRE_TRUCK_SIREN, "Vehicle", "Fire Trucks", 3),
-                    new SliderDef<string>(VehiclesPatcher.ID_POLICE_CAR_SIREN, "Vehicle", "Police Cars")
-                }
-            },
-            { "Miscellaneous", new[]
-                {
-                    new SliderDef<string>(VehiclesPatcher.ID_TRANSPORT_ARRIVE, "Vehicle", "Transport Arrivals")
-                }
-            }
-        };
-
-        protected readonly IDictionary<string, SliderDef<string>[]> MiscDef = new Dictionary<string, SliderDef<string>[]>()
-        {
-            { "Bulldozer", new[]
-                {
-                    new SliderDef<string>(MiscPatcher.ID_BUILDING_BULLDOZE, "Misc", "Buildings"),
-                    new SliderDef<string>(MiscPatcher.ID_PROP_BULLDOZE, "Misc", "Props"),
-                    new SliderDef<string>(MiscPatcher.ID_ROAD_BULLDOZE, "Misc", "Roads"),
-                }
-            },
-            { "Placements", new[]
-                {
-                    new SliderDef<string>(MiscPatcher.ID_BUILDING_PLACEMENT, "Misc", "Buildings"),
-                    new SliderDef<string>(MiscPatcher.ID_PROP_PLACEMENT, "Misc", "Props"),
-                    new SliderDef<string>(MiscPatcher.ID_ROAD_PLACEMENT, "Misc", "Roads")
-                }
-            },
-            { "User Interface", new[]
-                {
-                    new SliderDef<string>(MiscPatcher.ID_CLICK_SOUND, "Misc", "Clicks"),
-                    new SliderDef<string>(MiscPatcher.ID_DISABLED_CLICK_SOUND, "Misc", "Clicks (disabled components)"),
-                    new SliderDef<string>(MiscPatcher.ID_ROAD_DRAW, "Misc", "Road Drawer"),
-                    new SliderDef<string>(MiscPatcher.ID_ZONE_FILL, "Misc", "Zone Filler")
-                }
-            }
-        };
-
-        protected readonly HashSet<string> SoundPackBlacklist = new HashSet<string>()
-        {
-            MiscPatcher.ID_CLICK_SOUND,
-            MiscPatcher.ID_DISABLED_CLICK_SOUND
-        };
-
-        #endregion
-
         private string[] soundPacks;
         private bool isChangingSoundPackPreset = false;
         private UIDropDown soundPackPresetDropDown;
@@ -219,12 +60,7 @@ namespace AmbientSoundsTuner.UI
 
             // Create tabs
             int tabWidth = (int)(tabstrip.tabPages.width / 5);
-            this.AddTab(tabstrip, tabWidth, "Ambients", this.AmbientsDef);
-            this.AddTab(tabstrip, tabWidth, "Animals", this.AnimalsDef);
-            this.AddTab(tabstrip, tabWidth, "Buildings", this.BuildingsDef);
-            this.AddTab(tabstrip, tabWidth, "Vehicles", this.VehiclesDef);
-            this.AddTab(tabstrip, tabWidth, "Misc", this.MiscDef);
-
+            this.PopulateTabContainer(tabstrip);
             tabstrip.selectedIndex = -1;
             tabstrip.selectedIndex = 0;
 
@@ -243,57 +79,69 @@ namespace AmbientSoundsTuner.UI
             Mod.Instance.Settings.SaveConfig(Mod.Instance.SettingsFilename);
         }
 
-        protected void AddTab<T>(UITabstrip tabstrip, float buttonWidth, string title, IDictionary<string, SliderDef<T>[]> content)
+        protected void PopulateTabContainer(UITabstrip tabstrip)
         {
-            UIHelper tabHelper = this.RootHelper.AddScrollingTab(tabstrip, buttonWidth, title);
-            foreach (var group in content)
+            // Parse all the available sounds first
+            var sliders = new Dictionary<string, Dictionary<string, List<ISound>>>();
+            foreach (var sound in SoundPatchersManager.instance.Sounds.Values)
             {
-                UIHelper groupHelper = tabHelper.AddGroup2(group.Key);
-                foreach (var sliderDef in group.Value)
+                if (!sliders.ContainsKey(sound.CategoryName))
+                    sliders.Add(sound.CategoryName, new Dictionary<string, List<ISound>>());
+                if (!sliders[sound.CategoryName].ContainsKey(sound.SubCategoryName))
+                    sliders[sound.CategoryName].Add(sound.SubCategoryName, new List<ISound>());
+                sliders[sound.CategoryName][sound.SubCategoryName].Add(sound);
+            }
+
+            // Populate the tab container
+            int buttonWidth = (int)(tabstrip.tabPages.width / sliders.Count);
+            foreach (var tabGroup in sliders)
+            {
+                UIHelper tabHelper = this.RootHelper.AddScrollingTab(tabstrip, buttonWidth, tabGroup.Key);
+                foreach (var group in tabGroup.Value)
                 {
-                    this.AddSoundRow(sliderDef, groupHelper);
+                    UIHelper groupHelper = tabHelper.AddGroup2(group.Key);
+                    foreach (var sound in group.Value)
+                    {
+                        this.CreateSoundSlider(groupHelper, sound);
+                    }
                 }
             }
         }
 
-        protected void AddSoundRow<T>(SliderDef<T> slider, UIHelperBase helper)
+        protected void CreateSoundSlider(UIHelperBase helper, ISound sound)
         {
-            // Get all used singletons
-            var patcher = SoundPatchersManager.instance.GetPatcherById<T>(slider.Prefix);
-            var configuration = Mod.Instance.Settings.GetSoundsByCategoryId<T>(slider.Prefix);
-
-            var customAudioFiles = patcher.GetAvailableAudiosForType(slider.Id.ToString()).Values.ToArray();
+            // Initialize variables
+            var configuration = Mod.Instance.Settings.GetSoundsByCategoryId<string>(sound.CategoryId);
+            var customAudioFiles = SoundPacksManager.instance.AudioFiles.Where(kvp => kvp.Key.StartsWith(string.Format("{0}.{1}", sound.CategoryId, sound.Id))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
             float volume = 0;
-            if (configuration.ContainsKey(slider.Id))
-            {
-                volume = configuration[slider.Id].Volume;
-            }
+            if (configuration.ContainsKey(sound.Id))
+                volume = configuration[sound.Id].Volume;
             else
             {
-                Mod.Instance.Log.Info("No volume configuration found for {0}, using default value", slider.Id.ToString());
-                volume = patcher.DefaultVolumes.ContainsKey(slider.Id) ? patcher.DefaultVolumes[slider.Id] : 1;
+                Mod.Instance.Log.Info("No volume configuration found for {0}.{1}, using default value", sound.CategoryId, sound.Id);
+                volume = sound.DefaultVolume;
             }
 
             // Add UI components
-            UISlider uiSlider = (UISlider)helper.AddSlider(slider.Text, slider.MinValue, slider.MaxValue, 0.01f, volume, v => this.SoundVolumeChanged<T>(slider.Prefix, slider.Id, v));
+            UISlider uiSlider = (UISlider)helper.AddSlider(sound.Name, 0, sound.MaxVolume, 0.01f, volume, v => this.SoundVolumeChanged(sound, v));
             UIPanel uiPanel = (UIPanel)uiSlider.parent;
             UILabel uiLabel = uiPanel.Find<UILabel>("Label");
             UIDropDown uiDropDown = null;
 
-            if (customAudioFiles.Length > 0)
+            if (customAudioFiles.Count > 0)
             {
                 uiDropDown = uiPanel.AttachUIComponent(GameObject.Instantiate((UITemplateManager.Peek(UITemplateDefs.ID_OPTIONS_DROPDOWN_TEMPLATE) as UIPanel).Find<UIDropDown>("Dropdown").gameObject)) as UIDropDown;
-                uiDropDown.items = new[] { "Default" }.Union(customAudioFiles.Select(a => a.Name)).ToArray();
+                uiDropDown.items = new[] { "Default" }.Union(customAudioFiles.Select(kvp => kvp.Value.Name)).ToArray();
                 uiDropDown.height = 28;
                 uiDropDown.textFieldPadding.top = 4;
-                if (configuration.ContainsKey(slider.Id) && !string.IsNullOrEmpty(configuration[slider.Id].SoundPack))
-                    uiDropDown.selectedValue = configuration[slider.Id].SoundPack;
+                if (configuration.ContainsKey(sound.Id) && !string.IsNullOrEmpty(configuration[sound.Id].SoundPack))
+                    uiDropDown.selectedValue = configuration[sound.Id].SoundPack;
                 else
                     uiDropDown.selectedIndex = 0;
 
-                uiDropDown.eventSelectedIndexChanged += (c, i) => this.SoundPackChanged(slider.Prefix, slider.Id, i > 0 ? ((UIDropDown)c).items[i] : null, uiSlider);
-                this.soundSelections[slider.Prefix + "." + slider.Id.ToString()] = uiDropDown;
+                uiDropDown.eventSelectedIndexChanged += (c, i) => this.SoundPackChanged(sound, i > 0 ? ((UIDropDown)c).items[i] : null, uiSlider);
+                this.soundSelections[string.Format("{0}.{1}", sound.CategoryId, sound.Id)] = uiDropDown;
             }
 
             // Configure UI components
@@ -304,7 +152,7 @@ namespace AmbientSoundsTuner.UI
             uiSlider.builtinKeyNavigation = false;
             uiSlider.width = 207;
             uiSlider.relativePosition = new Vector3(uiLabel.relativePosition.x + uiLabel.width + 20, 0);
-            if (customAudioFiles.Length > 0)
+            if (customAudioFiles.Count > 0)
             {
                 uiDropDown.anchor = UIAnchorStyle.CenterVertical;
                 uiDropDown.width = 180;
@@ -317,45 +165,43 @@ namespace AmbientSoundsTuner.UI
             }
         }
 
-        private void SoundVolumeChanged<T>(string categoryId, T soundId, float value)
+        private void SoundVolumeChanged(ISound sound, float value)
         {
-            var patcher = SoundPatchersManager.instance.GetPatcherById<T>(categoryId);
-            var configuration = Mod.Instance.Settings.GetSoundsByCategoryId<T>(categoryId);
+            var configuration = Mod.Instance.Settings.GetSoundsByCategoryId<string>(sound.CategoryId);
 
-            if (!configuration.ContainsKey(soundId))
-                configuration.Add(soundId, new ConfigurationV4.Sound());
+            if (!configuration.ContainsKey(sound.Id))
+                configuration.Add(sound.Id, new ConfigurationV4.Sound());
 
-            configuration[soundId].Volume = value;
+            configuration[sound.Id].Volume = value;
 
-            if (LoadingManager.instance.m_loadingComplete)
-                patcher.PatchVolume(soundId, value);
+            if (LoadingManager.instance.m_loadingComplete || !sound.IngameOnly)
+                sound.PatchVolume(value);
             else
-                Mod.Instance.Log.Debug("Skip patching volume of {0} as there isn't a game active", soundId.ToString());
+                Mod.Instance.Log.Debug("Skip patching volume of {0}.{1} as there isn't a game active", sound.CategoryId, sound.Id);
         }
 
-        private void SoundPackChanged<T>(string categoryId, T soundId, string name, UISlider uiSlider)
+        private void SoundPackChanged(ISound sound, string audioFileName, UISlider uiSlider)
         {
-            var patcher = SoundPatchersManager.instance.GetPatcherById<T>(categoryId);
-            var configuration = Mod.Instance.Settings.GetSoundsByCategoryId<T>(categoryId);
+            var configuration = Mod.Instance.Settings.GetSoundsByCategoryId<string>(sound.CategoryId);
 
             // Selected audio changed
-            if (!configuration.ContainsKey(soundId))
-                configuration.Add(soundId, new ConfigurationV4.Sound());
+            if (!configuration.ContainsKey(sound.Id))
+                configuration.Add(sound.Id, new ConfigurationV4.Sound());
 
             // Set preset to custom
             if (!this.isChangingSoundPackPreset)
                 this.soundPackPresetDropDown.selectedIndex = 1;
 
-            if (!string.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(audioFileName))
             {
                 // Chosen audio is a custom audio
-                configuration[soundId].SoundPack = name;
-                var audioFile = patcher.GetAudioByName(soundId.ToString(), name);
+                configuration[sound.Id].SoundPack = audioFileName;
+                var audioFile = SoundPacksManager.instance.GetAudioFileByName(sound.CategoryId, sound.Id, audioFileName);
 
-                if (LoadingManager.instance.m_loadingComplete)
-                    patcher.PatchSound(soundId, audioFile);
+                if (LoadingManager.instance.m_loadingComplete || !sound.IngameOnly)
+                    sound.PatchSound(audioFile);
                 else
-                    Mod.Instance.Log.Debug("Skip patching sound of {0} as there isn't a game active", soundId.ToString());
+                    Mod.Instance.Log.Debug("Skip patching sound of {0}.{1} as there isn't a game active", sound.CategoryId, sound.Id);
 
                 uiSlider.maxValue = Mathf.Max(audioFile.AudioInfo.MaxVolume, audioFile.AudioInfo.Volume);
                 uiSlider.value = audioFile.AudioInfo.Volume;
@@ -363,23 +209,15 @@ namespace AmbientSoundsTuner.UI
             else
             {
                 // Chosen audio is the default one
-                configuration[soundId].SoundPack = "";
+                configuration[sound.Id].SoundPack = "";
 
-                if (LoadingManager.instance.m_loadingComplete)
-                    patcher.RevertSound(soundId);
+                if (LoadingManager.instance.m_loadingComplete || !sound.IngameOnly)
+                    sound.RevertSound();
                 else
-                    Mod.Instance.Log.Debug("Skip reverting sound of {0} as there isn't a game active", soundId.ToString());
+                    Mod.Instance.Log.Debug("Skip reverting sound of {0}.{1} as there isn't a game active", sound.CategoryId, sound.Id);
 
-                if (patcher.OldSounds.ContainsKey(soundId))
-                {
-                    uiSlider.maxValue = patcher.OldSounds[soundId].AudioInfo.MaxVolume;
-                    uiSlider.value = patcher.OldSounds[soundId].AudioInfo.Volume;
-                }
-                else
-                {
-                    uiSlider.maxValue = patcher.DefaultMaxVolumes.ContainsKey(soundId) ? patcher.DefaultMaxVolumes[soundId] : 1;
-                    uiSlider.value = patcher.DefaultVolumes.ContainsKey(soundId) ? patcher.DefaultVolumes[soundId] : 1;
-                }
+                uiSlider.maxValue = sound.MaxVolume;
+                uiSlider.value = sound.DefaultVolume;
             }
         }
 
@@ -448,32 +286,6 @@ namespace AmbientSoundsTuner.UI
 
             Mod.Instance.Settings.SoundPackPreset = this.soundPackPresetDropDown.selectedValue;
             this.isChangingSoundPackPreset = false;
-        }
-
-        /// <summary>
-        /// A struct that represents the definition of a slider.
-        /// </summary>
-        /// <typeparam name="T">The type of the slider id.</typeparam>
-        public struct SliderDef<T>
-        {
-            public T Id;
-            public string Prefix;
-            public string Text;
-            public float MinValue;
-            public float MaxValue;
-
-            public SliderDef(T id, string prefix, string text) : this(id, prefix, text, 0, 1) { }
-
-            public SliderDef(T id, string prefix, string text, float maxValue) : this(id, prefix, text, 0, maxValue) { }
-
-            public SliderDef(T id, string prefix, string text, float minValue, float maxValue)
-            {
-                this.Id = id;
-                this.Prefix = prefix;
-                this.Text = text;
-                this.MinValue = minValue;
-                this.MaxValue = maxValue;
-            }
         }
     }
 }
