@@ -148,6 +148,7 @@ namespace AmbientSoundsTuner.SoundPack
             {
                 foreach (var group in new Dictionary<string, SoundPacksFileV1.Audio[]>() { 
                         { "Ambient", soundPackFile.Ambients }, 
+                        { "AmbientNight", soundPackFile.AmbientsNight },
                         { "Animal", soundPackFile.Animals }, 
                         { "Building", soundPackFile.Buildings },
                         { "Vehicle", soundPackFile.Vehicles },
