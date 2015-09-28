@@ -46,39 +46,33 @@ namespace AmbientSoundsTuner
 
         #region UserModBase members
 
-        public override string ModName
+        public override string Name
         {
             get { return "Ambient Sounds Tuner"; }
         }
 
-        public override string ModDescription
+        public override string Description
         {
             get { return "Tune your ambient sounds volumes individually"; }
         }
 
-        public override void OnModInitializing(bool enabled)
+        public override void OnModInitializing()
         {
             this.SettingsFilename = Path.Combine(FileUtils.GetStorageFolder(this), "AmbientSoundsTuner.yml");
+            this.Load();
+            this.PatchUISounds();
+
             this.Log.Debug("Mod initialized");
         }
 
-        public override void OnMainMenuLoading()
-        {
-            this.Load();
-
-            this.PatchUISounds();
-            this.Log.Debug("Mod loaded in-menu");
-        }
-
-        public override void OnModDeactivated()
+        public override void OnModUninitializing()
         {
             this.Unload();
+            this.Log.Debug("Mod uninitialized");
         }
 
         public override void OnGameLoaded(LoadMode mode)
         {
-            this.Load();
-
             // Before we patch, we export the current game sounds as an example file
             var exampleFile = SoundPatchersManager.instance.GetCurrentSoundSettingsAsSoundPack();
             exampleFile.SaveConfig(Path.Combine(FileUtils.GetStorageFolder(Mod.Instance), "Example." + SoundPacksManager.SOUNDPACKS_FILENAME_XML));
@@ -86,11 +80,6 @@ namespace AmbientSoundsTuner
 
             this.PatchSounds();
             this.Log.Debug("Mod loaded in-game");
-        }
-
-        public override void OnGameUnloading()
-        {
-            this.Unload();
         }
 
         #endregion
@@ -161,8 +150,6 @@ namespace AmbientSoundsTuner
             // Actually, to be consistent and nice, we should also revert the other sound patching here.
             // But since that sounds are only patched in-game, and closing that game conveniently resets the other sounds, it's not really needed.
             // If it's needed at some point in the future, we can add that logic here.
-
-            this.Log.Debug("Mod unloaded");
         }
 
         #endregion
