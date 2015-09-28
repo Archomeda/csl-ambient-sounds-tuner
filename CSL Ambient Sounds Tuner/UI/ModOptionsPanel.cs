@@ -65,11 +65,14 @@ namespace AmbientSoundsTuner.UI
             tabstrip.selectedIndex = 0;
 
             // Add mod information
+            string versionText = Mod.Instance.BuildVersion;
+            if (DlcUtils.IsAfterDarkInstalled)
+                versionText += " - After Dark";
             this.RootPanel.autoLayout = false;
             UILabel versionLabel = this.RootPanel.AddUIComponent<UILabel>();
             versionLabel.autoSize = true;
             versionLabel.textScale = 0.8f;
-            versionLabel.text = Mod.Instance.BuildVersion;
+            versionLabel.text = versionText;
             versionLabel.relativePosition = new Vector3(this.RootPanel.width - versionLabel.size.x - 10, 0);
         }
 

@@ -291,10 +291,10 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
     [SoundCategory("Building", "Building", "Leisure")]
     public abstract class BuildingAfterDarkSoundBase : BuildingSoundBase { }
 
-    [Sound("Casino", "Casino", RequiredDlc = DlcUtils.Dlc.AfterDark)]
+    [Sound("Casino", "Casino (After Dark)", RequiredDlc = DlcUtils.Dlc.AfterDark)]
     public class BuildingCasinoSound : BuildingAfterDarkSoundBase { }
 
-    [Sound("Zoo", "Zoo", RequiredDlc = DlcUtils.Dlc.AfterDark)]
+    [Sound("Zoo", "Zoo (After Dark)", RequiredDlc = DlcUtils.Dlc.AfterDark)]
     public class BuildingZooSound : BuildingAfterDarkSoundBase { }
 
 
