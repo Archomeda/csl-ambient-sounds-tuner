@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using CommonShared.Utils;
 
-namespace AmbientSoundsTuner.SoundPatchers.Sounds
+namespace AmbientSoundsTuner.Sounds.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class SoundAttribute : Attribute

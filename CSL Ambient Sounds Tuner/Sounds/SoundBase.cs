@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.SoundPack.Migration;
+using AmbientSoundsTuner.Sounds.Attributes;
+using AmbientSoundsTuner.Sounds.Exceptions;
 using ColossalFramework;
 using CommonShared.Utils;
 
-namespace AmbientSoundsTuner.SoundPatchers.Sounds
+namespace AmbientSoundsTuner.Sounds
 {
     /// <summary>
     /// Provides an abstract base class that implements <see cref="ISound`1"/>.
@@ -54,7 +56,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
             try
             {
                 var sound = this.GetSoundInstance();
-                this.OldSound = SoundsPatcher.GetAudioInfo(sound);
+                this.OldSound = SoundPatchUtils.GetAudioInfo(sound);
                 if (this.OldSound == null)
                     throw new SoundBackupException(string.Format("{0}.{1}", this.CategoryId, this.Id), "AudioInfo is null");
             }
@@ -74,7 +76,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
             {
                 var sound = this.GetSoundInstance();
 
-                if (!SoundsPatcher.SetAudioInfo(sound, newSound))
+                if (!SoundPatchUtils.SetAudioInfo(sound, newSound))
                     throw new SoundPatchException(string.Format("{0}.{1}"), "Failed to set AudioInfo");
             }
             catch (Exception ex)
@@ -101,7 +103,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
             try
             {
                 var sound = this.GetSoundInstance();
-                float? volume = SoundsPatcher.GetVolume(sound);
+                float? volume = SoundPatchUtils.GetVolume(sound);
                 if (!volume.HasValue)
                     throw new SoundBackupException(string.Format("{0}.{1}", this.CategoryId, this.Id), "Sound has no volume set");
                 this.OldVolume = volume.Value;
@@ -122,7 +124,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
             {
                 var sound = this.GetSoundInstance();
 
-                if (!SoundsPatcher.SetVolume(sound, volume))
+                if (!SoundPatchUtils.SetVolume(sound, volume))
                     throw new SoundPatchException(string.Format("{0}.{1}"), "Failed to set volume");
             }
             catch (Exception ex)

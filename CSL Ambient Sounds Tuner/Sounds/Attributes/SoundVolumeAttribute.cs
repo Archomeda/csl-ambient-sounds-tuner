@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AmbientSoundsTuner.SoundPatchers.Sounds
+namespace AmbientSoundsTuner.Sounds.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class SoundVolumeAttribute : Attribute

@@ -7,8 +7,7 @@ using AmbientSoundsTuner.Defs;
 using AmbientSoundsTuner.Migration;
 using AmbientSoundsTuner.SoundPack;
 using AmbientSoundsTuner.SoundPack.Migration;
-using AmbientSoundsTuner.SoundPatchers;
-using AmbientSoundsTuner.SoundPatchers.Sounds;
+using AmbientSoundsTuner.Sounds;
 using ColossalFramework;
 using ColossalFramework.DataBinding;
 using ColossalFramework.UI;
@@ -86,7 +85,7 @@ namespace AmbientSoundsTuner.UI
         {
             // Parse all the available sounds first
             var sliders = new Dictionary<string, Dictionary<string, List<ISound>>>();
-            foreach (var sound in SoundPatchersManager.instance.Sounds.Values)
+            foreach (var sound in SoundManager.instance.Sounds.Values)
             {
                 if ((DlcUtils.InstalledDlcs & sound.RequiredDlc) != sound.RequiredDlc)
                     continue;

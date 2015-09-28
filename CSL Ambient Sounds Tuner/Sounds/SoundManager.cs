@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.SoundPack;
 using AmbientSoundsTuner.SoundPack.Migration;
-using AmbientSoundsTuner.SoundPatchers.Sounds;
 using ColossalFramework;
 using UnityEngine;
 
-namespace AmbientSoundsTuner.SoundPatchers
+namespace AmbientSoundsTuner.Sounds
 {
-    public class SoundPatchersManager : SingletonLite<SoundPatchersManager>
+    public class SoundManager : SingletonLite<SoundManager>
     {
-        public SoundPatchersManager()
+        public SoundManager()
         {
             this.Sounds = new Dictionary<string, ISound>();
         }
@@ -131,7 +130,7 @@ namespace AmbientSoundsTuner.SoundPatchers
                 };
             });
 
-            foreach (ISound sound in SoundPatchersManager.instance.Sounds.Values)
+            foreach (ISound sound in SoundManager.instance.Sounds.Values)
             {
                 var soundInstance = sound.GetSoundInstance();
                 if (soundInstance != null && soundInstance.HasSound)

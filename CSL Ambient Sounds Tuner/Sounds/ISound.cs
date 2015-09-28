@@ -5,7 +5,7 @@ using System.Text;
 using AmbientSoundsTuner.SoundPack.Migration;
 using CommonShared.Utils;
 
-namespace AmbientSoundsTuner.SoundPatchers.Sounds
+namespace AmbientSoundsTuner.Sounds
 {
     /// <summary>
     /// An interface for a sound definition.

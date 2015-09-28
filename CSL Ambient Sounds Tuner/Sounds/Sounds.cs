@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.Detour;
 using AmbientSoundsTuner.SoundPack.Migration;
+using AmbientSoundsTuner.Sounds.Attributes;
 using CommonShared.Utils;
 
-namespace AmbientSoundsTuner.SoundPatchers.Sounds
+namespace AmbientSoundsTuner.Sounds
 {
     #region Ambients - Day
     [SoundCategory("Ambient", "Ambient", "Day")]
@@ -134,7 +135,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
     {
         public override SoundContainer GetSoundInstance()
         {
-            return new SoundContainer(SoundPatchersManager.GetAudioInfoFromBuildingInfo(this.Id));
+            return new SoundContainer(SoundManager.GetAudioInfoFromBuildingInfo(this.Id));
         }
     }
 
@@ -170,7 +171,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
         public override SoundContainer GetSoundInstance()
         {
             if (BuildingManager.instance.m_properties != null)
-                return new SoundContainer(SoundPatchersManager.GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, this.Id));
+                return new SoundContainer(SoundManager.GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, this.Id));
             return null;
         }
     }
@@ -205,7 +206,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
     {
         public override SoundContainer GetSoundInstance()
         {
-            return new SoundContainer(SoundPatchersManager.GetFirstAudioInfoFromBuildingInfos(new[] { this.Id, "Elementary_School_EU" }));
+            return new SoundContainer(SoundManager.GetFirstAudioInfoFromBuildingInfos(new[] { this.Id, "Elementary_School_EU" }));
         }
     }
 
@@ -215,7 +216,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
         public override SoundContainer GetSoundInstance()
         {
             if (BuildingManager.instance.m_properties != null)
-                return new SoundContainer(SoundPatchersManager.GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, this.Id));
+                return new SoundContainer(SoundManager.GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, this.Id));
             return null;
         }
     }
@@ -225,7 +226,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
     {
         public override SoundContainer GetSoundInstance()
         {
-            return new SoundContainer(SoundPatchersManager.GetFirstAudioInfoFromBuildingInfos(new[] { this.Id, "highschool_EU" }));
+            return new SoundContainer(SoundManager.GetFirstAudioInfoFromBuildingInfos(new[] { this.Id, "highschool_EU" }));
         }
     }
 
@@ -235,7 +236,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
         public override SoundContainer GetSoundInstance()
         {
             if (BuildingManager.instance.m_properties != null)
-                return new SoundContainer(SoundPatchersManager.GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, this.Id));
+                return new SoundContainer(SoundManager.GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, this.Id));
             return null;
         }
     }
@@ -246,7 +247,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
         public override SoundContainer GetSoundInstance()
         {
             if (BuildingManager.instance.m_properties != null)
-                return new SoundContainer(SoundPatchersManager.GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, this.Id));
+                return new SoundContainer(SoundManager.GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_serviceSounds, this.Id));
             return null;
         }
     }
@@ -256,7 +257,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
     {
         public override SoundContainer GetSoundInstance()
         {
-            return new SoundContainer(SoundPatchersManager.GetFirstAudioInfoFromBuildingInfos(new[] { this.Id, "University_EU" }));
+            return new SoundContainer(SoundManager.GetFirstAudioInfoFromBuildingInfos(new[] { this.Id, "University_EU" }));
         }
     }
 
@@ -267,7 +268,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
         public override SoundContainer GetSoundInstance()
         {
             if (BuildingManager.instance.m_properties != null)
-                return new SoundContainer(SoundPatchersManager.GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, this.Id));
+                return new SoundContainer(SoundManager.GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, this.Id));
             return null;
         }
     }
@@ -304,7 +305,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
         public override SoundContainer GetSoundInstance()
         {
             if (BuildingManager.instance.m_properties != null)
-                return new SoundContainer(SoundPatchersManager.GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, this.Id));
+                return new SoundContainer(SoundManager.GetAudioInfoFromArray(BuildingManager.instance.m_properties.m_subServiceSounds, this.Id));
             return null;
         }
     }
@@ -342,7 +343,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
         public override SoundContainer GetSoundInstance()
         {
             if (BuildingManager.instance.m_properties != null)
-                return new SoundContainer(SoundPatchersManager.GetSubEffectFromMultiEffect(BuildingManager.instance.m_properties.m_levelupEffect as MultiEffect, "Levelup Sound"));
+                return new SoundContainer(SoundManager.GetSubEffectFromMultiEffect(BuildingManager.instance.m_properties.m_levelupEffect as MultiEffect, "Levelup Sound"));
             return null;
         }
     }
@@ -427,7 +428,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
         public override SoundContainer GetSoundInstance()
         {
             if (BuildingManager.instance.m_properties != null)
-                return new SoundContainer(SoundPatchersManager.GetSubEffectFromMultiEffect(BuildingManager.instance.m_properties.m_bulldozeEffect as MultiEffect, this.Id));
+                return new SoundContainer(SoundManager.GetSubEffectFromMultiEffect(BuildingManager.instance.m_properties.m_bulldozeEffect as MultiEffect, this.Id));
             return null;
         }
     }
@@ -438,7 +439,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
         public override SoundContainer GetSoundInstance()
         {
             if (BuildingManager.instance.m_properties != null)
-                return new SoundContainer(SoundPatchersManager.GetSubEffectFromMultiEffect(PropManager.instance.m_properties.m_bulldozeEffect as MultiEffect, this.Id));
+                return new SoundContainer(SoundManager.GetSubEffectFromMultiEffect(PropManager.instance.m_properties.m_bulldozeEffect as MultiEffect, this.Id));
             return null;
         }
     }
@@ -449,7 +450,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
         public override SoundContainer GetSoundInstance()
         {
             if (BuildingManager.instance.m_properties != null)
-                return new SoundContainer(SoundPatchersManager.GetSubEffectFromMultiEffect(NetManager.instance.m_properties.m_bulldozeEffect as MultiEffect, this.Id));
+                return new SoundContainer(SoundManager.GetSubEffectFromMultiEffect(NetManager.instance.m_properties.m_bulldozeEffect as MultiEffect, this.Id));
             return null;
         }
     }
@@ -464,7 +465,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
         public override SoundContainer GetSoundInstance()
         {
             if (BuildingManager.instance.m_properties != null)
-                return new SoundContainer(SoundPatchersManager.GetSubEffectFromMultiEffect(BuildingManager.instance.m_properties.m_placementEffect as MultiEffect, this.Id));
+                return new SoundContainer(SoundManager.GetSubEffectFromMultiEffect(BuildingManager.instance.m_properties.m_placementEffect as MultiEffect, this.Id));
             return null;
         }
     }
@@ -475,7 +476,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
         public override SoundContainer GetSoundInstance()
         {
             if (BuildingManager.instance.m_properties != null)
-                return new SoundContainer(SoundPatchersManager.GetSubEffectFromMultiEffect(PropManager.instance.m_properties.m_placementEffect as MultiEffect, this.Id));
+                return new SoundContainer(SoundManager.GetSubEffectFromMultiEffect(PropManager.instance.m_properties.m_placementEffect as MultiEffect, this.Id));
             return null;
         }
     }
@@ -486,7 +487,7 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
         public override SoundContainer GetSoundInstance()
         {
             if (BuildingManager.instance.m_properties != null)
-                return new SoundContainer(SoundPatchersManager.GetSubEffectFromMultiEffect(NetManager.instance.m_properties.m_placementEffect as MultiEffect, this.Id));
+                return new SoundContainer(SoundManager.GetSubEffectFromMultiEffect(NetManager.instance.m_properties.m_placementEffect as MultiEffect, this.Id));
             return null;
         }
     }

@@ -7,8 +7,8 @@ using AmbientSoundsTuner.Compatibility;
 using AmbientSoundsTuner.Detour;
 using AmbientSoundsTuner.Migration;
 using AmbientSoundsTuner.SoundPack;
-using AmbientSoundsTuner.SoundPatchers;
-using AmbientSoundsTuner.SoundPatchers.Sounds;
+using AmbientSoundsTuner.Sounds;
+using AmbientSoundsTuner.Sounds.Exceptions;
 using AmbientSoundsTuner.UI;
 using ColossalFramework.Plugins;
 using ColossalFramework.UI;
@@ -81,7 +81,7 @@ namespace AmbientSoundsTuner
             this.Load();
 
             // Before we patch, we export the current game sounds as an example file
-            var exampleFile = SoundPatchersManager.instance.GetCurrentSoundSettingsAsSoundPack();
+            var exampleFile = SoundManager.instance.GetCurrentSoundSettingsAsSoundPack();
             exampleFile.SaveConfig(Path.Combine(FileUtils.GetStorageFolder(Mod.Instance), "Example." + SoundPacksManager.SOUNDPACKS_FILENAME_XML));
             exampleFile.SaveConfig(Path.Combine(FileUtils.GetStorageFolder(Mod.Instance), "Example." + SoundPacksManager.SOUNDPACKS_FILENAME_YAML));
 
@@ -148,7 +148,7 @@ namespace AmbientSoundsTuner
             }
 
             // Initialize sounds
-            SoundPatchersManager.instance.InitializeSounds();
+            SoundManager.instance.InitializeSounds();
 
             // Load sound packs
             SoundPacksManager.instance.InitSoundPacks();
@@ -242,7 +242,7 @@ namespace AmbientSoundsTuner
             var patchedSounds = new List<string>();
             var patchedVolumes = new List<string>();
 
-            foreach (ISound sound in SoundPatchersManager.instance.Sounds.Values)
+            foreach (ISound sound in SoundManager.instance.Sounds.Values)
             {
                 var soundName = string.Format("{0}.{1}", sound.CategoryId, sound.Id);
 
@@ -333,13 +333,13 @@ namespace AmbientSoundsTuner
         {
             try
             {
-                ((UserInterfaceClickSound)SoundPatchersManager.instance.Sounds["Misc.UI Clicks"]).PatchVolume(this.Settings.MiscSounds["UI Clicks"].Volume);
+                ((UserInterfaceClickSound)SoundManager.instance.Sounds["Misc.UI Clicks"]).PatchVolume(this.Settings.MiscSounds["UI Clicks"].Volume);
             }
             catch (Exception ex) { Mod.Instance.Log.Warning("Failed to patch volume: Misc.UI Clicks\r\n{0}", ex); }
 
             try
             {
-                ((UserInterfaceClickDisabledSound)SoundPatchersManager.instance.Sounds["Misc.UI Clicks (Disabled)"]).PatchVolume(this.Settings.MiscSounds["UI Clicks (Disabled)"].Volume);
+                ((UserInterfaceClickDisabledSound)SoundManager.instance.Sounds["Misc.UI Clicks (Disabled)"]).PatchVolume(this.Settings.MiscSounds["UI Clicks (Disabled)"].Volume);
             }
             catch (Exception ex) { Mod.Instance.Log.Warning("Failed to patch volume: Misc.UI Clicks (Disabled)\r\n{0}", ex); }
         }

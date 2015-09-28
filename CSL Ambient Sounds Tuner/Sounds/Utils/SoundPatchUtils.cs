@@ -6,12 +6,12 @@ using AmbientSoundsTuner.SoundPack;
 using AmbientSoundsTuner.SoundPack.Migration;
 using UnityEngine;
 
-namespace AmbientSoundsTuner.SoundPatchers
+namespace AmbientSoundsTuner.Sounds
 {
     /// <summary>
     /// A static class that contains various methods related to sounds patching.
     /// </summary>
-    public static class SoundsPatcher
+    public static class SoundPatchUtils
     {
         /// <summary>
         /// Gets the volume of a sound.

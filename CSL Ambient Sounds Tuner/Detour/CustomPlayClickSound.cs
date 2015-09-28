@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using AmbientSoundsTuner.SoundPatchers;
-using AmbientSoundsTuner.SoundPatchers.Sounds;
+using AmbientSoundsTuner.Sounds;
 using ColossalFramework.UI;
 using CommonShared.Utils;
 
