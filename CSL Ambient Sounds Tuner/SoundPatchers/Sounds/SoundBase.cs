@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.SoundPack.Migration;
+using ColossalFramework;
+using CommonShared.Utils;
 
 namespace AmbientSoundsTuner.SoundPatchers.Sounds
 {
@@ -28,6 +30,8 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
 
         public virtual bool IngameOnly { get { return this.GetAttribute<SoundAttribute>().IngameOnly; } }
 
+        public virtual DlcUtils.Dlc RequiredDlc { get { return this.GetAttribute<SoundAttribute>().RequiredDlc; } }
+
         private T GetAttribute<T>() where T : Attribute
         {
             return Attribute.GetCustomAttribute(this.GetType(), typeof(T), true) as T;
@@ -44,6 +48,9 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
 
         public virtual void BackUpSound()
         {
+            if ((DlcUtils.InstalledDlcs & this.RequiredDlc) != this.RequiredDlc)
+                return;
+
             try
             {
                 var sound = this.GetSoundInstance();
@@ -60,6 +67,9 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
 
         public virtual void PatchSound(SoundPack.Migration.SoundPacksFileV1.Audio newSound)
         {
+            if ((DlcUtils.InstalledDlcs & this.RequiredDlc) != this.RequiredDlc)
+                return;
+
             try
             {
                 var sound = this.GetSoundInstance();
@@ -76,12 +86,18 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
 
         public virtual void RevertSound()
         {
+            if ((DlcUtils.InstalledDlcs & this.RequiredDlc) != this.RequiredDlc)
+                return;
+
             if (this.OldSound != null)
                 this.PatchSound(this.OldSound);
         }
 
         public virtual void BackUpVolume()
         {
+            if ((DlcUtils.InstalledDlcs & this.RequiredDlc) != this.RequiredDlc)
+                return;
+
             try
             {
                 var sound = this.GetSoundInstance();
@@ -99,6 +115,9 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
 
         public virtual void PatchVolume(float volume)
         {
+            if ((DlcUtils.InstalledDlcs & this.RequiredDlc) != this.RequiredDlc)
+                return;
+
             try
             {
                 var sound = this.GetSoundInstance();
@@ -115,6 +134,9 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
 
         public virtual void RevertVolume()
         {
+            if ((DlcUtils.InstalledDlcs & this.RequiredDlc) != this.RequiredDlc)
+                return;
+
             if (this.OldVolume.HasValue)
                 this.PatchVolume(this.OldVolume.Value);
         }

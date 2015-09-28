@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.Detour;
 using AmbientSoundsTuner.SoundPack.Migration;
+using CommonShared.Utils;
 
 namespace AmbientSoundsTuner.SoundPatchers.Sounds
 {
@@ -287,13 +288,13 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
     public class BuildingTrainStationSound : BuildingPublicTransportSoundBase { }
 
 
-    [SoundCategory("Building", "Building", "After Dark DLC")]
+    [SoundCategory("Building", "Building", "Leisure")]
     public abstract class BuildingAfterDarkSoundBase : BuildingSoundBase { }
 
-    [Sound("Casino", "Casino")]
+    [Sound("Casino", "Casino", RequiredDlc = DlcUtils.Dlc.AfterDark)]
     public class BuildingCasinoSound : BuildingAfterDarkSoundBase { }
 
-    [Sound("Zoo", "Zoo")]
+    [Sound("Zoo", "Zoo", RequiredDlc = DlcUtils.Dlc.AfterDark)]
     public class BuildingZooSound : BuildingAfterDarkSoundBase { }
 
 

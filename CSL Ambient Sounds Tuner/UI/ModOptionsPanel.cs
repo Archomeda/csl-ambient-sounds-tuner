@@ -85,6 +85,9 @@ namespace AmbientSoundsTuner.UI
             var sliders = new Dictionary<string, Dictionary<string, List<ISound>>>();
             foreach (var sound in SoundPatchersManager.instance.Sounds.Values)
             {
+                if ((DlcUtils.InstalledDlcs & sound.RequiredDlc) != sound.RequiredDlc)
+                    continue;
+
                 if (!sliders.ContainsKey(sound.CategoryName))
                     sliders.Add(sound.CategoryName, new Dictionary<string, List<ISound>>());
                 if (!sliders[sound.CategoryName].ContainsKey(sound.SubCategoryName))

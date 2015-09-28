@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AmbientSoundsTuner.SoundPack.Migration;
+using CommonShared.Utils;
 
 namespace AmbientSoundsTuner.SoundPatchers.Sounds
 {
@@ -75,6 +76,14 @@ namespace AmbientSoundsTuner.SoundPatchers.Sounds
         /// <c>true</c> if this sound is active while in-game only; otherwise, <c>false</c>.
         /// </value>
         bool IngameOnly { get; }
+
+        /// <summary>
+        /// Gets the required DLC.
+        /// </summary>
+        /// <value>
+        /// The required DLC.
+        /// </value>
+        DlcUtils.Dlc RequiredDlc { get; }
 
 
         /// <summary>
