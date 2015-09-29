@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Timers;
 using AmbientSoundsTuner.Defs;
 using AmbientSoundsTuner.Migration;
 using AmbientSoundsTuner.SoundPack;
@@ -25,54 +26,90 @@ namespace AmbientSoundsTuner.UI
     /// </summary>
     public class ModOptionsPanel : ConfigPanelBase
     {
+        public ModOptionsPanel(UIHelper helper) : base(helper) { }
+
         private string[] soundPacks;
         private bool isChangingSoundPackPreset = false;
-        private UIDropDown soundPackPresetDropDown;
         private Dictionary<string, UIDropDown> soundSelections = new Dictionary<string, UIDropDown>();
 
-        public ModOptionsPanel(UIHelper helper) : base(helper) { }
+        private bool isLayoutApplied = false;
+        private UIHelper modSettingsGroup;
+        private UIDropDown soundPackPresetDropDown;
+        private UICheckBox debugLoggingCheckBox;
+        private UIHelper soundSettingsGroup;
+        private UITabstrip soundSettingsTabstrip;
+        private UILabel versionInfoLabel;
 
         protected override void PopulateUI()
         {
-            UIHelper groupHelper = null;
+            this.RootPanel.eventVisibilityChanged += RootPanel_eventVisibilityChanged;
 
             // Create global options
-            groupHelper = this.RootHelper.AddGroup2("Mod settings");
+            this.modSettingsGroup = this.RootHelper.AddGroup2("Mod settings");
             this.soundPacks = new[] { "Default", "Custom" }.Union(SoundPacksManager.instance.SoundPacks.Values.OrderBy(p => p.Name).Select(p => p.Name)).ToArray();
-            this.soundPackPresetDropDown = (UIDropDown)groupHelper.AddDropdown("Sound pack preset", this.soundPacks, 0, this.SoundPackPresetDropDownSelectionChanged);
+            this.soundPackPresetDropDown = (UIDropDown)this.modSettingsGroup.AddDropdown("Sound pack preset", this.soundPacks, 0, this.SoundPackPresetDropDownSelectionChanged);
             this.soundPackPresetDropDown.selectedValue = Mod.Instance.Settings.SoundPackPreset;
-            groupHelper.AddCheckbox("Enable debug logging (don't use this during normal gameplay)", Mod.Instance.Settings.ExtraDebugLogging, v =>
+            this.debugLoggingCheckBox = (UICheckBox)this.modSettingsGroup.AddCheckbox("Enable debug logging (don't use this during normal gameplay)", Mod.Instance.Settings.ExtraDebugLogging, v =>
             {
                 Mod.Instance.Settings.ExtraDebugLogging = v;
                 Mod.Instance.Log.EnableDebugLogging = v;
             });
 
             // Create tab strip
-            groupHelper = this.RootHelper.AddGroup2("Sound settings");
-            UIComponent groupParent = ((UIPanel)groupHelper.self).parent;
-            UITabstrip tabstrip = groupHelper.AddTabstrip();
-            tabstrip.tabPages.size = new Vector2(
-                groupParent.width - 20,
-                this.RootPanelInnerArea.y - (groupParent.absolutePosition.y - this.RootPanel.absolutePosition.y) - (groupParent.height - tabstrip.tabPages.height)
-            );
-            tabstrip.tabPages.anchor = UIAnchorStyle.All;
+            this.soundSettingsGroup = this.RootHelper.AddGroup2("Sound settings");
+            UIComponent groupParent = ((UIPanel)this.soundSettingsGroup.self).parent;
+            this.soundSettingsTabstrip = this.soundSettingsGroup.AddTabstrip();
+            this.soundSettingsTabstrip.tabPages.width = groupParent.width - 20;
 
             // Create tabs
-            int tabWidth = (int)(tabstrip.tabPages.width / 5);
-            this.PopulateTabContainer(tabstrip);
-            tabstrip.selectedIndex = -1;
-            tabstrip.selectedIndex = 0;
+            int tabWidth = (int)(this.soundSettingsTabstrip.tabPages.width / 5);
+            this.PopulateTabContainer(this.soundSettingsTabstrip);
+            this.soundSettingsTabstrip.selectedIndex = -1;
+            this.soundSettingsTabstrip.selectedIndex = 0;
 
             // Add mod information
             string versionText = Mod.Instance.BuildVersion;
             if (DlcUtils.IsAfterDarkInstalled)
                 versionText += " - After Dark";
-            this.RootPanel.autoLayout = false;
-            UILabel versionLabel = this.RootPanel.AddUIComponent<UILabel>();
-            versionLabel.autoSize = true;
-            versionLabel.textScale = 0.8f;
-            versionLabel.text = versionText;
-            versionLabel.relativePosition = new Vector3(this.RootPanel.width - versionLabel.size.x - 10, 0);
+            this.versionInfoLabel = this.RootPanel.AddUIComponent<UILabel>();
+            this.versionInfoLabel.isVisible = false;
+            this.versionInfoLabel.autoSize = true;
+            this.versionInfoLabel.textScale = 0.8f;
+            this.versionInfoLabel.text = versionText;
+        }
+
+        private void RootPanel_eventVisibilityChanged(UIComponent component, bool value)
+        {
+            if (value && !this.isLayoutApplied)
+            {
+                // The panel is visible now, here we change the layout of our UI components to work around issue #35
+
+                // Set our flag so we reapply our layout again next time
+                this.isLayoutApplied = true;
+
+                // The global options are fine as it is, so we leave that
+
+                // We have to modify the sound settings group to extend it fully down without making the scrollbar visible on the root panel
+                UIComponent groupParent = ((UIPanel)this.soundSettingsGroup.self).parent;
+                this.soundSettingsTabstrip.tabPages.height = this.RootPanelInnerArea.y - (groupParent.absolutePosition.y - this.RootPanel.absolutePosition.y) - (groupParent.height - this.soundSettingsTabstrip.tabPages.height);
+                this.soundSettingsTabstrip.tabPages.anchor = UIAnchorStyle.All;
+
+                Timer timer = new Timer(10);
+                timer.Elapsed += (s, e) =>
+                {
+                    // We have to relocate our mod information label to the top right where it makes more sense
+                    // This is on a delayed timer because the values of certain sizes/positions on UIComponents are not reliable, see
+                    // https://forum.paradoxplaza.com/forum/index.php?threads/variable-inconsistencies-in-custom-mod-option-panels.884268/
+                    // We have to disable auto layout, but if we disable it too early, we mess up the whole panel,
+                    // so after auto layout has settled, we proceed to disable it and relocate our mod information label
+                    this.RootPanel.autoLayout = false;
+                    this.versionInfoLabel.relativePosition = new Vector3(this.RootPanel.width - this.versionInfoLabel.size.x - 10, 10);
+                    this.versionInfoLabel.Show();
+                    timer.Dispose();
+                };
+                timer.AutoReset = false;
+                timer.Start();
+            }
         }
 
         protected override void OnClose()
