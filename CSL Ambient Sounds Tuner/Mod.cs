@@ -214,7 +214,7 @@ namespace AmbientSoundsTuner
             // Try patching the sounds
             try
             {
-                this.PatchGameSounds();
+                this.PatchGameSounds(true);
             }
             catch (Exception ex)
             {
@@ -222,7 +222,20 @@ namespace AmbientSoundsTuner
             }
         }
 
-        private void PatchGameSounds()
+        internal void PatchUISounds()
+        {
+            // Try patching the sounds
+            try
+            {
+                this.PatchGameSounds(false);
+            }
+            catch (Exception ex)
+            {
+                this.Log.Warning("Could not patch sounds: {0}", ex);
+            }
+        }
+
+        private void PatchGameSounds(bool ingame)
         {
             var backedUpSounds = new List<string>();
             var backedUpVolumes = new List<string>();
@@ -232,6 +245,8 @@ namespace AmbientSoundsTuner
             foreach (ISound sound in SoundManager.instance.Sounds.Values)
             {
                 var soundName = string.Format("{0}.{1}", sound.CategoryId, sound.Id);
+                if (sound.IngameOnly != ingame)
+                    continue;
 
                 try
                 {
@@ -314,21 +329,6 @@ namespace AmbientSoundsTuner
             Mod.Instance.Log.Debug("Successfully backed up the following sound volumes: {0}", string.Join(",", backedUpVolumes.ToArray()));
             Mod.Instance.Log.Debug("Successfully patched the following sound instances: {0}", string.Join(",", patchedSounds.ToArray()));
             Mod.Instance.Log.Debug("Successfully patched the following sound volumes: {0}", string.Join(",", patchedVolumes.ToArray()));
-        }
-
-        internal void PatchUISounds()
-        {
-            try
-            {
-                ((UserInterfaceClickSound)SoundManager.instance.Sounds["Misc.UI Clicks"]).PatchVolume(this.Settings.MiscSounds["UI Clicks"].Volume);
-            }
-            catch (Exception ex) { Mod.Instance.Log.Warning("Failed to patch volume: Misc.UI Clicks\r\n{0}", ex); }
-
-            try
-            {
-                ((UserInterfaceClickDisabledSound)SoundManager.instance.Sounds["Misc.UI Clicks (Disabled)"]).PatchVolume(this.Settings.MiscSounds["UI Clicks (Disabled)"].Volume);
-            }
-            catch (Exception ex) { Mod.Instance.Log.Warning("Failed to patch volume: Misc.UI Clicks (Disabled)\r\n{0}", ex); }
         }
     }
 }
