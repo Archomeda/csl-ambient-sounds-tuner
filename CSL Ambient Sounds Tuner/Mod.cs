@@ -118,16 +118,24 @@ namespace AmbientSoundsTuner
         private void Load()
         {
             // We have to properly migrate the outdated XML configuration file
-            string oldXmlSettingsFilename = Path.Combine(Path.GetDirectoryName(this.SettingsFilename), Path.GetFileNameWithoutExtension(this.SettingsFilename)) + ".xml";
-            if (File.Exists(oldXmlSettingsFilename) && !File.Exists(this.SettingsFilename))
+            try
             {
-                this.Settings = Configuration.LoadConfig(oldXmlSettingsFilename, new ConfigurationMigrator());
-                this.Settings.SaveConfig(this.SettingsFilename);
-                File.Delete(oldXmlSettingsFilename);
+                string oldXmlSettingsFilename = Path.Combine(Path.GetDirectoryName(this.SettingsFilename), Path.GetFileNameWithoutExtension(this.SettingsFilename)) + ".xml";
+                if (File.Exists(oldXmlSettingsFilename) && !File.Exists(this.SettingsFilename))
+                {
+                    this.Settings = Configuration.LoadConfig(oldXmlSettingsFilename, new ConfigurationMigrator());
+                    this.Settings.SaveConfig(this.SettingsFilename);
+                    File.Delete(oldXmlSettingsFilename);
+                }
+                else
+                {
+                    this.Settings = Configuration.LoadConfig(this.SettingsFilename, new ConfigurationMigrator());
+                }
             }
-            else
+            catch (Exception ex)
             {
-                this.Settings = Configuration.LoadConfig(this.SettingsFilename, new ConfigurationMigrator());
+                this.Log.Warning("An error occured while loading the settings, default values will be used instead: {0}", ex);
+                this.Settings = new Configuration();
             }
 
             this.Log.EnableDebugLogging = this.Settings.ExtraDebugLogging;
@@ -148,7 +156,14 @@ namespace AmbientSoundsTuner
 
         private void Unload()
         {
-            this.Settings.SaveConfig(this.SettingsFilename);
+            try
+            {
+                this.Settings.SaveConfig(this.SettingsFilename);
+            }
+            catch (Exception ex)
+            {
+                this.Log.Warning("An error occured while saving the settings, the settings are not saved: {0}", ex);
+            }
             CustomPlayClickSound.UnDetour();
 
             // Actually, to be consistent and nice, we should also revert the other sound patching here.
