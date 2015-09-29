@@ -31,6 +31,15 @@ namespace AmbientSoundsTuner.SoundPack
 
         public IDictionary<string, SoundPacksFileV1.Audio> AudioFiles { get; private set; }
 
+        public SoundPacksFileV1.Audio GetAudioFileByName(string categoryId, string soundId, string audioName)
+        {
+            string id = string.Format("{0}.{1}.{2}", categoryId, soundId, audioName);
+            if (this.AudioFiles.ContainsKey(id))
+                return this.AudioFiles[id];
+            return null;
+        }
+
+
         public void InitSoundPacks()
         {
             this.SoundPackMods.Clear();
@@ -96,7 +105,7 @@ namespace AmbientSoundsTuner.SoundPack
                             }
                         }
                     });
-                    foreach (var group in new[] { soundPack.Ambients, soundPack.Animals, soundPack.Buildings, soundPack.Vehicles, soundPack.Miscs })
+                    foreach (var group in new[] { soundPack.Ambients, soundPack.AmbientsNight, soundPack.Animals, soundPack.Buildings, soundPack.Vehicles, soundPack.Miscs })
                     {
                         for (int i = 0; i < group.Length; i++)
                         {
@@ -114,8 +123,9 @@ namespace AmbientSoundsTuner.SoundPack
                     // Get every audio
                     var audioFiles = new Dictionary<string, SoundPacksFileV1.Audio>();
                     foreach (var group in new Dictionary<string, SoundPacksFileV1.Audio[]>() { 
-                        { "Ambient", soundPack.Ambients }, 
-                        { "Animal", soundPack.Animals }, 
+                        { "Ambient", soundPack.Ambients },
+                        { "AmbientNight", soundPack.AmbientsNight },
+                        { "Animal", soundPack.Animals },
                         { "Building", soundPack.Buildings },
                         { "Vehicle", soundPack.Vehicles },
                         { "Misc", soundPack.Miscs } })
@@ -162,6 +172,7 @@ namespace AmbientSoundsTuner.SoundPack
                 {
                     foreach (var group in new Dictionary<string, SoundPacksFileV1.Audio[]>() { 
                         { "Ambient", soundPackFile.Ambients }, 
+                        { "AmbientNight", soundPackFile.AmbientsNight },
                         { "Animal", soundPackFile.Animals }, 
                         { "Building", soundPackFile.Buildings },
                         { "Vehicle", soundPackFile.Vehicles },

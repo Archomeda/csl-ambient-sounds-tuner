@@ -7,7 +7,8 @@ using AmbientSoundsTuner.Compatibility;
 using AmbientSoundsTuner.Detour;
 using AmbientSoundsTuner.Migration;
 using AmbientSoundsTuner.SoundPack;
-using AmbientSoundsTuner.SoundPatchers;
+using AmbientSoundsTuner.Sounds;
+using AmbientSoundsTuner.Sounds.Exceptions;
 using AmbientSoundsTuner.UI;
 using ColossalFramework.Plugins;
 using ColossalFramework.UI;
@@ -74,7 +75,7 @@ namespace AmbientSoundsTuner
         public override void OnGameLoaded(LoadMode mode)
         {
             // Before we patch, we export the current game sounds as an example file
-            var exampleFile = SoundPatchersManager.instance.GetCurrentSoundSettingsAsSoundPack();
+            var exampleFile = SoundManager.instance.GetCurrentSoundSettingsAsSoundPack();
             exampleFile.SaveConfig(Path.Combine(FileUtils.GetStorageFolder(Mod.Instance), "Example." + SoundPacksManager.SOUNDPACKS_FILENAME_XML));
             exampleFile.SaveConfig(Path.Combine(FileUtils.GetStorageFolder(Mod.Instance), "Example." + SoundPacksManager.SOUNDPACKS_FILENAME_YAML));
 
@@ -135,6 +136,9 @@ namespace AmbientSoundsTuner
                 this.Log.Warning("Extra debug logging is enabled, please use this only to get more information while hunting for bugs; don't use this when playing normally!");
             }
 
+            // Initialize sounds
+            SoundManager.instance.InitializeSounds();
+
             // Load sound packs
             SoundPacksManager.instance.InitSoundPacks();
 
@@ -154,28 +158,6 @@ namespace AmbientSoundsTuner
 
         #endregion
 
-
-        private void PatchSounds<T>(SoundsInstancePatcher<T> patcher, IDictionary<T, ConfigurationV4.Sound> newSounds)
-        {
-            int backedUpSounds = patcher.BackupAllSounds();
-            this.Log.Debug("{0} sounds have been backed up through {1}", backedUpSounds, patcher.GetType().Name);
-
-            int backedUpVolumes = patcher.BackupAllVolumes();
-            this.Log.Debug("{0} volumes have been backed up through {1}", backedUpVolumes, patcher.GetType().Name);
-
-            int patchedSounds = patcher.PatchAllSounds(
-                newSounds
-                    .Where(kvp => !string.IsNullOrEmpty(kvp.Value.SoundPack) && kvp.Value.SoundPack != "Default")
-                    .ToDictionary(
-                        kvp => kvp.Key,
-                        kvp => patcher.GetAudioByName(kvp.Key.ToString(), kvp.Value.SoundPack)
-                    )
-                );
-            this.Log.Debug("{0} sounds have been patched through {1}", patchedSounds, patcher.GetType().Name);
-
-            int patchedVolumes = patcher.PatchAllVolumes(newSounds.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Volume));
-            this.Log.Debug("{0} volumes have been patched through {1}", patchedVolumes, patcher.GetType().Name);
-        }
 
         internal void PatchSounds()
         {
@@ -232,11 +214,7 @@ namespace AmbientSoundsTuner
             // Try patching the sounds
             try
             {
-                this.PatchSounds(SoundPatchersManager.instance.AmbientsPatcher, Settings.AmbientSounds);
-                this.PatchSounds(SoundPatchersManager.instance.AnimalsPatcher, Settings.AnimalSounds);
-                this.PatchSounds(SoundPatchersManager.instance.BuildingsPatcher, Settings.BuildingSounds);
-                this.PatchSounds(SoundPatchersManager.instance.VehiclesPatcher, Settings.VehicleSounds);
-                this.PatchSounds(SoundPatchersManager.instance.MiscPatcher, Settings.MiscSounds);
+                this.PatchGameSounds();
             }
             catch (Exception ex)
             {
@@ -244,15 +222,113 @@ namespace AmbientSoundsTuner
             }
         }
 
-        internal void PatchUISounds()
+        private void PatchGameSounds()
         {
-            foreach (var id in new[] { MiscPatcher.ID_CLICK_SOUND, MiscPatcher.ID_DISABLED_CLICK_SOUND })
+            var backedUpSounds = new List<string>();
+            var backedUpVolumes = new List<string>();
+            var patchedSounds = new List<string>();
+            var patchedVolumes = new List<string>();
+
+            foreach (ISound sound in SoundManager.instance.Sounds.Values)
             {
-                if (this.Settings.MiscSounds.ContainsKey(id))
+                var soundName = string.Format("{0}.{1}", sound.CategoryId, sound.Id);
+
+                try
                 {
-                    SoundPatchersManager.instance.MiscPatcher.PatchVolume(id, this.Settings.MiscSounds[id].Volume);
+                    IDictionary<string, ConfigurationV4.Sound> soundConfig = null;
+                    switch (sound.CategoryId)
+                    {
+                        case "Ambient":
+                            soundConfig = this.Settings.AmbientSounds;
+                            break;
+                        case "AmbientNight":
+                            soundConfig = this.Settings.AmbientNightSounds;
+                            break;
+                        case "Animal":
+                            soundConfig = this.Settings.AnimalSounds;
+                            break;
+                        case "Building":
+                            soundConfig = this.Settings.BuildingSounds;
+                            break;
+                        case "Vehicle":
+                            soundConfig = this.Settings.VehicleSounds;
+                            break;
+                        case "Misc":
+                            soundConfig = this.Settings.MiscSounds;
+                            break;
+                    }
+
+                    try
+                    {
+                        sound.BackUpSound();
+                        backedUpSounds.Add(soundName);
+                    }
+                    catch (SoundBackupException ex)
+                    {
+                        Mod.Instance.Log.Warning("Failed to back up sound instance {0}:\r\n{1}", soundName, ex.InnerException != null ? ex.InnerException.ToString() : ex.Message);
+                    }
+
+                    try
+                    {
+                        sound.BackUpVolume();
+                        backedUpVolumes.Add(soundName);
+                    }
+                    catch (SoundBackupException ex)
+                    {
+                        Mod.Instance.Log.Warning("Failed to back up sound volume {0}:\r\n{1}", soundName, ex.InnerException != null ? ex.InnerException.ToString() : ex.Message);
+                    }
+
+                    if (soundConfig.ContainsKey(sound.Id))
+                    {
+                        if (!string.IsNullOrEmpty(soundConfig[sound.Id].SoundPack) && soundConfig[sound.Id].SoundPack != "Default")
+                        {
+                            try
+                            {
+                                sound.PatchSound(SoundPacksManager.instance.GetAudioFileByName(sound.CategoryId, sound.Id, soundConfig[sound.Id].SoundPack));
+                                patchedSounds.Add(soundName);
+                            }
+                            catch (SoundPatchException ex)
+                            {
+                                Mod.Instance.Log.Warning("Failed to patch sound instance {0}:\r\n{1}", soundName, ex.InnerException != null ? ex.InnerException.ToString() : ex.Message);
+                            }
+                        }
+
+                        try
+                        {
+                            sound.PatchVolume(soundConfig[sound.Id].Volume);
+                            patchedVolumes.Add(soundName);
+                        }
+                        catch (SoundPatchException ex)
+                        {
+                            Mod.Instance.Log.Warning("Failed to patch sound volume {0}:\r\n{1}", soundName, ex.InnerException != null ? ex.InnerException.ToString() : ex.Message);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Mod.Instance.Log.Warning("Failed to patch sound {0}:\r\n{1}", soundName, ex);
                 }
             }
+
+            Mod.Instance.Log.Debug("Successfully backed up the following sound instances: {0}", string.Join(",", backedUpSounds.ToArray()));
+            Mod.Instance.Log.Debug("Successfully backed up the following sound volumes: {0}", string.Join(",", backedUpVolumes.ToArray()));
+            Mod.Instance.Log.Debug("Successfully patched the following sound instances: {0}", string.Join(",", patchedSounds.ToArray()));
+            Mod.Instance.Log.Debug("Successfully patched the following sound volumes: {0}", string.Join(",", patchedVolumes.ToArray()));
+        }
+
+        internal void PatchUISounds()
+        {
+            try
+            {
+                ((UserInterfaceClickSound)SoundManager.instance.Sounds["Misc.UI Clicks"]).PatchVolume(this.Settings.MiscSounds["UI Clicks"].Volume);
+            }
+            catch (Exception ex) { Mod.Instance.Log.Warning("Failed to patch volume: Misc.UI Clicks\r\n{0}", ex); }
+
+            try
+            {
+                ((UserInterfaceClickDisabledSound)SoundManager.instance.Sounds["Misc.UI Clicks (Disabled)"]).PatchVolume(this.Settings.MiscSounds["UI Clicks (Disabled)"].Volume);
+            }
+            catch (Exception ex) { Mod.Instance.Log.Warning("Failed to patch volume: Misc.UI Clicks (Disabled)\r\n{0}", ex); }
         }
     }
 }

@@ -27,6 +27,7 @@ namespace AmbientSoundsTuner.SoundPack.Migration
             public SoundPack()
             {
                 this.Ambients = new Audio[0];
+                this.AmbientsNight = new Audio[0];
                 this.Animals = new Audio[0];
                 this.Buildings = new Audio[0];
                 this.Vehicles = new Audio[0];
@@ -38,6 +39,9 @@ namespace AmbientSoundsTuner.SoundPack.Migration
 
             [XmlArray("Ambients"), XmlArrayItem("Ambient")]
             public Audio[] Ambients { get; set; }
+
+            [XmlArray("AmbientsNight"), XmlArrayItem("AmbientNight")]
+            public Audio[] AmbientsNight { get; set; }
 
             [XmlArray("Animals"), XmlArrayItem("Animal")]
             public Audio[] Animals { get; set; }

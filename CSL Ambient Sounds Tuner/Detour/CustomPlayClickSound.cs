@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using AmbientSoundsTuner.SoundPatchers;
+using AmbientSoundsTuner.Sounds;
 using ColossalFramework.UI;
 using CommonShared.Utils;
 
@@ -67,20 +67,34 @@ namespace AmbientSoundsTuner.Detour
             }
         }
 
+        private static float uiClickSoundVolume = 1;
+        public static float UIClickSoundVolume
+        {
+            get { return uiClickSoundVolume; }
+            set { uiClickSoundVolume = value; }
+        }
+
         public static void PlayClickSound(UIComponent @this, UIComponent comp)
         {
             if (@this.playAudioEvents && comp == @this && UIView.playSoundDelegate != null)
             {
                 if (@this.clickSound != null)
                 {
-                    UIView.playSoundDelegate(@this.clickSound, SoundPatchersManager.instance.MiscPatcher.UIClickSoundVolume);
+                    UIView.playSoundDelegate(@this.clickSound, UIClickSoundVolume);
                     return;
                 }
                 if (@this.GetUIView().defaultClickSound != null)
                 {
-                    UIView.playSoundDelegate(@this.GetUIView().defaultClickSound, SoundPatchersManager.instance.MiscPatcher.UIClickSoundVolume);
+                    UIView.playSoundDelegate(@this.GetUIView().defaultClickSound, UIClickSoundVolume);
                 }
             }
+        }
+
+        private static float disabledUIClickSoundVolume = 1;
+        public static float DisabledUIClickSoundVolume
+        {
+            get { return disabledUIClickSoundVolume; }
+            set { disabledUIClickSoundVolume = value; }
         }
 
         public static void PlayDisabledClickSound(UIComponent @this, UIComponent comp)
@@ -89,12 +103,12 @@ namespace AmbientSoundsTuner.Detour
             {
                 if (@this.disabledClickSound != null)
                 {
-                    UIView.playSoundDelegate(@this.disabledClickSound, SoundPatchersManager.instance.MiscPatcher.UIDisabledClickSoundVolume);
+                    UIView.playSoundDelegate(@this.disabledClickSound, DisabledUIClickSoundVolume);
                     return;
                 }
                 if (@this.GetUIView().defaultDisabledClickSound != null)
                 {
-                    UIView.playSoundDelegate(@this.GetUIView().defaultDisabledClickSound, SoundPatchersManager.instance.MiscPatcher.UIDisabledClickSoundVolume);
+                    UIView.playSoundDelegate(@this.GetUIView().defaultDisabledClickSound, DisabledUIClickSoundVolume);
                 }
             }
         }

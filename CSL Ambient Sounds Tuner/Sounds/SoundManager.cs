@@ -7,40 +7,25 @@ using AmbientSoundsTuner.SoundPack.Migration;
 using ColossalFramework;
 using UnityEngine;
 
-namespace AmbientSoundsTuner.SoundPatchers
+namespace AmbientSoundsTuner.Sounds
 {
-    public class SoundPatchersManager : SingletonLite<SoundPatchersManager>
+    public class SoundManager : SingletonLite<SoundManager>
     {
-        public SoundPatchersManager()
+        public SoundManager()
         {
-            this.AmbientsPatcher = new AmbientsPatcher();
-            this.AnimalsPatcher = new AnimalsPatcher();
-            this.BuildingsPatcher = new BuildingsPatcher();
-            this.VehiclesPatcher = new VehiclesPatcher();
-            this.MiscPatcher = new MiscPatcher();
+            this.Sounds = new Dictionary<string, ISound>();
         }
 
-        public AmbientsPatcher AmbientsPatcher { get; private set; }
+        public IDictionary<string, ISound> Sounds { get; protected set; }
 
-        public AnimalsPatcher AnimalsPatcher { get; private set; }
-
-        public BuildingsPatcher BuildingsPatcher { get; private set; }
-
-        public VehiclesPatcher VehiclesPatcher { get; private set; }
-
-        public MiscPatcher MiscPatcher { get; private set; }
-
-        public SoundsInstancePatcher<T> GetPatcherById<T>(string id)
+        public void InitializeSounds()
         {
-            switch (id)
+            foreach (var soundClass in this.GetType().Assembly.GetTypes().Where(p => typeof(ISound).IsAssignableFrom(p) && !p.IsInterface && !p.IsAbstract))
             {
-                case "Ambient": return this.AmbientsPatcher as SoundsInstancePatcher<T>;
-                case "Animal": return this.AnimalsPatcher as SoundsInstancePatcher<T>;
-                case "Building": return this.BuildingsPatcher as SoundsInstancePatcher<T>;
-                case "Vehicle": return this.VehiclesPatcher as SoundsInstancePatcher<T>;
-                case "Misc": return this.MiscPatcher as SoundsInstancePatcher<T>;
+                ISound sound = (ISound)Activator.CreateInstance(soundClass);
+                this.Sounds[string.Format("{0}.{1}", sound.CategoryId, sound.Id)] = sound;
+                Mod.Instance.Log.Debug("Initialized sound {0}.{1}", sound.CategoryId, sound.Id);
             }
-            return null;
         }
 
 
@@ -97,11 +82,12 @@ namespace AmbientSoundsTuner.SoundPatchers
 
             var soundPack = file.SoundPacks[0];
             soundPack.Name = "Default";
-            soundPack.Ambients = new SoundPacksFileV1.Audio[this.AmbientsPatcher.Ids.Length];
-            soundPack.Animals = new SoundPacksFileV1.Audio[this.AnimalsPatcher.Ids.Length];
-            soundPack.Buildings = new SoundPacksFileV1.Audio[this.BuildingsPatcher.Ids.Length];
-            soundPack.Vehicles = new SoundPacksFileV1.Audio[this.VehiclesPatcher.Ids.Length];
-            soundPack.Miscs = new SoundPacksFileV1.Audio[this.MiscPatcher.Ids.Length];
+            var ambients = new List<SoundPacksFileV1.Audio>();
+            var ambientsNight = new List<SoundPacksFileV1.Audio>();
+            var animals = new List<SoundPacksFileV1.Audio>();
+            var buildings = new List<SoundPacksFileV1.Audio>();
+            var vehicles = new List<SoundPacksFileV1.Audio>();
+            var miscs = new List<SoundPacksFileV1.Audio>();
 
             Func<AudioInfo, SoundPacksFileV1.AudioInfo> convertAudioInfo = null;
             convertAudioInfo = new Func<AudioInfo, SoundPacksFileV1.AudioInfo>(ai =>
@@ -144,55 +130,42 @@ namespace AmbientSoundsTuner.SoundPatchers
                 };
             });
 
-            // Ambients
-            for (int i = 0; i < soundPack.Ambients.Length; i++)
+            foreach (ISound sound in SoundManager.instance.Sounds.Values)
             {
-                var sound = this.AmbientsPatcher.GetSoundInstance(this.AmbientsPatcher.Ids[i]);
-                if (sound != null && sound.HasSound)
+                var soundInstance = sound.GetSoundInstance();
+                if (soundInstance != null && soundInstance.HasSound)
                 {
-                    soundPack.Ambients[i] = convertToFile(this.AmbientsPatcher.Ids[i].ToString(), sound.AudioInfo);
+                    var audioFile = convertToFile(sound.Id, soundInstance.AudioInfo);
+                    switch (sound.CategoryId)
+                    {
+                        case "Ambient":
+                            ambients.Add(audioFile);
+                            break;
+                        case "AmbientNight":
+                            ambientsNight.Add(audioFile);
+                            break;
+                        case "Animal":
+                            animals.Add(audioFile);
+                            break;
+                        case "Building":
+                            buildings.Add(audioFile);
+                            break;
+                        case "Vehicle":
+                            vehicles.Add(audioFile);
+                            break;
+                        case "Misc":
+                            miscs.Add(audioFile);
+                            break;
+                    }
                 }
             }
 
-            // Animals
-            for (int i = 0; i < soundPack.Animals.Length; i++)
-            {
-                var sound = this.AnimalsPatcher.GetSoundInstance(this.AnimalsPatcher.Ids[i]);
-                if (sound != null && sound.HasSound)
-                {
-                    soundPack.Animals[i] = convertToFile(this.AnimalsPatcher.Ids[i].ToString(), sound.AudioInfo);
-                }
-            }
-
-            // Buildings
-            for (int i = 0; i < soundPack.Buildings.Length; i++)
-            {
-                var sound = this.BuildingsPatcher.GetSoundInstance(this.BuildingsPatcher.Ids[i]);
-                if (sound != null && sound.HasSound)
-                {
-                    soundPack.Buildings[i] = convertToFile(this.BuildingsPatcher.Ids[i].ToString(), sound.AudioInfo);
-                }
-            }
-
-            // Vehicles
-            for (int i = 0; i < soundPack.Vehicles.Length; i++)
-            {
-                var sound = this.VehiclesPatcher.GetSoundInstance(this.VehiclesPatcher.Ids[i]);
-                if (sound != null && sound.HasSound)
-                {
-                    soundPack.Vehicles[i] = convertToFile(this.VehiclesPatcher.Ids[i].ToString(), sound.AudioInfo);
-                }
-            }
-
-            // Miscs
-            for (int i = 0; i < soundPack.Miscs.Length; i++)
-            {
-                var sound = this.MiscPatcher.GetSoundInstance(this.MiscPatcher.Ids[i]);
-                if (sound != null && sound.HasSound)
-                {
-                    soundPack.Miscs[i] = convertToFile(this.MiscPatcher.Ids[i].ToString(), sound.AudioInfo);
-                }
-            }
+            soundPack.Ambients = ambients.ToArray();
+            soundPack.AmbientsNight = ambientsNight.ToArray();
+            soundPack.Animals = animals.ToArray();
+            soundPack.Buildings = buildings.ToArray();
+            soundPack.Vehicles = vehicles.ToArray();
+            soundPack.Miscs = miscs.ToArray();
 
             return file;
         }

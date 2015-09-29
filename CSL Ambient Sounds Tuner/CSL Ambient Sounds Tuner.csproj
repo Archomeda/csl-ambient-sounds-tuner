@@ -82,21 +82,21 @@
     <Compile Include="SoundPack\Migration\SoundPacksFileMigrator.cs" />
     <Compile Include="SoundPack\SoundPacksFile.cs" />
     <Compile Include="SoundPack\SoundPacksManager.cs" />
-    <Compile Include="SoundPatchers\MiscPatcher.cs" />
-    <Compile Include="SoundPatchers\SoundContainer.cs" />
-    <Compile Include="SoundPatchers\SoundPatchersManager.cs" />
-    <Compile Include="SoundPatchers\SoundBackupException.cs" />
-    <Compile Include="SoundPatchers\SoundPatchException.cs" />
-    <Compile Include="SoundPatchers\VehiclesPatcher.cs" />
-    <Compile Include="SoundPatchers\AmbientsPatcher.cs" />
+    <Compile Include="Sounds\SoundContainer.cs" />
+    <Compile Include="Sounds\SoundManager.cs" />
+    <Compile Include="Sounds\Exceptions\SoundBackupException.cs" />
+    <Compile Include="Sounds\Exceptions\SoundPatchException.cs" />
+    <Compile Include="Sounds\ISound.cs" />
+    <Compile Include="Sounds\SoundBase.cs" />
+    <Compile Include="Sounds\Attributes\SoundCategoryAttribute.cs" />
+    <Compile Include="Sounds\Attributes\SoundVolumeAttribute.cs" />
+    <Compile Include="Sounds\Attributes\SoundAttribute.cs" />
+    <Compile Include="Sounds\Sounds.cs" />
     <Compile Include="Compatibility\SoundDuplicator.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="SoundPatchers\BuildingsPatcher.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SoundPatchers\AnimalsPatcher.cs" />
-    <Compile Include="SoundPatchers\SoundsInstancePatcher.cs" />
-    <Compile Include="SoundPatchers\SoundsPatcher.cs" />
+    <Compile Include="Sounds\Utils\SoundPatchUtils.cs" />
     <Compile Include="UI\ModOptionsPanel.cs" />
   </ItemGroup>
   <ItemGroup>
