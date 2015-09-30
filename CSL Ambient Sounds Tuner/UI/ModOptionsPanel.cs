@@ -32,7 +32,6 @@ namespace AmbientSoundsTuner.UI
         private bool isChangingSoundPackPreset = false;
         private Dictionary<string, UIDropDown> soundSelections = new Dictionary<string, UIDropDown>();
 
-        private bool isLayoutApplied = false;
         private UIHelper modSettingsGroup;
         private UIDropDown soundPackPresetDropDown;
         private UICheckBox debugLoggingCheckBox;
@@ -80,13 +79,10 @@ namespace AmbientSoundsTuner.UI
 
         private void RootPanel_eventVisibilityChanged(UIComponent component, bool value)
         {
-            if (value && !this.isLayoutApplied)
+            if (value)
             {
                 // The panel is visible now, here we change the layout of our UI components to work around issue #35
-
-                // Set our flag so we reapply our layout again next time
-                this.isLayoutApplied = true;
-                this.RootPanel.eventVisibilityChanged -= RootPanel_eventVisibilityChanged;
+                this.RootPanel.eventVisibilityChanged -= this.RootPanel_eventVisibilityChanged;
 
                 // Start a delayed timer because the values of certain sizes/positions on UIComponents are not reliable, see
                 // https://forum.paradoxplaza.com/forum/index.php?threads/variable-inconsistencies-in-custom-mod-option-panels.884268/
