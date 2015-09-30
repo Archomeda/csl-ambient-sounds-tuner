@@ -94,7 +94,6 @@ namespace AmbientSoundsTuner.UI
                     // We have to modify the sound settings group to extend it fully down without making the scrollbar visible on the root panel
                     UIComponent groupParent = ((UIPanel)this.soundSettingsGroup.self).parent;
                     this.soundSettingsTabstrip.tabPages.height = this.RootPanelInnerArea.y - groupParent.relativePosition.y - (groupParent.height - this.soundSettingsTabstrip.tabPages.height);
-                    Mod.Instance.Log.Warning("{0} - {1} - ({2} - {3}) = {4}", this.RootPanelInnerArea.y, groupParent.relativePosition.y, groupParent.height, this.soundSettingsTabstrip.tabPages.height, this.soundSettingsTabstrip.tabPages.height);
                     this.soundSettingsTabstrip.tabPages.anchor = UIAnchorStyle.All;
 
                     // We have to relocate our mod information label to the top right where it makes more sense
