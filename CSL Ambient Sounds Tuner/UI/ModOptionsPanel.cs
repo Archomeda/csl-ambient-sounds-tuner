@@ -143,6 +143,8 @@ namespace AmbientSoundsTuner.UI
                 foreach (var group in tabGroup.Value)
                 {
                     UIHelper groupHelper = tabHelper.AddGroup2(group.Key);
+                    ((UIComponent)groupHelper.self).parent.width -= 10; // Fix some overlap with the scrollbar
+                    ((UIComponent)groupHelper.self).width -= 10; // Fix some overlap with the scrollbar
                     foreach (var sound in group.Value)
                     {
                         this.CreateSoundSlider(groupHelper, sound);
