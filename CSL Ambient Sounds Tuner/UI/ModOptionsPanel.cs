@@ -169,10 +169,22 @@ namespace AmbientSoundsTuner.UI
             }
 
             // Add UI components
-            UISlider uiSlider = (UISlider)helper.AddSlider(sound.Name, 0, sound.MaxVolume, 0.01f, volume, v => this.SoundVolumeChanged(sound, v));
-            UIPanel uiPanel = (UIPanel)uiSlider.parent;
-            UILabel uiLabel = uiPanel.Find<UILabel>("Label");
+            UISlider uiSlider = null;
+            UIPanel uiPanel = null;
+            UILabel uiLabel = null;
             UIDropDown uiDropDown = null;
+            var maxVolume = sound.MaxVolume;
+
+            if (customAudioFiles.Count > 0 && configuration.ContainsKey(sound.Id) && !string.IsNullOrEmpty(configuration[sound.Id].SoundPack))
+            {
+                // Custom sound, determine custom max volume
+                var audioFile = SoundPacksManager.instance.GetAudioFileByName(sound.CategoryId, sound.Id, configuration[sound.Id].SoundPack);
+                maxVolume = Mathf.Max(audioFile.AudioInfo.MaxVolume, audioFile.AudioInfo.Volume);
+            }
+
+            uiSlider = (UISlider)helper.AddSlider(sound.Name, 0, maxVolume, 0.01f, volume, v => this.SoundVolumeChanged(sound, v));
+            uiPanel = (UIPanel)uiSlider.parent;
+            uiLabel = uiPanel.Find<UILabel>("Label");
 
             if (customAudioFiles.Count > 0)
             {
