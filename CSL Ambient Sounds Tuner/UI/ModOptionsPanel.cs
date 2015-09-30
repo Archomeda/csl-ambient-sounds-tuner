@@ -86,6 +86,7 @@ namespace AmbientSoundsTuner.UI
 
                 // Set our flag so we reapply our layout again next time
                 this.isLayoutApplied = true;
+                this.RootPanel.eventVisibilityChanged -= RootPanel_eventVisibilityChanged;
 
                 // The global options are fine as it is, so we leave that
 
