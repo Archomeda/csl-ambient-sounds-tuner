@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Timers;
 using AmbientSoundsTuner.Defs;
 using AmbientSoundsTuner.Migration;
 using AmbientSoundsTuner.SoundPack;
@@ -41,7 +41,7 @@ namespace AmbientSoundsTuner.UI
 
         protected override void PopulateUI()
         {
-            this.RootPanel.eventVisibilityChanged += RootPanel_eventVisibilityChanged;
+            this.RootPanel.eventVisibilityChanged += this.RootPanel_eventVisibilityChanged;
 
             // Create global options
             this.modSettingsGroup = this.RootHelper.AddGroup2("Mod settings");
@@ -84,27 +84,29 @@ namespace AmbientSoundsTuner.UI
                 // The panel is visible now, here we change the layout of our UI components to work around issue #35
                 this.RootPanel.eventVisibilityChanged -= this.RootPanel_eventVisibilityChanged;
 
-                // Start a delayed timer because the values of certain sizes/positions on UIComponents are not reliable, see
+                // Start a delayed coroutine because the values of certain sizes/positions on UIComponents are not reliable, see
                 // https://forum.paradoxplaza.com/forum/index.php?threads/variable-inconsistencies-in-custom-mod-option-panels.884268/
                 // We have to disable auto layout, but if we disable it too early, we mess up the whole panel,
                 // so after auto layout has settled, we proceed to disable it and relocate our mod information label
-                Timer timer = new Timer(10);
-                timer.Elapsed += (s, e) =>
-                {
-                    // We have to modify the sound settings group to extend it fully down without making the scrollbar visible on the root panel
-                    UIComponent groupParent = ((UIPanel)this.soundSettingsGroup.self).parent;
-                    this.soundSettingsTabstrip.tabPages.height = this.RootPanelInnerArea.y - groupParent.relativePosition.y - (groupParent.height - this.soundSettingsTabstrip.tabPages.height);
-                    this.soundSettingsTabstrip.tabPages.anchor = UIAnchorStyle.All;
-
-                    // We have to relocate our mod information label to the top right where it makes more sense
-                    this.RootPanel.autoLayout = false;
-                    this.versionInfoLabel.relativePosition = new Vector3(this.RootPanel.width - this.versionInfoLabel.size.x - 10, 10);
-                    this.versionInfoLabel.Show();
-                    timer.Dispose();
-                };
-                timer.AutoReset = false;
-                timer.Start();
+                this.RootPanel.StartCoroutine(this.FixLayout());
             }
+        }
+
+        private IEnumerator FixLayout()
+        {
+            // Don't execute this method immediately, but rather wait for some milliseconds
+            yield return new WaitForSeconds(0.01f);
+
+            // We have to modify the sound settings group to extend it fully down without making the scrollbar visible on the root panel
+            UIComponent groupParent = ((UIPanel)this.soundSettingsGroup.self).parent;
+
+            this.soundSettingsTabstrip.tabPages.height = this.RootPanelInnerArea.y - groupParent.relativePosition.y - (groupParent.height - this.soundSettingsTabstrip.tabPages.height);
+            this.soundSettingsTabstrip.tabPages.anchor = UIAnchorStyle.All;
+
+            // We have to relocate our mod information label to the top right where it makes more sense
+            this.RootPanel.autoLayout = false;
+            this.versionInfoLabel.relativePosition = new Vector3(this.RootPanel.width - this.versionInfoLabel.size.x - 10, 10);
+            this.versionInfoLabel.Show();
         }
 
         protected override void OnClose()
