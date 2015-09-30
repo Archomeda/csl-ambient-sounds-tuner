@@ -10,7 +10,7 @@ using CommonShared.Utils;
 namespace AmbientSoundsTuner.Sounds
 {
     #region Ambients - Day
-    [SoundCategory("Ambient", "Ambient", "Day")]
+    [SoundCategory("Ambient", "Ambients", "Day")]
     public abstract class AmbientDaySoundBase : SoundBase
     {
         public override SoundContainer GetSoundInstance()
@@ -56,7 +56,7 @@ namespace AmbientSoundsTuner.Sounds
 
     #region Ambients - Night
 
-    [SoundCategory("AmbientNight", "Ambient", "Night")]
+    [SoundCategory("AmbientNight", "Ambients", "Night")]
     public abstract class AmbientNightSoundBase : SoundBase
     {
         public override SoundContainer GetSoundInstance()
@@ -93,7 +93,7 @@ namespace AmbientSoundsTuner.Sounds
 
     #region Animals
 
-    [SoundCategory("Animal", "Animal", "Animals")]
+    [SoundCategory("Animal", "Animals", "Animals")]
     public abstract class AnimalSoundBase : SoundBase
     {
         public override SoundContainer GetSoundInstance()
@@ -140,7 +140,7 @@ namespace AmbientSoundsTuner.Sounds
     }
 
 
-    [SoundCategory("Building", "Building", "Electricity and Water")]
+    [SoundCategory("Building", "Buildings", "Electricity and Water")]
     public abstract class BuildingElectricityAndWaterSoundBase : BuildingSoundBase { }
 
     [Sound("Advanced Wind Turbine", "Advanced Wind Turbine")]
@@ -192,7 +192,7 @@ namespace AmbientSoundsTuner.Sounds
     public class BuildingWindTurbineSound : BuildingElectricityAndWaterSoundBase { }
 
 
-    [SoundCategory("Building", "Building", "Services")]
+    [SoundCategory("Building", "Buildings", "Services")]
     public abstract class BuildingServiceSoundBase : BuildingSoundBase { }
 
     [Sound("Cemetery", "Cemetery")]
@@ -262,7 +262,7 @@ namespace AmbientSoundsTuner.Sounds
     }
 
 
-    [SoundCategory("Building", "Building", "Public Transport")]
+    [SoundCategory("Building", "Buildings", "Public Transport")]
     public abstract class BuildingPublicTransportSoundBase : BuildingSoundBase
     {
         public override SoundContainer GetSoundInstance()
@@ -289,7 +289,7 @@ namespace AmbientSoundsTuner.Sounds
     public class BuildingTrainStationSound : BuildingPublicTransportSoundBase { }
 
 
-    [SoundCategory("Building", "Building", "Leisure")]
+    [SoundCategory("Building", "Buildings", "Leisure")]
     public abstract class BuildingAfterDarkSoundBase : BuildingSoundBase { }
 
     [Sound("Casino", "Casino (After Dark)", RequiredDlc = DlcUtils.Dlc.AfterDark)]
@@ -299,7 +299,7 @@ namespace AmbientSoundsTuner.Sounds
     public class BuildingZooSound : BuildingAfterDarkSoundBase { }
 
 
-    [SoundCategory("Building", "Building", "Other")]
+    [SoundCategory("Building", "Buildings", "Other")]
     public abstract class BuildingOtherSoundBase : BuildingSoundBase
     {
         public override SoundContainer GetSoundInstance()
@@ -318,7 +318,7 @@ namespace AmbientSoundsTuner.Sounds
     public class BuildingIndustrialSound : BuildingOtherSoundBase { }
 
 
-    [SoundCategory("Building", "Building", "Miscellaneous")]
+    [SoundCategory("Building", "Buildings", "Miscellaneous")]
     public abstract class BuildingMiscellaneousSoundBase : BuildingSoundBase { }
 
     [Sound("On Fire", "On Fire")]
@@ -364,7 +364,7 @@ namespace AmbientSoundsTuner.Sounds
     }
 
 
-    [SoundCategory("Vehicle", "Vehicle", "Engines")]
+    [SoundCategory("Vehicle", "Vehicles", "Engines")]
     public abstract class VehicleEngineSoundBase : VehicleSoundBase { }
 
     [Sound("Aircraft Sound", "Aircrafts")]
@@ -392,7 +392,7 @@ namespace AmbientSoundsTuner.Sounds
     public class VehicleTrainSound : VehicleEngineSoundBase { }
 
 
-    [SoundCategory("Vehicle", "Vehicle", "Sirens")]
+    [SoundCategory("Vehicle", "Vehicles", "Sirens")]
     public abstract class VehicleSirenSoundBase : VehicleSoundBase { }
 
     [Sound("Ambulance Siren", "Ambulances")]
@@ -406,7 +406,7 @@ namespace AmbientSoundsTuner.Sounds
     public class VehiclePoliceCarSirenSound : VehicleSirenSoundBase { }
 
 
-    [SoundCategory("Vehicle", "Vehicle", "Miscellaneous")]
+    [SoundCategory("Vehicle", "Vehicles", "Miscellaneous")]
     public abstract class VehicleMiscellaneousSoundBase : VehicleSoundBase { }
 
     [Sound("Transport Arrive", "Transport Arrivals")]
