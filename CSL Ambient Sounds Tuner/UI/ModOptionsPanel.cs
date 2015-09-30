@@ -88,21 +88,20 @@ namespace AmbientSoundsTuner.UI
                 this.isLayoutApplied = true;
                 this.RootPanel.eventVisibilityChanged -= RootPanel_eventVisibilityChanged;
 
-                // The global options are fine as it is, so we leave that
-
-                // We have to modify the sound settings group to extend it fully down without making the scrollbar visible on the root panel
-                UIComponent groupParent = ((UIPanel)this.soundSettingsGroup.self).parent;
-                this.soundSettingsTabstrip.tabPages.height = this.RootPanelInnerArea.y - (groupParent.absolutePosition.y - this.RootPanel.absolutePosition.y) - (groupParent.height - this.soundSettingsTabstrip.tabPages.height);
-                this.soundSettingsTabstrip.tabPages.anchor = UIAnchorStyle.All;
-
+                // Start a delayed timer because the values of certain sizes/positions on UIComponents are not reliable, see
+                // https://forum.paradoxplaza.com/forum/index.php?threads/variable-inconsistencies-in-custom-mod-option-panels.884268/
+                // We have to disable auto layout, but if we disable it too early, we mess up the whole panel,
+                // so after auto layout has settled, we proceed to disable it and relocate our mod information label
                 Timer timer = new Timer(10);
                 timer.Elapsed += (s, e) =>
                 {
+                    // We have to modify the sound settings group to extend it fully down without making the scrollbar visible on the root panel
+                    UIComponent groupParent = ((UIPanel)this.soundSettingsGroup.self).parent;
+                    this.soundSettingsTabstrip.tabPages.height = this.RootPanelInnerArea.y - groupParent.relativePosition.y - (groupParent.height - this.soundSettingsTabstrip.tabPages.height);
+                    Mod.Instance.Log.Warning("{0} - {1} - ({2} - {3}) = {4}", this.RootPanelInnerArea.y, groupParent.relativePosition.y, groupParent.height, this.soundSettingsTabstrip.tabPages.height, this.soundSettingsTabstrip.tabPages.height);
+                    this.soundSettingsTabstrip.tabPages.anchor = UIAnchorStyle.All;
+
                     // We have to relocate our mod information label to the top right where it makes more sense
-                    // This is on a delayed timer because the values of certain sizes/positions on UIComponents are not reliable, see
-                    // https://forum.paradoxplaza.com/forum/index.php?threads/variable-inconsistencies-in-custom-mod-option-panels.884268/
-                    // We have to disable auto layout, but if we disable it too early, we mess up the whole panel,
-                    // so after auto layout has settled, we proceed to disable it and relocate our mod information label
                     this.RootPanel.autoLayout = false;
                     this.versionInfoLabel.relativePosition = new Vector3(this.RootPanel.width - this.versionInfoLabel.size.x - 10, 10);
                     this.versionInfoLabel.Show();
